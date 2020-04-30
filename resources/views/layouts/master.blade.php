@@ -31,12 +31,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
-            <!-- <img
-                src="{{ asset('images/user-avatar.png') }}"
-                alt="{{ auth()->user()->name }}"
-                height="30px"
-                width="auto"
-            > -->
             <i class="fas fa-user-circle fa-2x"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -89,15 +83,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item has-treeview menu-open">
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <router-link to="/dashboard" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>Dashboard</p>
-                    </router-link>
-                </li>
-            </ul>
+            <li class="nav-item">
+                <router-link to="/" class="nav-link">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>Dashboard</p>
+                </router-link>
+            </li>
+
+            <li class="nav-item">
+                <router-link to="/attendance" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>Attendance</p>
+                </router-link>
+            </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -144,6 +142,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   </footer>
 </div>
 <!-- ./wrapper -->
-<script src="/js/app.js"></script>
+<script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

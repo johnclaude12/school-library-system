@@ -13,3 +13,9 @@ $fa-font-path: "../webfonts";
 
 // Admin LTE
 @import '~admin-lte/dist/css/adminlte.css';
+
+// Custom SCSS
+.router-link-exact-active {
+    background-color: #d6d8d9;
+    color: #212529 !important;
+}

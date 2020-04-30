@@ -12,7 +12,8 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 const routes = [
-    { path: '/', component: require('./components/Dashboard.vue').default },
+    { path: '/', component: require('./components/pages/Dashboard.vue').default },
+    { path: '/attendance', component: require('./components/pages/Attendance.vue').default },
 ];
 
 const router = new VueRouter({
