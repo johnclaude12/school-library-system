@@ -40,17 +40,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <i class="fas fa-user-circle fa-2x"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-header">Sign in as <br> <b>{{ auth()->user()->name }}</b></span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            Profile
-          </a>
-          <a href="#" class="dropdown-item">
-            Settings
-          </a>
-          <a href="#" class="dropdown-item">
-            Logout
-          </a>
+            <span class="dropdown-header">Sign in as <br> <b>{{ auth()->user()->name }}</b></span>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+                Profile
+            </a>
+            <a href="#" class="dropdown-item">
+                Settings
+            </a>
+            <a class="dropdown-item" href="{{ route('logout') }}"
+                onclick="event.preventDefault();
+                document.getElementById('logout-form').submit();"
+            >
+                {{ __('Logout') }}
+            </a>
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
       </li>
     </ul>
   </nav>
