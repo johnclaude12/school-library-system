@@ -1939,8 +1939,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Dashboard",
   mounted: function mounted() {
@@ -1979,6 +1977,53 @@ __webpack_require__.r(__webpack_exports__);
   name: "Dashboard",
   mounted: function mounted() {
     console.log('Component mounted.');
+  },
+  data: function data() {
+    return {
+      items: [{
+        icon: 'fa-swatchbook',
+        text: "Total Books",
+        description: "Total books registered",
+        total: 171,
+        "footer-text": "More info",
+        "footer-icon": '<i class="fas fa-arrow-right"></i>'
+      }, {
+        icon: 'fa-book',
+        text: "Total Books Lost",
+        description: "Total books lost recorded.",
+        total: 1,
+        "footer-text": "More info",
+        "footer-icon": '<i class="fas fa-arrow-right"></i>'
+      }, {
+        icon: 'fa-exclamation-triangle',
+        text: "Books Overdue",
+        description: "Total books overdue recorded.",
+        total: 4,
+        "footer-text": "More info",
+        "footer-icon": '<i class="fas fa-arrow-right"></i>'
+      }, {
+        icon: 'fa-book-reader',
+        text: "Total Borrowers",
+        description: "Total borrowers recorded.",
+        total: 56,
+        "footer-text": "More info",
+        "footer-icon": '<i class="fas fa-arrow-right"></i>'
+      }, {
+        icon: 'fa-users',
+        text: "Total Students",
+        description: "Total students registered",
+        total: 200,
+        "footer-text": "More info",
+        "footer-icon": '<i class="fas fa-arrow-right"></i>'
+      }, {
+        icon: 'fa-user-tie',
+        text: "Total Faculties",
+        description: "Total faculties today recorded.",
+        total: 10,
+        "footer-text": "More info",
+        "footer-icon": '<i class="fas fa-arrow-right"></i>'
+      }]
+    };
   }
 });
 
@@ -37639,10 +37684,6 @@ var staticRenderFns = [
       _c("div", { staticClass: "row justify-content-center" }, [
         _c("div", { staticClass: "col-md-12" }, [
           _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Attendance Component")
-            ]),
-            _vm._v(" "),
             _c("div", { staticClass: "card-body" }, [
               _vm._v(
                 "\n                    I'm an Attendance component.\n                "
@@ -37675,32 +37716,36 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-12" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Dashboard Component")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an Dashboard component.\n                "
-              )
+  return _c("div", { staticClass: "container" }, [
+    _c(
+      "div",
+      { staticClass: "row justify-content-center" },
+      _vm._l(_vm.items, function(item, $index) {
+        return _c(
+          "div",
+          { key: $index, staticClass: "col-md-4 col-sm-6 my-3" },
+          [
+            _c("div", { staticClass: "card h-100" }, [
+              _c("div", { staticClass: "card-body text-muted" }, [
+                _c("i", { class: "fa-5x mt-3 fas " + item.icon }),
+                _vm._v(" "),
+                _c("h6", { staticClass: "text-uppercase" }, [
+                  _vm._v(_vm._s(item.text))
+                ]),
+                _vm._v(" "),
+                _c("h1", { staticClass: "display-4 font-weight-bold" }, [
+                  _vm._v(_vm._s(item.total))
+                ])
+              ])
             ])
-          ])
-        ])
-      ])
-    ])
-  }
-]
+          ]
+        )
+      }),
+      0
+    )
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 

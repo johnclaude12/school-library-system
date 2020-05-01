@@ -16,6 +16,24 @@ $fa-font-path: "../webfonts";
 
 // Custom SCSS
 .router-link-exact-active {
-    background-color: #d6d8d9;
+    background-color: #d6d8d9 !important;
     color: #212529 !important;
+}
+
+.card {
+    color: #76838F;
+}
+
+.card-body i {
+    float: right;
+    color: $teal;
+}
+
+.card-body .display-4 {
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+        color: $teal;
+    }
 }
