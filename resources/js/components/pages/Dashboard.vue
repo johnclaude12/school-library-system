@@ -26,7 +26,7 @@
                 items: [
                     {
                         icon: 'swatchbook',
-                        text: "Total Books",
+                        text: "Books",
                         description: "Total books registered",
                         total: 171,
                         "footer-text": "More info",
@@ -34,7 +34,7 @@
                     },
                     {
                         icon: 'book',
-                        text: "Total Books Lost",
+                        text: "Books Lost",
                         description: "Total books lost recorded.",
                         total: 1,
                         "footer-text": "More info",
@@ -50,7 +50,7 @@
                     },
                     {
                         icon: 'book-reader',
-                        text: "Total Borrowers",
+                        text: "Borrowers",
                         description: "Total borrowers recorded.",
                         total: 56,
                         "footer-text": "More info",
@@ -58,7 +58,7 @@
                     },
                     {
                         icon: 'users',
-                        text: "Total Students",
+                        text: "Students",
                         description: "Total students registered",
                         total: 200,
                         "footer-text": "More info",
@@ -66,7 +66,7 @@
                     },
                     {
                         icon: 'user-tie',
-                        text: "Total Faculties",
+                        text: "Faculties",
                         description: "Total faculties today recorded.",
                         total: 10,
                         "footer-text": "More info",

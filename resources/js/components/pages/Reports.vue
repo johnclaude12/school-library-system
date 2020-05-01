@@ -4,7 +4,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        I'm an Attendance component.
+                        I'm an Reports component.
                     </div>
                 </div>
             </div>
@@ -14,9 +14,9 @@
 
 <script>
     export default {
-        name: "Attendance",
+        name: "Reports",
         mounted() {
-            console.log('Component mounted.')
+            console.log('Reports Component mounted.')
         }
     }
 </script>

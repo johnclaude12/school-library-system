@@ -15,7 +15,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="/css/app.css">
 
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini control-sidebar-open text-sm">
 <div class="wrapper" id="app">
 
   <!-- Navbar -->
@@ -30,15 +30,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <ul class="navbar-nav ml-auto">
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-            <i class="fas fa-user-circle fa-2x"></i>
+        <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown">
+            <i class="fas fa-user-circle" style="font-size: 2em;"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
             <span class="dropdown-header">Sign in as <br> <b>{{ auth()->user()->name }}</b></span>
             <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
+            <router-link to="/settings" class="dropdown-item">
                 <i class="fas fa-cog mr-1"></i> Settings
-            </a>
+            </router-link>
             <a class="dropdown-item" href="{{ route('logout') }}"
                 onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();"
@@ -80,19 +80,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-            <li class="nav-item">
-                <router-link to="/" class="nav-link">
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                    <p>Dashboard</p>
-                </router-link>
-            </li>
+            @php
+                $items = array(
+                    // text        Link    Icon            Class
+                    "Dashboard" => ["/", "tachometer-alt", ""],
+                    "Attendance" => ["/attendance", "clipboard-list", ""],
+                    "Issued & Return" => ["/issued-return", "paste", ""],
+                    "Borrowers" => ["/borrowers", "book-reader", ""],
+                    "User Management" => ["/user-management", "users-cog", ""],
+                    "Audit Log" => ["/audit-log", "history", ""],
+                    "reports" => ["/reports", "file-download", ""]
+                );
+            @endphp
 
-            <li class="nav-item">
-                <router-link to="/attendance" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>Attendance</p>
-                </router-link>
-            </li>
+            @foreach ($items as $item => [$link, $icon, $class])
+                <li class="nav-item">
+                    <router-link to="{{ $link }}" class="nav-link {{ $class }}">
+                        <i class="nav-icon fas fa-{{ $icon }}"></i>
+                        <p>{{ $item }}</p>
+                    </router-link>
+                </li>
+            @endforeach
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
