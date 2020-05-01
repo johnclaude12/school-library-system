@@ -1973,6 +1973,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Dashboard",
   mounted: function mounted() {
@@ -1981,47 +1982,47 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       items: [{
-        icon: 'fa-swatchbook',
+        icon: 'swatchbook',
         text: "Total Books",
         description: "Total books registered",
         total: 171,
         "footer-text": "More info",
-        "footer-icon": '<i class="fas fa-arrow-right"></i>'
+        "footer-icon": 'arrow-right'
       }, {
-        icon: 'fa-book',
+        icon: 'book',
         text: "Total Books Lost",
         description: "Total books lost recorded.",
         total: 1,
         "footer-text": "More info",
-        "footer-icon": '<i class="fas fa-arrow-right"></i>'
+        "footer-icon": 'arrow-right'
       }, {
-        icon: 'fa-exclamation-triangle',
+        icon: 'exclamation-triangle',
         text: "Books Overdue",
         description: "Total books overdue recorded.",
         total: 4,
         "footer-text": "More info",
-        "footer-icon": '<i class="fas fa-arrow-right"></i>'
+        "footer-icon": 'arrow-right'
       }, {
-        icon: 'fa-book-reader',
+        icon: 'book-reader',
         text: "Total Borrowers",
         description: "Total borrowers recorded.",
         total: 56,
         "footer-text": "More info",
-        "footer-icon": '<i class="fas fa-arrow-right"></i>'
+        "footer-icon": 'arrow-right'
       }, {
-        icon: 'fa-users',
+        icon: 'users',
         text: "Total Students",
         description: "Total students registered",
         total: 200,
         "footer-text": "More info",
-        "footer-icon": '<i class="fas fa-arrow-right"></i>'
+        "footer-icon": 'arrow-right'
       }, {
-        icon: 'fa-user-tie',
+        icon: 'user-tie',
         text: "Total Faculties",
         description: "Total faculties today recorded.",
         total: 10,
         "footer-text": "More info",
-        "footer-icon": '<i class="fas fa-arrow-right"></i>'
+        "footer-icon": 'arrow-right'
       }]
     };
   }
@@ -37727,7 +37728,7 @@ var render = function() {
           [
             _c("div", { staticClass: "card h-100" }, [
               _c("div", { staticClass: "card-body text-muted" }, [
-                _c("i", { class: "fa-5x mt-3 fas " + item.icon }),
+                _c("i", { class: "fa-5x mt-3 fas fa-" + item.icon }),
                 _vm._v(" "),
                 _c("h6", { staticClass: "text-uppercase" }, [
                   _vm._v(_vm._s(item.text))
@@ -37736,7 +37737,9 @@ var render = function() {
                 _c("h1", { staticClass: "display-4 font-weight-bold" }, [
                   _vm._v(_vm._s(item.total))
                 ])
-              ])
+              ]),
+              _vm._v(" "),
+              _vm._m(0, true)
             ])
           ]
         )
@@ -37745,7 +37748,17 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
+      _vm._v("More info "),
+      _c("i", { staticClass: "fas fa-arrow-circle-right" })
+    ])
+  }
+]
 render._withStripped = true
 
 

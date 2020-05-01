@@ -48027,17 +48027,36 @@ readers do not read off random characters that represent icons */
   color: #76838F;
 }
 
+.card-body:hover i {
+  transition: all 0.3s linear;
+  font-size: 75px;
+}
+
 .card-body i {
   float: right;
   color: #4dc0b5;
 }
 
-.card-body .display-4 {
-  cursor: pointer;
+.card-body i:hover {
+  color: rgba(77, 192, 181, 0.8);
 }
 
-.card-body .display-4:hover {
-  text-decoration: underline;
+.card-body .display-4 {
   color: #4dc0b5;
+}
+
+.small-box-footer {
+  padding: 5px;
+  background: #F0F0F0;
+  position: inherit;
+  -moz-text-align-last: center;
+       text-align-last: center;
+  color: #76838F;
+  text-decoration: none;
+}
+
+.small-box-footer:hover {
+  text-decoration: none;
+  color: #76838F;
 }
 

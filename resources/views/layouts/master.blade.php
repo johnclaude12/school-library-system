@@ -37,16 +37,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <span class="dropdown-header">Sign in as <br> <b>{{ auth()->user()->name }}</b></span>
             <div class="dropdown-divider"></div>
             <a href="#" class="dropdown-item">
-                Profile
-            </a>
-            <a href="#" class="dropdown-item">
-                Settings
+                <i class="fas fa-cog mr-1"></i> Settings
             </a>
             <a class="dropdown-item" href="{{ route('logout') }}"
                 onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();"
             >
-                {{ __('Logout') }}
+                <i class="fas fa-sign-out-alt mr-1"></i> {{ __('Logout') }}
             </a>
 
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

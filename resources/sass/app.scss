@@ -24,16 +24,36 @@ $fa-font-path: "../webfonts";
     color: #76838F;
 }
 
+.card-body:hover {
+    & i {
+        transition: all .3s linear;
+        font-size: 75px;
+    }
+}
+
 .card-body i {
     float: right;
     color: $teal;
+
+    &:hover {
+        color: rgba($color: $teal, $alpha: 0.8);
+    }
 }
 
 .card-body .display-4 {
-    cursor: pointer;
+    color: $teal;
+}
+
+.small-box-footer {
+    padding: 5px;
+    background: #F0F0F0;
+    position: inherit;
+    text-align-last: center;
+    color: $text-muted;
+    text-decoration: none;
 
     &:hover {
-        text-decoration: underline;
-        color: $teal;
+        text-decoration: none;
+        color: $text-muted;
     }
 }
