@@ -2083,7 +2083,7 @@ __webpack_require__.r(__webpack_exports__);
         description: "Total books registered",
         total: 171,
         "footer-text": "More info",
-        "footer-icon": 'arrow-right'
+        "footer-icon": 'arrow-circle-right'
       }, {
         icon: 'book',
         text: "Books Lost",
@@ -38193,7 +38193,14 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._m(0, true)
+              _c(
+                "a",
+                { staticClass: "small-box-footer", attrs: { href: "#" } },
+                [
+                  _vm._v(_vm._s(item["footer-text"]) + " "),
+                  _c("i", { class: "fas fa-" + item["footer-icon"] })
+                ]
+              )
             ])
           ]
         )
@@ -38202,17 +38209,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-      _vm._v("More info "),
-      _c("i", { staticClass: "fas fa-arrow-circle-right" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

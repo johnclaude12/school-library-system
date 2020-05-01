@@ -8,7 +8,7 @@
                         <h6 class="text-uppercase">{{ item.text }}</h6>
                         <h1 class="display-4 font-weight-bold">{{ item.total }}</h1>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="#" class="small-box-footer">{{ item['footer-text'] }} <i :class="'fas fa-' + item['footer-icon']"></i></a>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
                         description: "Total books registered",
                         total: 171,
                         "footer-text": "More info",
-                        "footer-icon": 'arrow-right'
+                        "footer-icon": 'arrow-circle-right'
                     },
                     {
                         icon: 'book',
