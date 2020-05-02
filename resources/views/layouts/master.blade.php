@@ -34,7 +34,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <i class="fas fa-user-circle" style="font-size: 2em;"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <span class="dropdown-header">Sign in as <br> <b>{{ auth()->user()->name }}</b></span>
+            <span class="dropdown-header">Sign in as <br> <b>{{ auth()->user()->firstname ." ". auth()->user()->lastname }}</b></span>
             <div class="dropdown-divider"></div>
             <router-link to="/settings" class="dropdown-item">
                 <i class="fas fa-cog mr-1"></i> Settings
@@ -71,7 +71,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <img src="{{ asset('images/user-avatar.png') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">John Claude Maghanoy</a>
+          <a href="#" class="d-block">{{ auth()->user()->firstname ." ". auth()->user()->lastname }}</a>
         </div>
       </div>
 

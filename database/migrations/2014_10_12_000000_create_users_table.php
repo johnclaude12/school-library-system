@@ -29,7 +29,7 @@ class CreateUsersTable extends Migration
             $table->integer('question_id');
             $table->string('security_answer');
             $table->integer('status');
-            $table->integer('image_id');
+            $table->integer('image_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
