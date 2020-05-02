@@ -19,12 +19,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>test</td>
-                                    <td>test</td>
-                                    <td>test</td>
-                                    <td>test</td>
-                                    <td>test</td>
+                                <tr v-for="user in users" :key="user.id">
+                                    <td>{{ user.id }}</td>
+                                    <td>{{ user.user_type_id }}</td>
+                                    <td>{{ user.firstname }}</td>
+                                    <td>{{ user.gender }}</td>
+                                    <td>{{ user.birthday }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -48,11 +48,17 @@
 <script>
     export default {
         name: "UserManagement",
+        data() {
+            return {
+                users: []
+            }
+        },
         mounted() {
+            console.log('User Management Component mounted.')
         },
         created() {
             axios.get('api/get_user')
-                .then(res => console.log("Response :", res))
+                .then(({ data })=> this.users = data.data)
                 .catch(err => console.log("Error :", err))
         }
     }
