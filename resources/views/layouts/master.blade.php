@@ -85,11 +85,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     // text        Link    Icon            Class
                     "Dashboard" => ["/", "tachometer-alt", ""],
                     "Attendance" => ["/attendance", "clipboard-list", ""],
+                    "Book Entry" => ["/book-entry", "book", ""],
                     "Issued & Return" => ["/issued-return", "paste", ""],
                     "Borrowers" => ["/borrowers", "book-reader", ""],
                     "User Management" => ["/user-management", "users-cog", ""],
                     "Audit Log" => ["/audit-log", "history", ""],
-                    "reports" => ["/reports", "file-download", ""]
+                    "Reports" => ["/reports", "file-download", ""],
                 );
             @endphp
 
