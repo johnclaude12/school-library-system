@@ -31319,7 +31319,7 @@ table {
 caption {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-  color: #76838F;
+  color: #343a40;
   text-align: left;
   caption-side: bottom;
 }
@@ -33425,7 +33425,7 @@ textarea.form-control {
 
 .form-check-input[disabled] ~ .form-check-label,
 .form-check-input:disabled ~ .form-check-label {
-  color: #76838F;
+  color: #343a40;
 }
 
 .form-check-label {
@@ -41838,7 +41838,7 @@ a.text-dark:focus {
 }
 
 .text-muted {
-  color: #76838F !important;
+  color: #343a40 !important;
 }
 
 .text-black-50 {
@@ -48051,12 +48051,28 @@ readers do not read off random characters that represent icons */
   position: inherit;
   -moz-text-align-last: center;
        text-align-last: center;
-  color: #76838F;
+  color: #343a40;
   text-decoration: none;
 }
 
 .small-box-footer:hover {
   text-decoration: none;
-  color: #76838F;
+  color: #343a40;
+}
+
+label {
+  margin-bottom: 0px;
+}
+
+.form-group {
+  margin-bottom: 0.5rem;
+}
+
+.form-control-custom {
+  height: calc(1.5em + 0.5rem + 4px);
+}
+
+.text-muted {
+  color: #343a40;
 }
 

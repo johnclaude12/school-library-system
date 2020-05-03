@@ -5,6 +5,13 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">User Table</h3>
+                        <div class="card-tools">
+                            <div class="input-group input-group-sm">
+                                <button data-toggle="modal" data-target="#add_user_modal" data-title="Add User" class="btn btn-sm btn-primary">
+                                    Add User <i class="fas fa-user-plus"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -42,19 +49,26 @@
                 </div>
             </div>
         </div>
+
+        <UserModal
+            :modalName="'add_user_modal'"
+            :modalTitle="'Register User'"
+        />
     </div>
 </template>
 
 <script>
+    import UserModal from '../common/UserModal.vue'
+
     export default {
         name: "UserManagement",
+        components: {
+            UserModal
+        },
         data() {
             return {
-                users: []
+                users: [],
             }
-        },
-        mounted() {
-            console.log('User Management Component mounted.')
         },
         created() {
             axios.get('api/get_user')
