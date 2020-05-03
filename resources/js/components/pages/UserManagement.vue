@@ -39,7 +39,7 @@
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
                         <div class="float-right">
-                            <pagination :data="users" show-disabled size="small" @pagination-change-page="loadUsers"></pagination>
+                            <pagination :data="users" show-disabled @pagination-change-page="loadUsers"></pagination>
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
         },
         data() {
             return {
-                users: [],
+                users: {},
                 userData: {
                     image_id: '',
                     firstname: '',
@@ -94,14 +94,28 @@
                 this.$Progress.start();
                 axios.post('api/user', this.userData)
                     .then(({ data }) => {
-                        this.users = [data.data, ...this.users]; // inject new data in this.users
+                        this.users.data = [data.data, ...this.users.data]; // inject new data in this.users.data
                         this.userData = {}; // to clear all fields in modal
                         $('#add_user_modal').modal('hide'); // close modal
                         this.$Progress.finish()
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
                     })
-                    .catch(err => {
+                    .catch(error => {
                         this.$Progress.fail()
-                        console.log("Error :", err)
+                        if (error.response.status !== 422) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops! Something went wrong.',
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+                        }
                     })
             }
         }

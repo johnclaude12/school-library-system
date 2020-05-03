@@ -9,6 +9,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 import VueRouter from 'vue-router';
 import VueProgressBar from 'vue-progressbar'
+import Swal from 'sweetalert2'
 
 Vue.use(VueRouter);
 Vue.use(VueProgressBar, {
@@ -17,6 +18,8 @@ Vue.use(VueProgressBar, {
     height: '3px'
 })
 Vue.component('pagination', require('laravel-vue-pagination'));
+
+window.Swal = Swal;
 
 const routes = [
     { path: '/', name: 'Dashboard', component: require('./components/pages/Dashboard.vue').default },
