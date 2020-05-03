@@ -92,13 +92,18 @@
         },
         methods: {
             onSubmit() {
+                this.$Progress.start();
                 axios.post('api/user', this.userData)
                     .then(({ data }) => {
                         this.users = [data.data, ...this.users]; // inject new data in this.users
                         this.userData = {}; // to clear all fields in modal
                         $('#add_user_modal').modal('hide'); // close modal
+                        this.$Progress.finish()
                     })
-                    .catch(err => console.log("Error :", err))
+                    .catch(err => {
+                        this.$Progress.fail()
+                        console.log("Error :", err)
+                    })
             }
         }
     }

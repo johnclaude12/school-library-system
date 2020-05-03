@@ -131,6 +131,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Main content -->
     <div class="content">
         <router-view></router-view>
+        <vue-progress-bar></vue-progress-bar>
     </div>
     <!-- /.content -->
   </div>
