@@ -46,3 +46,8 @@ npm run dev
 ```
 npm install --save @fortawesome/fontawesome-free
 ```
+
+### How to create Request?
+```
+php artisan make:request Request/UserRequest
+```
