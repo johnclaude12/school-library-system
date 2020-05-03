@@ -38,9 +38,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function security_answer()
+    public function userType()
     {
-        return $this->hasMany(SecurityAnswer::class);
+        return $this->belongsTo(UserType::class);
     }
 
     public function question()
