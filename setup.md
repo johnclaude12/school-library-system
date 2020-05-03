@@ -51,3 +51,13 @@ npm install --save @fortawesome/fontawesome-free
 ```
 php artisan make:request Request/UserRequest
 ```
+
+### How to create Resource?
+```
+php artisan make:resource UserResource
+```
+
+### How to create Collection?
+```
+php artisan make:resource UserCollection
+```

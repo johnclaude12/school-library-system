@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(SecurityAnswer::class);
     }
+
+    public function question()
+    {
+        return $this->belongsTo(SecurityQuestion::class);
+    }
 }

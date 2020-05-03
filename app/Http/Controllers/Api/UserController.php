@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests\Request\UserRequest;
+use App\Http\Resources\User\UserResource;
+use App\Http\Resources\User\UserCollection;
 use App\Model\User;
 
 class UserController extends Controller
@@ -17,17 +19,19 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::all();
+        $users = User::get();
 
         return response()->json([
-            "success" => true,
-            "data" => $users
+            "success" => "success",
+            "message" => "Data found.",
+            "data" => UserCollection::collection($users)
         ]);
     }
 
     public function show($id)
     {
-
+        $user = User::findOrFail($id);
+        return response()->json(new UserResource($user));
     }
 
     public function store(UserRequest $request)
@@ -39,7 +43,7 @@ class UserController extends Controller
         try {
             $input = $request->all();
             $input['password'] = bcrypt($input['password']);
-            User::create($input);
+            $userData = User::create($input);
         } catch(Exception $ex) {
             $message = "User failed to create.";
             $status = "failed";
@@ -49,7 +53,7 @@ class UserController extends Controller
         return response()->json([
             'status' => $status,
             'message' => $message,
-            'data' => $request->all()
+            'data' => new UserResource($userData)
         ], $code);
     }
 
