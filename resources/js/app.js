@@ -15,7 +15,8 @@ Vue.use(VueProgressBar, {
     color: 'rgb(143, 255, 199)',
     failedColor: 'red',
     height: '3px'
-  })
+})
+Vue.component('pagination', require('laravel-vue-pagination'));
 
 const routes = [
     { path: '/', name: 'Dashboard', component: require('./components/pages/Dashboard.vue').default },

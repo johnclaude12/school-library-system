@@ -19,13 +19,8 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::get();
-
-        return response()->json([
-            "success" => "success",
-            "message" => "Data found.",
-            "data" => UserCollection::collection($users)
-        ]);
+        $users = User::paginate(5);
+        return UserCollection::collection($users);
     }
 
     public function show($id)

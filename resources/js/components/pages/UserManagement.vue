@@ -26,7 +26,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="user in users" :key="user.id">
+                                <tr v-for="user in users.data" :key="user.id">
                                     <td>{{ user.id }}</td>
                                     <td>{{ user.user_type }}</td>
                                     <td>{{ user.firstname }}</td>
@@ -38,13 +38,9 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
-                        <ul class="pagination pagination-sm m-0 float-right">
-                        <li class="page-item"><a class="page-link" href="#">«</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">»</a></li>
-                        </ul>
+                        <div class="float-right">
+                            <pagination :data="users" show-disabled size="small" @pagination-change-page="loadUsers"></pagination>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -86,11 +82,14 @@
             }
         },
         created() {
-            axios.get('api/user')
-                .then(({ data })=> this.users = data.data)
-                .catch(err => console.log("Error :", err))
+            this.loadUsers();
         },
         methods: {
+            loadUsers(page = 1) {
+                axios.get('api/user?page='+ page)
+                    .then(({ data })=> this.users = data)
+                    .catch(err => console.log("Error :", err))
+            },
             onSubmit() {
                 this.$Progress.start();
                 axios.post('api/user', this.userData)
