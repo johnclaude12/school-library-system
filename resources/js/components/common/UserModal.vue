@@ -67,7 +67,19 @@
                                     :key="$index"
                                 >
                                     <label :for="item.name">{{ item.label }}</label>
-                                    <template v-if="item.name === 'question_id'">
+                                    <template v-if="item.name === 'user_type_id'">
+                                        <select
+                                            class="form-control form-control-custom"
+                                            :name="item.name"
+                                            :id="item.name"
+                                            v-model="userData[item.name]"
+                                        >
+                                            <option value="1">Admin</option>
+                                            <option value="2">Librarian</option>
+                                            <option value="3">Student Assistant</option>
+                                        </select>
+                                    </template>
+                                    <template v-else-if="item.name === 'question_id'">
                                         <select
                                             class="form-control form-control-custom"
                                             :name="item.name"
@@ -100,7 +112,9 @@
                     <!-- Modal Footer -->
                     <div class="modal-footer">
                         <button class="btn btn-secondary p-18" data-dismiss="modal">Cancel</button>
-                        <button @click="this.onSubmit" type="submit" class="btn btn-primary btn-new-position"><i class="fas fa-save mr-1"></i>Save</button>
+                        <button @click="this.onSubmit" type="submit" class="btn btn-primary btn-new-position">
+                            <i class="fas fa-save mr-1"></i> Save
+                        </button>
                     </div>
                 </div>
             </div>
@@ -111,21 +125,9 @@
 <script>
     export default {
         name: "UserModal",
-        props: ['modalName', 'modalTitle'],
+        props: ['modalName', 'modalTitle', 'userData', 'onSubmit'],
         data() {
             return {
-                userData: {
-                    image_id: '',
-                    firstname: '',
-                    middlename: '',
-                    lastname: '',
-                    gender: '',
-                    birthday: '',
-                    username: '',
-                    password: '',
-                    question_id: '',
-                    security_answer: '',
-                },
                 items_col1: [
                     {
                         label: "Picture *",
@@ -166,6 +168,12 @@
                 ],
                 items_col2: [
                     {
+                        label: "User Type *",
+                        name: "user_type_id",
+                        required: "required",
+                        type: "dropdown"
+                    },
+                    {
                         label: "Username *",
                         name: "username",
                         required: "required",
@@ -184,6 +192,12 @@
                         type: "email"
                     },
                     {
+                        label: "Contact No. *",
+                        name: "contact_no",
+                        required: "required",
+                        type: "number"
+                    },
+                    {
                         label: "Question *",
                         name: "question_id",
                         required: "required",
@@ -196,11 +210,6 @@
                         type: "text"
                     }
                 ]
-            }
-        },
-        methods: {
-            onSubmit() {
-                console.log("Data :", this.userData)
             }
         }
     }

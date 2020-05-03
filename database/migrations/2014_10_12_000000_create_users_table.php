@@ -28,7 +28,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->integer('question_id');
             $table->string('security_answer');
-            $table->integer('status');
+            $table->integer('status')->default(1);
             $table->integer('image_id')->nullable();
             $table->rememberToken();
             $table->timestamps();

@@ -53,6 +53,8 @@
         <UserModal
             :modalName="'add_user_modal'"
             :modalTitle="'Register User'"
+            :userData="userData"
+            :onSubmit="onSubmit"
         />
     </div>
 </template>
@@ -68,12 +70,32 @@
         data() {
             return {
                 users: [],
+                userData: {
+                    image_id: '',
+                    firstname: '',
+                    middlename: '',
+                    lastname: '',
+                    gender: '',
+                    birthday: '',
+                    username: '',
+                    password: '',
+                    question_id: '',
+                    security_answer: '',
+                    user_type_id: ''
+                },
             }
         },
         created() {
-            axios.get('api/get_user')
+            axios.get('api/user')
                 .then(({ data })=> this.users = data.data)
                 .catch(err => console.log("Error :", err))
+        },
+        methods: {
+            onSubmit() {
+                axios.post('api/user', this.userData)
+                    .then(res => console.log("Response :", res))
+                    .catch(err => console.log("Error :", err))
+            }
         }
     }
 </script>

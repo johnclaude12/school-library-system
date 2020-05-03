@@ -2035,23 +2035,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "UserModal",
-  props: ['modalName', 'modalTitle'],
+  props: ['modalName', 'modalTitle', 'userData', 'onSubmit'],
   data: function data() {
     return {
-      userData: {
-        image_id: '',
-        firstname: '',
-        middlename: '',
-        lastname: '',
-        gender: '',
-        birthday: '',
-        username: '',
-        password: '',
-        question_id: '',
-        security_answer: ''
-      },
       items_col1: [{
         label: "Picture *",
         name: "image_id",
@@ -2084,6 +2086,11 @@ __webpack_require__.r(__webpack_exports__);
         type: "date"
       }],
       items_col2: [{
+        label: "User Type *",
+        name: "user_type_id",
+        required: "required",
+        type: "dropdown"
+      }, {
         label: "Username *",
         name: "username",
         required: "required",
@@ -2099,6 +2106,11 @@ __webpack_require__.r(__webpack_exports__);
         required: "required",
         type: "email"
       }, {
+        label: "Contact No. *",
+        name: "contact_no",
+        required: "required",
+        type: "number"
+      }, {
         label: "Question *",
         name: "question_id",
         required: "required",
@@ -2110,11 +2122,6 @@ __webpack_require__.r(__webpack_exports__);
         type: "text"
       }]
     };
-  },
-  methods: {
-    onSubmit: function onSubmit() {
-      console.log("Data :", this.userData);
-    }
   }
 });
 
@@ -2783,6 +2790,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "UserManagement",
@@ -2791,18 +2800,40 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      users: []
+      users: [],
+      userData: {
+        image_id: '',
+        firstname: '',
+        middlename: '',
+        lastname: '',
+        gender: '',
+        birthday: '',
+        username: '',
+        password: '',
+        question_id: '',
+        security_answer: '',
+        user_type_id: ''
+      }
     };
   },
   created: function created() {
     var _this = this;
 
-    axios.get('api/get_user').then(function (_ref) {
+    axios.get('api/user').then(function (_ref) {
       var data = _ref.data;
       return _this.users = data.data;
     })["catch"](function (err) {
       return console.log("Error :", err);
     });
+  },
+  methods: {
+    onSubmit: function onSubmit() {
+      axios.post('api/user', this.userData).then(function (res) {
+        return console.log("Response :", res);
+      })["catch"](function (err) {
+        return console.log("Error :", err);
+      });
+    }
   }
 });
 
@@ -38832,7 +38863,61 @@ var render = function() {
                             _vm._v(_vm._s(item.label))
                           ]),
                           _vm._v(" "),
-                          item.name === "question_id"
+                          item.name === "user_type_id"
+                            ? [
+                                _c(
+                                  "select",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.userData[item.name],
+                                        expression: "userData[item.name]"
+                                      }
+                                    ],
+                                    staticClass:
+                                      "form-control form-control-custom",
+                                    attrs: { name: item.name, id: item.name },
+                                    on: {
+                                      change: function($event) {
+                                        var $$selectedVal = Array.prototype.filter
+                                          .call($event.target.options, function(
+                                            o
+                                          ) {
+                                            return o.selected
+                                          })
+                                          .map(function(o) {
+                                            var val =
+                                              "_value" in o ? o._value : o.value
+                                            return val
+                                          })
+                                        _vm.$set(
+                                          _vm.userData,
+                                          item.name,
+                                          $event.target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("option", { attrs: { value: "1" } }, [
+                                      _vm._v("Admin")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("option", { attrs: { value: "2" } }, [
+                                      _vm._v("Librarian")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("option", { attrs: { value: "3" } }, [
+                                      _vm._v("Student Assistant")
+                                    ])
+                                  ]
+                                )
+                              ]
+                            : item.name === "question_id"
                             ? [
                                 _c(
                                   "select",
@@ -39051,7 +39136,10 @@ var render = function() {
                   attrs: { type: "submit" },
                   on: { click: this.onSubmit }
                 },
-                [_c("i", { staticClass: "fas fa-save mr-1" }), _vm._v("Save")]
+                [
+                  _c("i", { staticClass: "fas fa-save mr-1" }),
+                  _vm._v(" Save\n                    ")
+                ]
               )
             ])
           ])
@@ -40199,7 +40287,12 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("UserModal", {
-        attrs: { modalName: "add_user_modal", modalTitle: "Register User" }
+        attrs: {
+          modalName: "add_user_modal",
+          modalTitle: "Register User",
+          userData: _vm.userData,
+          onSubmit: _vm.onSubmit
+        }
       })
     ],
     1
