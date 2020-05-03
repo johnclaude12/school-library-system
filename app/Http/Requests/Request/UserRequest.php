@@ -23,13 +23,15 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
+        $aplha_allow_spaces = 'regex:/^[.a-zA-Z\s]*$/';
+
         return [
             'username' => 'required|unique:users|min:8|max:25',
             'password' => 'required|min:8|max:25',
             'email' => 'required|email|unique:users,email',
             'firstname' => 'required|max:50',
-            'middlename' => 'required|alpha|max:50',
-            'lastname' => 'required|max:50|alpha',
+            'middlename' => 'required|max:50|'. $aplha_allow_spaces,
+            'lastname' => 'required|max:50|'. $aplha_allow_spaces,
             'gender' => 'required|alpha|max:1',
             'contact_no' => 'required|numeric|digits_between:10,12',
             'birthday' => 'required|date_format:Y-m-d',

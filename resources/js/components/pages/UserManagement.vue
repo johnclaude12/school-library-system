@@ -28,7 +28,7 @@
                             <tbody>
                                 <tr v-for="user in users" :key="user.id">
                                     <td>{{ user.id }}</td>
-                                    <td>{{ user.user_type_id }}</td>
+                                    <td>{{ user.user_type }}</td>
                                     <td>{{ user.firstname }}</td>
                                     <td>{{ user.gender }}</td>
                                     <td>{{ user.birthday }}</td>
@@ -93,7 +93,11 @@
         methods: {
             onSubmit() {
                 axios.post('api/user', this.userData)
-                    .then(res => console.log("Response :", res))
+                    .then(({ data }) => {
+                        this.users = [data.data, ...this.users]; // inject new data in this.users
+                        this.userData = {}; // to clear all fields in modal
+                        $('#add_user_modal').modal('hide'); // close modal
+                    })
                     .catch(err => console.log("Error :", err))
             }
         }

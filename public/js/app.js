@@ -2731,6 +2731,18 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _common_UserModal_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../common/UserModal.vue */ "./resources/js/components/common/UserModal.vue");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 //
 //
 //
@@ -2828,8 +2840,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     onSubmit: function onSubmit() {
-      axios.post('api/user', this.userData).then(function (res) {
-        return console.log("Response :", res);
+      var _this2 = this;
+
+      axios.post('api/user', this.userData).then(function (_ref2) {
+        var data = _ref2.data;
+        _this2.users = [data.data].concat(_toConsumableArray(_this2.users)); // inject new data in this.users
+
+        _this2.userData = {}; // to clear all fields in modal
+
+        $('#add_user_modal').modal('hide'); // close modal
       })["catch"](function (err) {
         return console.log("Error :", err);
       });
@@ -40267,7 +40286,7 @@ var render = function() {
                     return _c("tr", { key: user.id }, [
                       _c("td", [_vm._v(_vm._s(user.id))]),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(user.user_type_id))]),
+                      _c("td", [_vm._v(_vm._s(user.user_type))]),
                       _vm._v(" "),
                       _c("td", [_vm._v(_vm._s(user.firstname))]),
                       _vm._v(" "),
