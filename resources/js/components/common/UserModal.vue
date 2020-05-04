@@ -22,15 +22,21 @@
                                     :key="$index"
                                 >
                                     <label :for="item.name">{{ item.label }}</label>
-
-                                    <template v-if="item.name === 'image_id'">
+                                    <template v-if="item.name === 'user_image'">
+                                        <div class="text-center">
+                                            <img
+                                            class="profile-user-img img-fluid img-circle"
+                                            src="../../../../public/images/profile/user.png"
+                                            alt="User profile picture"
+                                        >
                                         <input
-                                            class="form-control form-control-custom"
+                                            class="form-control form-control-custom mt-2"
                                             :type="item.type"
                                             :id="item.name"
                                             :name="item.name"
-                                            v-model="userData[item.name]"
+                                            @change="imageOnchage"
                                         >
+                                        </div>
                                     </template>
                                     <template v-else-if="item.name === 'gender'">
                                         <select
@@ -130,15 +136,15 @@
 <script>
     export default {
         name: "UserModal",
-        props: ['modalName', 'modalTitle', 'userData', 'onSubmit', 'errors'],
+        props: ['modalName', 'modalTitle', 'userData', 'onSubmit', 'imageOnchage', 'errors'],
         data() {
             return {
                 items_col1: [
                     {
-                        label: "Picture",
-                        name: "image_id",
+                        label: "",
+                        name: "user_image",
                         required: "required",
-                        type: "text"
+                        type: "file"
                     },
                     {
                         label: "Firstname *",

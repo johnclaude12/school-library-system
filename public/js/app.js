@@ -2054,16 +2054,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "UserModal",
-  props: ['modalName', 'modalTitle', 'userData', 'onSubmit', 'errors'],
+  props: ['modalName', 'modalTitle', 'userData', 'onSubmit', 'imageOnchage', 'errors'],
   data: function data() {
     return {
       items_col1: [{
-        label: "Picture",
-        name: "image_id",
+        label: "",
+        name: "user_image",
         required: "required",
-        type: "text"
+        type: "file"
       }, {
         label: "Firstname *",
         name: "firstname",
@@ -2806,6 +2812,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "UserManagement",
@@ -2816,7 +2823,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     return {
       users: {},
       userData: {
-        image_id: '',
+        user_image: '',
         firstname: '',
         middlename: '',
         lastname: '',
@@ -2862,9 +2869,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         Swal.fire({
           icon: 'success',
-          title: data.message,
+          text: data.message,
           showConfirmButton: false,
-          timer: 3000
+          timer: 4000
         });
       })["catch"](function (error) {
         _this2.$Progress.fail();
@@ -2872,14 +2879,38 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         if (error.response.status !== 422) {
           Swal.fire({
             icon: 'error',
-            title: 'Oops! Something went wrong.',
+            text: 'Oops! Something went wrong.',
             showConfirmButton: false,
-            timer: 3000
+            timer: 4000
           });
         }
 
         _this2.errors = error.response.data.errors;
       });
+    },
+    imageOnchage: function imageOnchage(el) {
+      var _this3 = this;
+
+      var file = el.target.files[0];
+      var reader = new FileReader();
+
+      if (file) {
+        if (file['size'] < 2111775) {
+          reader.onloadend = function (file) {
+            _this3.userData.user_image = reader.result;
+          };
+
+          return reader.readAsDataURL(file);
+        }
+
+        Swal.fire({
+          icon: 'error',
+          text: 'Please upload less than 2MB.'
+        });
+      }
+
+      $('input[name="user_image"]').val("");
+      this.userData.user_image = '';
     }
   }
 });
@@ -42272,135 +42303,29 @@ var render = function() {
                             _vm._v(_vm._s(item.label))
                           ]),
                           _vm._v(" "),
-                          item.name === "image_id"
+                          item.name === "user_image"
                             ? [
-                                item.type === "checkbox"
-                                  ? _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.userData[item.name],
-                                          expression: "userData[item.name]"
-                                        }
-                                      ],
-                                      staticClass:
-                                        "form-control form-control-custom",
-                                      attrs: {
-                                        id: item.name,
-                                        name: item.name,
-                                        type: "checkbox"
-                                      },
-                                      domProps: {
-                                        checked: Array.isArray(
-                                          _vm.userData[item.name]
-                                        )
-                                          ? _vm._i(
-                                              _vm.userData[item.name],
-                                              null
-                                            ) > -1
-                                          : _vm.userData[item.name]
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$a = _vm.userData[item.name],
-                                            $$el = $event.target,
-                                            $$c = $$el.checked ? true : false
-                                          if (Array.isArray($$a)) {
-                                            var $$v = null,
-                                              $$i = _vm._i($$a, $$v)
-                                            if ($$el.checked) {
-                                              $$i < 0 &&
-                                                _vm.$set(
-                                                  _vm.userData,
-                                                  item.name,
-                                                  $$a.concat([$$v])
-                                                )
-                                            } else {
-                                              $$i > -1 &&
-                                                _vm.$set(
-                                                  _vm.userData,
-                                                  item.name,
-                                                  $$a
-                                                    .slice(0, $$i)
-                                                    .concat($$a.slice($$i + 1))
-                                                )
-                                            }
-                                          } else {
-                                            _vm.$set(
-                                              _vm.userData,
-                                              item.name,
-                                              $$c
-                                            )
-                                          }
-                                        }
-                                      }
-                                    })
-                                  : item.type === "radio"
-                                  ? _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.userData[item.name],
-                                          expression: "userData[item.name]"
-                                        }
-                                      ],
-                                      staticClass:
-                                        "form-control form-control-custom",
-                                      attrs: {
-                                        id: item.name,
-                                        name: item.name,
-                                        type: "radio"
-                                      },
-                                      domProps: {
-                                        checked: _vm._q(
-                                          _vm.userData[item.name],
-                                          null
-                                        )
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          return _vm.$set(
-                                            _vm.userData,
-                                            item.name,
-                                            null
-                                          )
-                                        }
-                                      }
-                                    })
-                                  : _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.userData[item.name],
-                                          expression: "userData[item.name]"
-                                        }
-                                      ],
-                                      staticClass:
-                                        "form-control form-control-custom",
-                                      attrs: {
-                                        id: item.name,
-                                        name: item.name,
-                                        type: item.type
-                                      },
-                                      domProps: {
-                                        value: _vm.userData[item.name]
-                                      },
-                                      on: {
-                                        input: function($event) {
-                                          if ($event.target.composing) {
-                                            return
-                                          }
-                                          _vm.$set(
-                                            _vm.userData,
-                                            item.name,
-                                            $event.target.value
-                                          )
-                                        }
-                                      }
-                                    })
+                                _c("div", { staticClass: "text-center" }, [
+                                  _c("img", {
+                                    staticClass:
+                                      "profile-user-img img-fluid img-circle",
+                                    attrs: {
+                                      src: __webpack_require__(/*! ../../../../public/images/profile/user.png */ "./public/images/profile/user.png"),
+                                      alt: "User profile picture"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    staticClass:
+                                      "form-control form-control-custom mt-2",
+                                    attrs: {
+                                      type: item.type,
+                                      id: item.name,
+                                      name: item.name
+                                    },
+                                    on: { change: _vm.imageOnchage }
+                                  })
+                                ])
                               ]
                             : item.name === "gender"
                             ? [
@@ -44099,6 +44024,7 @@ var render = function() {
           modalTitle: "Register User",
           userData: _vm.userData,
           onSubmit: _vm.onSubmit,
+          imageOnchage: _vm.imageOnchage,
           errors: _vm.errors
         }
       })
@@ -59257,6 +59183,17 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+
+/***/ "./public/images/profile/user.png":
+/*!****************************************!*\
+  !*** ./public/images/profile/user.png ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/user.png?27744ecd49a80c057da1f9d473c8b00d";
 
 /***/ }),
 

@@ -51,6 +51,7 @@
             :modalTitle="'Register User'"
             :userData="userData"
             :onSubmit="onSubmit"
+            :imageOnchage="imageOnchage"
             :errors="errors"
         />
     </div>
@@ -68,7 +69,7 @@
             return {
                 users: {},
                 userData: {
-                    image_id: '',
+                    user_image: '',
                     firstname: '',
                     middlename: '',
                     lastname: '',
@@ -103,9 +104,9 @@
 
                         Swal.fire({
                             icon: 'success',
-                            title: data.message,
+                            text: data.message,
                             showConfirmButton: false,
-                            timer: 3000
+                            timer: 4000
                         })
                     })
                     .catch(error => {
@@ -113,14 +114,36 @@
                         if (error.response.status !== 422) {
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Oops! Something went wrong.',
+                                text: 'Oops! Something went wrong.',
                                 showConfirmButton: false,
-                                timer: 3000
+                                timer: 4000
                             })
                         }
 
                         this.errors = error.response.data.errors;
                     })
+            },
+            imageOnchage(el) {
+                let file = el.target.files[0];
+                let reader = new FileReader();
+
+                if (file) {
+                    if (file['size'] < 2111775) {
+                        reader.onloadend = file => {
+                            this.userData.user_image = reader.result;
+                        }
+
+                        return reader.readAsDataURL(file);
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Please upload less than 2MB.',
+                    });
+                }
+
+                $('input[name="user_image"]').val("");
+                this.userData.user_image = '';
             }
         }
     }

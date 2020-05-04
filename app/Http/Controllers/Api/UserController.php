@@ -37,6 +37,13 @@ class UserController extends Controller
 
         try {
             $input = $request->all();
+
+            if ($input['user_image']) {
+                $name = time(). '.' . explode('/', mime_content_type($input['user_image']))[1];
+                \Image::make($input['user_image'])->save(public_path('images/profile/').$name);
+                $input['user_image'] = $name;
+            }
+
             $input['password'] = bcrypt($input['password']);
             $userData = User::create($input);
         } catch(Exception $ex) {

@@ -21,7 +21,7 @@
                             "* Birthday" => ["birthday", "required", "date"],
                             "* Question" => ["question_id", "required", "dropdown"],
                             "* Answer" => ["security_answer", "required", "text"],
-                            "Picture" => ["image_id", "", "", ""],
+                            "Picture" => ["user_image", "", "", ""],
                         ];
                     @endphp
 
