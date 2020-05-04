@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div class="modal fade" :id="this.modalName" role="dialog">
+        <div class="modal fade" id="user_modal" role="dialog">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <!-- Modal Header -->
                     <div class="modal-header bg-dark text-white">
-                        <h5 class="modal-title">{{ this.modalTitle }}</h5>
+                        <h5 class="modal-title">{{ this.editMode ? 'Edit User' : 'Register User' }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span class="text-white" aria-hidden="true">&times;</span>
                         </button>
@@ -26,7 +26,7 @@
                                         <div class="text-center">
                                             <img
                                             class="profile-user-img img-fluid img-circle"
-                                            src="../../../../public/images/profile/user.png"
+                                            :src="getUserImage()"
                                             alt="User profile picture"
                                         >
                                         <input
@@ -136,7 +136,7 @@
 <script>
     export default {
         name: "UserModal",
-        props: ['modalName', 'modalTitle', 'userData', 'onSubmit', 'imageOnchage', 'errors'],
+        props: ['editMode', 'modalName', 'userData', 'onSubmit', 'imageOnchage', 'getUserImage', 'errors'],
         data() {
             return {
                 items_col1: [

@@ -7,7 +7,7 @@
                         <h3 class="card-title">User Table</h3>
                         <div class="card-tools">
                             <div class="input-group input-group-sm">
-                                <button data-toggle="modal" data-target="#add_user_modal" data-title="Add User" class="btn btn-sm btn-primary">
+                                <button data-toggle="modal" data-target="#user_modal" class="btn btn-sm btn-primary">
                                     Add User <i class="fas fa-user-plus"></i>
                                 </button>
                             </div>
@@ -23,6 +23,7 @@
                                     <th>Name</th>
                                     <th>Gender</th>
                                     <th>Birthday</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -32,6 +33,10 @@
                                     <td>{{ user.firstname }}</td>
                                     <td>{{ user.gender }}</td>
                                     <td>{{ user.birthday }}</td>
+                                    <td>
+                                        <i class="fas fa-trash" @click="editUser(user.id)"></i>
+                                        <i class="fas fa-edit" @click="editUser(user.id)"></i>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -47,11 +52,11 @@
         </div>
 
         <UserModal
-            :modalName="'add_user_modal'"
-            :modalTitle="'Register User'"
+            :editMode="editMode"
             :userData="userData"
             :onSubmit="onSubmit"
             :imageOnchage="imageOnchage"
+            :getUserImage="getUserImage"
             :errors="errors"
         />
     </div>
@@ -67,6 +72,7 @@
         },
         data() {
             return {
+                editMode: '',
                 users: {},
                 userData: {
                     user_image: '',
@@ -93,6 +99,10 @@
                     .then(({ data })=> this.users = data)
                     .catch(err => console.log("Error :", err))
             },
+            OpenAddModal() {
+                this.editMode = false;
+                $('#user_modal').modal('show');
+            },
             onSubmit() {
                 this.$Progress.start();
                 axios.post('api/user', this.userData)
@@ -100,6 +110,7 @@
                         this.users.data = [data.data, ...this.users.data]; // inject new data in this.users.data
                         this.userData = {}; // to clear all fields in modal
                         $('#add_user_modal').modal('hide'); // close modal
+                        $('#add_user_modal input, #add_user_modal select').text("").val(""); // delete all fields in modal after save
                         this.$Progress.finish()
 
                         Swal.fire({
@@ -144,6 +155,24 @@
 
                 $('input[name="user_image"]').val("");
                 this.userData.user_image = '';
+            },
+            getUserImage() {
+
+            },
+            editUser(id) {
+                this.$Progress.start();
+                axios.get('api/user/'+ id)
+                    .then(({ data }) => {
+                        this.userData = data;
+                        $('#user_modal').modal('show');
+                        this.editMode = true;
+                        this.getUserImage();
+                        this.$Progress.finish();
+                    })
+                    .catch(err => {
+                        this.$Progress.failed();
+                        console.log("Error :", err)
+                    })
             }
         }
     }

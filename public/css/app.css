@@ -48027,7 +48027,7 @@ readers do not read off random characters that represent icons */
   color: #76838F;
 }
 
-.card-body:hover i {
+.dashboard:hover i {
   transition: all 0.3s linear;
   font-size: 75px;
 }
@@ -48043,6 +48043,14 @@ readers do not read off random characters that represent icons */
 
 .card-body .display-4 {
   color: #4dc0b5;
+}
+
+tbody i {
+  cursor: pointer;
+}
+
+tbody tr td i {
+  padding: 0px 5px;
 }
 
 .small-box-footer {

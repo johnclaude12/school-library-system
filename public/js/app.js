@@ -2062,7 +2062,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "UserModal",
-  props: ['modalName', 'modalTitle', 'userData', 'onSubmit', 'imageOnchage', 'errors'],
+  props: ['editMode', 'modalName', 'userData', 'onSubmit', 'imageOnchage', 'getUserImage', 'errors'],
   data: function data() {
     return {
       items_col1: [{
@@ -2499,35 +2499,35 @@ __webpack_require__.r(__webpack_exports__);
         description: "Total books lost recorded.",
         total: 1,
         "footer-text": "More info",
-        "footer-icon": 'arrow-right'
+        "footer-icon": 'arrow-circle-right'
       }, {
         icon: 'exclamation-triangle',
         text: "Books Overdue",
         description: "Total books overdue recorded.",
         total: 4,
         "footer-text": "More info",
-        "footer-icon": 'arrow-right'
+        "footer-icon": 'arrow-circle-right'
       }, {
         icon: 'book-reader',
         text: "Borrowers",
         description: "Total borrowers recorded.",
         total: 56,
         "footer-text": "More info",
-        "footer-icon": 'arrow-right'
+        "footer-icon": 'arrow-circle-right'
       }, {
         icon: 'users',
         text: "Students",
         description: "Total students registered",
         total: 200,
         "footer-text": "More info",
-        "footer-icon": 'arrow-right'
+        "footer-icon": 'arrow-circle-right'
       }, {
         icon: 'user-tie',
         text: "Faculties",
         description: "Total faculties today recorded.",
         total: 10,
         "footer-text": "More info",
-        "footer-icon": 'arrow-right'
+        "footer-icon": 'arrow-circle-right'
       }]
     };
   }
@@ -2813,6 +2813,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "UserManagement",
@@ -2821,6 +2826,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   data: function data() {
     return {
+      editMode: '',
       users: {},
       userData: {
         user_image: '',
@@ -2853,6 +2859,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         return console.log("Error :", err);
       });
     },
+    OpenAddModal: function OpenAddModal() {
+      this.editMode = false;
+      $('#user_modal').modal('show');
+    },
     onSubmit: function onSubmit() {
       var _this2 = this;
 
@@ -2864,6 +2874,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this2.userData = {}; // to clear all fields in modal
 
         $('#add_user_modal').modal('hide'); // close modal
+
+        $('#add_user_modal input, #add_user_modal select').text("").val(""); // delete all fields in modal after save
 
         _this2.$Progress.finish();
 
@@ -2911,6 +2923,26 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       $('input[name="user_image"]').val("");
       this.userData.user_image = '';
+    },
+    getUserImage: function getUserImage() {},
+    editUser: function editUser(id) {
+      var _this4 = this;
+
+      this.$Progress.start();
+      axios.get('api/user/' + id).then(function (_ref3) {
+        var data = _ref3.data;
+        _this4.userData = data;
+        $('#user_modal').modal('show');
+        _this4.editMode = true;
+
+        _this4.getUserImage();
+
+        _this4.$Progress.finish();
+      })["catch"](function (err) {
+        _this4.$Progress.failed();
+
+        console.log("Error :", err);
+      });
     }
   }
 });
@@ -42271,14 +42303,14 @@ var render = function() {
       "div",
       {
         staticClass: "modal fade",
-        attrs: { id: this.modalName, role: "dialog" }
+        attrs: { id: "user_modal", role: "dialog" }
       },
       [
         _c("div", { staticClass: "modal-dialog modal-lg" }, [
           _c("div", { staticClass: "modal-content" }, [
             _c("div", { staticClass: "modal-header bg-dark text-white" }, [
               _c("h5", { staticClass: "modal-title" }, [
-                _vm._v(_vm._s(this.modalTitle))
+                _vm._v(_vm._s(this.editMode ? "Edit User" : "Register User"))
               ]),
               _vm._v(" "),
               _vm._m(0)
@@ -42310,7 +42342,7 @@ var render = function() {
                                     staticClass:
                                       "profile-user-img img-fluid img-circle",
                                     attrs: {
-                                      src: __webpack_require__(/*! ../../../../public/images/profile/user.png */ "./public/images/profile/user.png"),
+                                      src: _vm.getUserImage(),
                                       alt: "User profile picture"
                                     }
                                   }),
@@ -43516,7 +43548,7 @@ var render = function() {
           { key: $index, staticClass: "col-md-4 col-sm-6 my-3" },
           [
             _c("div", { staticClass: "card h-100" }, [
-              _c("div", { staticClass: "card-body text-muted" }, [
+              _c("div", { staticClass: "card-body text-muted dashboard" }, [
                 _c("i", { class: "fa-5x mt-3 fas fa-" + item.icon }),
                 _vm._v(" "),
                 _c("h6", { staticClass: "text-uppercase" }, [
@@ -43993,7 +44025,27 @@ var render = function() {
                       _vm._v(" "),
                       _c("td", [_vm._v(_vm._s(user.gender))]),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(user.birthday))])
+                      _c("td", [_vm._v(_vm._s(user.birthday))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("i", {
+                          staticClass: "fas fa-trash",
+                          on: {
+                            click: function($event) {
+                              return _vm.editUser(user.id)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("i", {
+                          staticClass: "fas fa-edit",
+                          on: {
+                            click: function($event) {
+                              return _vm.editUser(user.id)
+                            }
+                          }
+                        })
+                      ])
                     ])
                   }),
                   0
@@ -44020,11 +44072,11 @@ var render = function() {
       _vm._v(" "),
       _c("UserModal", {
         attrs: {
-          modalName: "add_user_modal",
-          modalTitle: "Register User",
+          editMode: _vm.editMode,
           userData: _vm.userData,
           onSubmit: _vm.onSubmit,
           imageOnchage: _vm.imageOnchage,
+          getUserImage: _vm.getUserImage,
           errors: _vm.errors
         }
       })
@@ -44046,11 +44098,7 @@ var staticRenderFns = [
             "button",
             {
               staticClass: "btn btn-sm btn-primary",
-              attrs: {
-                "data-toggle": "modal",
-                "data-target": "#add_user_modal",
-                "data-title": "Add User"
-              }
+              attrs: { "data-toggle": "modal", "data-target": "#user_modal" }
             },
             [
               _vm._v("\n                                Add User "),
@@ -44075,7 +44123,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Gender")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Birthday")])
+        _c("th", [_vm._v("Birthday")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")])
       ])
     ])
   }
@@ -59183,17 +59233,6 @@ module.exports = function(module) {
 	return module;
 };
 
-
-/***/ }),
-
-/***/ "./public/images/profile/user.png":
-/*!****************************************!*\
-  !*** ./public/images/profile/user.png ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "/images/user.png?27744ecd49a80c057da1f9d473c8b00d";
 
 /***/ }),
 

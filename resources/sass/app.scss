@@ -24,7 +24,7 @@ $fa-font-path: "../webfonts";
     color: #76838F;
 }
 
-.card-body:hover {
+.dashboard:hover {
     & i {
         transition: all .3s linear;
         font-size: 75px;
@@ -42,6 +42,14 @@ $fa-font-path: "../webfonts";
 
 .card-body .display-4 {
     color: $teal;
+}
+
+tbody i {
+    cursor: pointer;
+}
+
+tbody tr td i {
+    padding: 0px 5px;
 }
 
 .small-box-footer {

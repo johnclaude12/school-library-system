@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <div v-for="(item, $index) in items" :key="$index" class="col-md-4 col-sm-6 my-3">
                 <div class="card h-100">
-                    <div class="card-body text-muted">
+                    <div class="card-body text-muted dashboard">
                         <i :class="'fa-5x mt-3 fas fa-' + item.icon"></i>
                         <h6 class="text-uppercase">{{ item.text }}</h6>
                         <h1 class="display-4 font-weight-bold">{{ item.total }}</h1>
@@ -38,7 +38,7 @@
                         description: "Total books lost recorded.",
                         total: 1,
                         "footer-text": "More info",
-                        "footer-icon": 'arrow-right'
+                        "footer-icon": 'arrow-circle-right'
                     },
                     {
                         icon: 'exclamation-triangle',
@@ -46,7 +46,7 @@
                         description: "Total books overdue recorded.",
                         total: 4,
                         "footer-text": "More info",
-                        "footer-icon": 'arrow-right'
+                        "footer-icon": 'arrow-circle-right'
                     },
                     {
                         icon: 'book-reader',
@@ -54,7 +54,7 @@
                         description: "Total borrowers recorded.",
                         total: 56,
                         "footer-text": "More info",
-                        "footer-icon": 'arrow-right'
+                        "footer-icon": 'arrow-circle-right'
                     },
                     {
                         icon: 'users',
@@ -62,7 +62,7 @@
                         description: "Total students registered",
                         total: 200,
                         "footer-text": "More info",
-                        "footer-icon": 'arrow-right'
+                        "footer-icon": 'arrow-circle-right'
                     },
                     {
                         icon: 'user-tie',
@@ -70,7 +70,7 @@
                         description: "Total faculties today recorded.",
                         total: 10,
                         "footer-text": "More info",
-                        "footer-icon": 'arrow-right'
+                        "footer-icon": 'arrow-circle-right'
                     }
                 ]
             }
