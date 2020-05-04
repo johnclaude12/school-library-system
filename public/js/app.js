@@ -2049,13 +2049,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "UserModal",
-  props: ['modalName', 'modalTitle', 'userData', 'onSubmit'],
+  props: ['modalName', 'modalTitle', 'userData', 'onSubmit', 'errors'],
   data: function data() {
     return {
       items_col1: [{
-        label: "Picture *",
+        label: "Picture",
         name: "image_id",
         required: "required",
         type: "text"
@@ -2800,6 +2805,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "UserManagement",
@@ -2821,7 +2827,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         question_id: '',
         security_answer: '',
         user_type_id: ''
-      }
+      },
+      errors: []
     };
   },
   created: function created() {
@@ -2870,6 +2877,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             timer: 3000
           });
         }
+
+        _this2.errors = error.response.data.errors;
       });
     }
   }
@@ -42408,6 +42417,9 @@ var render = function() {
                                     ],
                                     staticClass:
                                       "form-control form-control-custom",
+                                    class: _vm.errors[item.name]
+                                      ? "is-invalid"
+                                      : "",
                                     attrs: { name: item.name, id: item.name },
                                     on: {
                                       change: function($event) {
@@ -42455,7 +42467,10 @@ var render = function() {
                                         }
                                       ],
                                       staticClass:
-                                        "form-control form-control-custom ",
+                                        "form-control form-control-custom",
+                                      class: _vm.errors[item.name]
+                                        ? "is-invalid"
+                                        : "",
                                       attrs: {
                                         id: item.name,
                                         name: item.name,
@@ -42517,7 +42532,10 @@ var render = function() {
                                         }
                                       ],
                                       staticClass:
-                                        "form-control form-control-custom ",
+                                        "form-control form-control-custom",
+                                      class: _vm.errors[item.name]
+                                        ? "is-invalid"
+                                        : "",
                                       attrs: {
                                         id: item.name,
                                         name: item.name,
@@ -42549,7 +42567,10 @@ var render = function() {
                                         }
                                       ],
                                       staticClass:
-                                        "form-control form-control-custom ",
+                                        "form-control form-control-custom",
+                                      class: _vm.errors[item.name]
+                                        ? "is-invalid"
+                                        : "",
                                       attrs: {
                                         id: item.name,
                                         name: item.name,
@@ -42576,10 +42597,18 @@ var render = function() {
                           _c(
                             "span",
                             {
-                              staticClass: "invalid-feedback",
+                              class: _vm.errors[item.name]
+                                ? "invalid-feedback d-block"
+                                : "",
                               attrs: { role: "alert" }
                             },
-                            [_c("strong", { attrs: { name: item.name } })]
+                            [
+                              _vm.errors[item.name]
+                                ? _c("strong", [
+                                    _vm._v(_vm._s(_vm.errors[item.name][0]))
+                                  ])
+                                : _vm._e()
+                            ]
                           )
                         ],
                         2
@@ -42621,6 +42650,9 @@ var render = function() {
                                     ],
                                     staticClass:
                                       "form-control form-control-custom",
+                                    class: _vm.errors[item.name]
+                                      ? "is-invalid"
+                                      : "",
                                     attrs: { name: item.name, id: item.name },
                                     on: {
                                       change: function($event) {
@@ -42675,6 +42707,9 @@ var render = function() {
                                     ],
                                     staticClass:
                                       "form-control form-control-custom",
+                                    class: _vm.errors[item.name]
+                                      ? "is-invalid"
+                                      : "",
                                     attrs: { name: item.name, id: item.name },
                                     on: {
                                       change: function($event) {
@@ -42727,6 +42762,9 @@ var render = function() {
                                       ],
                                       staticClass:
                                         "form-control form-control-custom",
+                                      class: _vm.errors[item.name]
+                                        ? "is-invalid"
+                                        : "",
                                       attrs: {
                                         id: item.name,
                                         name: item.name,
@@ -42789,6 +42827,9 @@ var render = function() {
                                       ],
                                       staticClass:
                                         "form-control form-control-custom",
+                                      class: _vm.errors[item.name]
+                                        ? "is-invalid"
+                                        : "",
                                       attrs: {
                                         id: item.name,
                                         name: item.name,
@@ -42821,6 +42862,9 @@ var render = function() {
                                       ],
                                       staticClass:
                                         "form-control form-control-custom",
+                                      class: _vm.errors[item.name]
+                                        ? "is-invalid"
+                                        : "",
                                       attrs: {
                                         id: item.name,
                                         name: item.name,
@@ -42847,10 +42891,18 @@ var render = function() {
                           _c(
                             "span",
                             {
-                              staticClass: "invalid-feedback",
+                              class: _vm.errors[item.name]
+                                ? "invalid-feedback d-block"
+                                : "",
                               attrs: { role: "alert" }
                             },
-                            [_c("strong", { attrs: { name: item.name } })]
+                            [
+                              _vm.errors[item.name]
+                                ? _c("strong", [
+                                    _vm._v(_vm._s(_vm.errors[item.name][0]))
+                                  ])
+                                : _vm._e()
+                            ]
                           )
                         ],
                         2
@@ -44046,7 +44098,8 @@ var render = function() {
           modalName: "add_user_modal",
           modalTitle: "Register User",
           userData: _vm.userData,
-          onSubmit: _vm.onSubmit
+          onSubmit: _vm.onSubmit,
+          errors: _vm.errors
         }
       })
     ],

@@ -51,6 +51,7 @@
             :modalTitle="'Register User'"
             :userData="userData"
             :onSubmit="onSubmit"
+            :errors="errors"
         />
     </div>
 </template>
@@ -79,6 +80,7 @@
                     security_answer: '',
                     user_type_id: ''
                 },
+                errors: []
             }
         },
         created() {
@@ -116,6 +118,8 @@
                                 timer: 3000
                             })
                         }
+
+                        this.errors = error.response.data.errors;
                     })
             }
         }
