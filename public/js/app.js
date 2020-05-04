@@ -2060,9 +2060,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "UserModal",
-  props: ['editMode', 'modalName', 'userData', 'onSubmit', 'imageOnchage', 'getUserImage', 'errors'],
+  props: ['editMode', 'modalName', 'userData', 'onSubmit', 'onUpdate', 'imageOnchage', 'getUserImage', 'errors'],
   data: function data() {
     return {
       items_col1: [{
@@ -2818,6 +2827,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "UserManagement",
@@ -2826,7 +2836,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   data: function data() {
     return {
-      editMode: '',
+      editMode: false,
       users: {},
       userData: {
         user_image: '',
@@ -2861,7 +2871,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     OpenAddModal: function OpenAddModal() {
       this.editMode = false;
-      $('#user_modal').modal('show');
+      $('#user_modal').modal('show').find("input,textarea,select").val('').end().find("input[type=checkbox], input[type=radio]").prop("checked", "").end();
     },
     onSubmit: function onSubmit() {
       var _this2 = this;
@@ -2873,9 +2883,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         _this2.userData = {}; // to clear all fields in modal
 
-        $('#add_user_modal').modal('hide'); // close modal
-
-        $('#add_user_modal input, #add_user_modal select').text("").val(""); // delete all fields in modal after save
+        $('#user_modal').modal('hide'); // close modal
 
         _this2.$Progress.finish();
 
@@ -2900,8 +2908,40 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this2.errors = error.response.data.errors;
       });
     },
-    imageOnchage: function imageOnchage(el) {
+    onUpdate: function onUpdate() {
       var _this3 = this;
+
+      axios.put('api/user/' + this.userData.id, this.userData).then(function (_ref3) {
+        var data = _ref3.data;
+        _this3.userData = {}; // to clear all fields in modal
+
+        $('#user_modal').modal('hide'); // close modal
+
+        _this3.$Progress.finish();
+
+        Swal.fire({
+          icon: 'success',
+          text: data.message,
+          showConfirmButton: false,
+          timer: 4000
+        });
+      })["catch"](function (err) {
+        _this3.$Progress.fail();
+
+        if (error.response.status !== 422) {
+          Swal.fire({
+            icon: 'error',
+            text: 'Oops! Something went wrong.',
+            showConfirmButton: false,
+            timer: 4000
+          });
+        }
+
+        _this3.errors = error.response.data.errors;
+      });
+    },
+    imageOnchage: function imageOnchage(el) {
+      var _this4 = this;
 
       var file = el.target.files[0];
       var reader = new FileReader();
@@ -2909,7 +2949,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (file) {
         if (file['size'] < 2111775) {
           reader.onloadend = function (file) {
-            _this3.userData.user_image = reader.result;
+            _this4.userData.user_image = reader.result;
           };
 
           return reader.readAsDataURL(file);
@@ -2924,22 +2964,21 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       $('input[name="user_image"]').val("");
       this.userData.user_image = '';
     },
-    getUserImage: function getUserImage() {},
+    getUserImage: function getUserImage() {// return this.userData.user_image.length > 150 ? this.userData.user_image : 'images/profile/'+ this.userData.user_image
+    },
     editUser: function editUser(id) {
-      var _this4 = this;
+      var _this5 = this;
 
       this.$Progress.start();
-      axios.get('api/user/' + id).then(function (_ref3) {
-        var data = _ref3.data;
-        _this4.userData = data;
+      axios.get('api/user/' + id).then(function (_ref4) {
+        var data = _ref4.data;
+        _this5.userData = data;
         $('#user_modal').modal('show');
-        _this4.editMode = true;
+        _this5.editMode = true; // this.getUserImage();
 
-        _this4.getUserImage();
-
-        _this4.$Progress.finish();
+        _this5.$Progress.finish();
       })["catch"](function (err) {
-        _this4.$Progress.failed();
+        _this5.$Progress.failed();
 
         console.log("Error :", err);
       });
@@ -42871,29 +42910,51 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "modal-footer" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-secondary p-18",
-                  attrs: { "data-dismiss": "modal" }
-                },
-                [_vm._v("Cancel")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary btn-new-position",
-                  attrs: { type: "submit" },
-                  on: { click: this.onSubmit }
-                },
-                [
-                  _c("i", { staticClass: "fas fa-save mr-1" }),
-                  _vm._v(" Save\n                    ")
-                ]
-              )
-            ])
+            _c(
+              "div",
+              { staticClass: "modal-footer" },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary p-18",
+                    attrs: { "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Cancel")]
+                ),
+                _vm._v(" "),
+                !_vm.editMode
+                  ? [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "button" },
+                          on: { click: this.onSubmit }
+                        },
+                        [
+                          _c("i", { staticClass: "fas fa-save mr-1" }),
+                          _vm._v(" Save\n                        ")
+                        ]
+                      )
+                    ]
+                  : [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "button" },
+                          on: { click: this.onUpdate }
+                        },
+                        [
+                          _c("i", { staticClass: "fas fa-edit mr-1" }),
+                          _vm._v(" Update\n                        ")
+                        ]
+                      )
+                    ]
+              ],
+              2
+            )
           ])
         ])
       ]
@@ -44007,11 +44068,29 @@ var render = function() {
       _c("div", { staticClass: "row justify-content-center" }, [
         _c("div", { staticClass: "col-md-12" }, [
           _c("div", { staticClass: "card" }, [
-            _vm._m(0),
+            _c("div", { staticClass: "card-header" }, [
+              _c("h3", { staticClass: "card-title" }, [_vm._v("User Table")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-tools" }, [
+                _c("div", { staticClass: "input-group input-group-sm" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-sm btn-primary",
+                      on: { click: _vm.OpenAddModal }
+                    },
+                    [
+                      _vm._v("\n                                Add User "),
+                      _c("i", { staticClass: "fas fa-user-plus" })
+                    ]
+                  )
+                ])
+              ])
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-body" }, [
               _c("table", { staticClass: "table table-bordered" }, [
-                _vm._m(1),
+                _vm._m(0),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -44075,6 +44154,7 @@ var render = function() {
           editMode: _vm.editMode,
           userData: _vm.userData,
           onSubmit: _vm.onSubmit,
+          onUpdate: _vm.onUpdate,
           imageOnchage: _vm.imageOnchage,
           getUserImage: _vm.getUserImage,
           errors: _vm.errors
@@ -44085,30 +44165,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("User Table")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-tools" }, [
-        _c("div", { staticClass: "input-group input-group-sm" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-sm btn-primary",
-              attrs: { "data-toggle": "modal", "data-target": "#user_modal" }
-            },
-            [
-              _vm._v("\n                                Add User "),
-              _c("i", { staticClass: "fas fa-user-plus" })
-            ]
-          )
-        ])
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

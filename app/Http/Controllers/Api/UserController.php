@@ -66,6 +66,25 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
+        $user = User::find($request->id);
+        $input = $request->all();
 
+        if ($input['user_image'] != null) {
+            $name = time(). '.' . explode('/', mime_content_type($input['user_image']))[1];
+            \Image::make($input['user_image'])->save(public_path('images/profile/').$name);
+            $input['user_image'] = $name;
+        }
+
+        $input['password'] = $user->password;
+        unset($input['user_type']);
+        unset($input['question']);
+
+        $user->update($input);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User updated successfully.',
+            'data' => new UserResource($user)
+        ], Response::HTTP_OK);
     }
 }

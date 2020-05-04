@@ -123,9 +123,18 @@
                     <!-- Modal Footer -->
                     <div class="modal-footer">
                         <button class="btn btn-secondary p-18" data-dismiss="modal">Cancel</button>
-                        <button @click="this.onSubmit" type="submit" class="btn btn-primary btn-new-position">
-                            <i class="fas fa-save mr-1"></i> Save
-                        </button>
+                        <template v-if="!editMode">
+                            <button @click="this.onSubmit" type="button" class="btn btn-primary">
+                                <i class="fas fa-save mr-1"></i> Save
+                            </button>
+                        </template>
+
+                        <template v-else>
+                            <button @click="this.onUpdate" type="button" class="btn btn-primary">
+                                <i class="fas fa-edit mr-1"></i> Update
+                            </button>
+                        </template>
+
                     </div>
                 </div>
             </div>
@@ -136,7 +145,7 @@
 <script>
     export default {
         name: "UserModal",
-        props: ['editMode', 'modalName', 'userData', 'onSubmit', 'imageOnchage', 'getUserImage', 'errors'],
+        props: ['editMode', 'modalName', 'userData', 'onSubmit', 'onUpdate', 'imageOnchage', 'getUserImage', 'errors'],
         data() {
             return {
                 items_col1: [

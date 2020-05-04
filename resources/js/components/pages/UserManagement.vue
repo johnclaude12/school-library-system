@@ -7,7 +7,7 @@
                         <h3 class="card-title">User Table</h3>
                         <div class="card-tools">
                             <div class="input-group input-group-sm">
-                                <button data-toggle="modal" data-target="#user_modal" class="btn btn-sm btn-primary">
+                                <button @click="OpenAddModal" class="btn btn-sm btn-primary">
                                     Add User <i class="fas fa-user-plus"></i>
                                 </button>
                             </div>
@@ -55,6 +55,7 @@
             :editMode="editMode"
             :userData="userData"
             :onSubmit="onSubmit"
+            :onUpdate="onUpdate"
             :imageOnchage="imageOnchage"
             :getUserImage="getUserImage"
             :errors="errors"
@@ -72,7 +73,7 @@
         },
         data() {
             return {
-                editMode: '',
+                editMode: false,
                 users: {},
                 userData: {
                     user_image: '',
@@ -101,7 +102,9 @@
             },
             OpenAddModal() {
                 this.editMode = false;
-                $('#user_modal').modal('show');
+                $('#user_modal').modal('show')
+                                .find("input,textarea,select").val('').end()
+                                .find("input[type=checkbox], input[type=radio]").prop("checked", "").end();
             },
             onSubmit() {
                 this.$Progress.start();
@@ -109,8 +112,7 @@
                     .then(({ data }) => {
                         this.users.data = [data.data, ...this.users.data]; // inject new data in this.users.data
                         this.userData = {}; // to clear all fields in modal
-                        $('#add_user_modal').modal('hide'); // close modal
-                        $('#add_user_modal input, #add_user_modal select').text("").val(""); // delete all fields in modal after save
+                        $('#user_modal').modal('hide'); // close modal
                         this.$Progress.finish()
 
                         Swal.fire({
@@ -121,6 +123,34 @@
                         })
                     })
                     .catch(error => {
+                        this.$Progress.fail()
+                        if (error.response.status !== 422) {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'Oops! Something went wrong.',
+                                showConfirmButton: false,
+                                timer: 4000
+                            })
+                        }
+
+                        this.errors = error.response.data.errors;
+                    })
+            },
+            onUpdate() {
+                axios.put('api/user/' + this.userData.id, this.userData)
+                    .then(({ data }) => {
+                        this.userData = {}; // to clear all fields in modal
+                        $('#user_modal').modal('hide'); // close modal
+                        this.$Progress.finish()
+
+                        Swal.fire({
+                            icon: 'success',
+                            text: data.message,
+                            showConfirmButton: false,
+                            timer: 4000
+                        })
+                    })
+                    .catch(err => {
                         this.$Progress.fail()
                         if (error.response.status !== 422) {
                             Swal.fire({
@@ -157,7 +187,7 @@
                 this.userData.user_image = '';
             },
             getUserImage() {
-
+                // return this.userData.user_image.length > 150 ? this.userData.user_image : 'images/profile/'+ this.userData.user_image
             },
             editUser(id) {
                 this.$Progress.start();
@@ -166,7 +196,7 @@
                         this.userData = data;
                         $('#user_modal').modal('show');
                         this.editMode = true;
-                        this.getUserImage();
+                        // this.getUserImage();
                         this.$Progress.finish();
                     })
                     .catch(err => {
