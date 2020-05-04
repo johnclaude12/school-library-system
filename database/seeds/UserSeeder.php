@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
             'question_id' => 1,
             'security_answer' => 'beauty',
             'status' => 1,
-            'image_id' => 1,
+            'user_image' => null,
             'remember_token' => Str::random(10),
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
