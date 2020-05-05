@@ -25,17 +25,20 @@
                                     <template v-if="item.name === 'user_image'">
                                         <div class="text-center">
                                             <img
-                                            class="profile-user-img img-fluid img-circle"
-                                            :src="userData[item.name]"
-                                            alt="User profile picture"
-                                        >
-                                        <input
-                                            class="form-control form-control-custom mt-2"
-                                            :type="item.type"
-                                            :id="item.name"
-                                            :name="item.name"
-                                            @change="imageOnchage"
-                                        >
+                                                class="profile-user-img img-fluid img-circle"
+                                                :src="userData[item.name]"
+                                                alt="User profile picture"
+                                            >
+                                            <input
+                                                class="d-none"
+                                                :type="item.type"
+                                                :id="item.name"
+                                                :name="item.name"
+                                                @change="imageOnchage"
+                                            >
+                                            <label :for="item.name" class="form-control form-control-custom mt-2">
+                                                <i class="fas fa-upload"></i> Upload Image
+                                            </label>
                                         </div>
                                     </template>
                                     <template v-else-if="item.name === 'gender'">

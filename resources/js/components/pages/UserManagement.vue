@@ -101,6 +101,7 @@
             },
             OpenAddModal() {
                 this.editMode = false;
+                this.userData.user_image = 'images/profile/user.png'; // set default value of element file
                 $('#user_modal').modal('show')
                                 .find("input,textarea,select").val('').end()
                                 .find("input[type=checkbox], input[type=radio]").prop("checked", "").end();
@@ -149,7 +150,7 @@
                             timer: 4000
                         })
                     })
-                    .catch(err => {
+                    .catch(error => {
                         this.$Progress.fail()
                         if (error.response.status !== 422) {
                             Swal.fire({

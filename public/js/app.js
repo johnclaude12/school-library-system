@@ -2069,6 +2069,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "UserModal",
   props: ['editMode', 'modalName', 'userData', 'onSubmit', 'onUpdate', 'imageOnchage', 'getUserImage', 'errors'],
@@ -2870,6 +2873,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     OpenAddModal: function OpenAddModal() {
       this.editMode = false;
+      this.userData.user_image = 'images/profile/user.png'; // set default value of element file
+
       $('#user_modal').modal('show').find("input,textarea,select").val('').end().find("input[type=checkbox], input[type=radio]").prop("checked", "").end();
     },
     onSubmit: function onSubmit() {
@@ -2924,7 +2929,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           showConfirmButton: false,
           timer: 4000
         });
-      })["catch"](function (err) {
+      })["catch"](function (error) {
         _this3.$Progress.fail();
 
         if (error.response.status !== 422) {
@@ -42384,15 +42389,29 @@ var render = function() {
                                   }),
                                   _vm._v(" "),
                                   _c("input", {
-                                    staticClass:
-                                      "form-control form-control-custom mt-2",
+                                    staticClass: "d-none",
                                     attrs: {
                                       type: item.type,
                                       id: item.name,
                                       name: item.name
                                     },
                                     on: { change: _vm.imageOnchage }
-                                  })
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass:
+                                        "form-control form-control-custom mt-2",
+                                      attrs: { for: item.name }
+                                    },
+                                    [
+                                      _c("i", { staticClass: "fas fa-upload" }),
+                                      _vm._v(
+                                        " Upload Image\n                                        "
+                                      )
+                                    ]
+                                  )
                                 ])
                               ]
                             : item.name === "gender"
