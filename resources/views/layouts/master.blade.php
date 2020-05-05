@@ -15,7 +15,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="/css/app.css">
 
 </head>
-<body class="hold-transition sidebar-mini control-sidebar-open text-sm">
+<body class="hold-transition sidebar-mini control-sidebar-open text-sm pr-0">
 <div class="wrapper" id="app">
 
   <!-- Navbar -->
@@ -30,8 +30,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <ul class="navbar-nav ml-auto">
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
-        <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown">
-            <i class="fas fa-user-circle" style="font-size: 2em;"></i>
+        <a href="javascript:void(0)" class="user-panel h-auto py-0 nav-link" data-toggle="dropdown">
+            <img
+                src="{{ auth()->user()->user_image == null ? '/images/profile/user.png' : '/images/profile/'.auth()->user()->user_image }}"
+                class="img-circle elevation-2"
+                id="user_profile_picture"
+                alt="User Image"
+            >
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
             <span class="dropdown-header">Sign in as <br> <b>{{ auth()->user()->firstname ." ". auth()->user()->lastname }}</b></span>
@@ -68,7 +73,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{ asset('images/user-avatar.png') }}" class="img-circle elevation-2" alt="User Image">
+            <img
+                src="{{ auth()->user()->user_image == null ? '/images/profile/user.png' : '/images/profile/'.auth()->user()->user_image }}"
+                class="img-circle elevation-2"
+                id="user_profile_picture"
+                alt="User Image"
+            >
         </div>
         <div class="info">
           <a href="#" class="d-block">{{ auth()->user()->firstname ." ". auth()->user()->lastname }}</a>
@@ -151,3 +161,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
+
+<script>
+    localStorage.setItem('userId', {{ auth()->user()->id }})
+
+    if (!localStorage.getItem('userId')) {
+        console.log("Logout...")
+    }
+</script>

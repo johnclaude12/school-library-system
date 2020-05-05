@@ -2921,6 +2921,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         $('#user_modal').modal('hide'); // close modal
 
+        _this3.setProfilePic(data);
+
         _this3.$Progress.finish();
 
         Swal.fire({
@@ -3011,6 +3013,15 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           });
         }
       });
+    },
+    setProfilePic: function setProfilePic(_ref6) {
+      var _ref6$data = _ref6.data,
+          id = _ref6$data.id,
+          user_image = _ref6$data.user_image;
+
+      if (id == localStorage.getItem('userId')) {
+        $('img#user_profile_picture').attr('src', user_image);
+      }
     }
   }
 });

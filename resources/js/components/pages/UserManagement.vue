@@ -141,6 +141,7 @@
                     .then(({ data }) => {
                         this.userData = {}; // to clear all fields in modal
                         $('#user_modal').modal('hide'); // close modal
+                        this.setProfilePic(data)
                         this.$Progress.finish()
 
                         Swal.fire({
@@ -232,6 +233,11 @@
                             })
                     }
                 })
+            },
+            setProfilePic({ data: { id, user_image } }) {
+                if (id == localStorage.getItem('userId')) {
+                    $('img#user_profile_picture').attr('src', user_image);
+                }
             }
         }
     }
