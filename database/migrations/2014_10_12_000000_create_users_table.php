@@ -31,6 +31,7 @@ class CreateUsersTable extends Migration
             $table->integer('status')->default(1);
             $table->string('user_image')->nullable();
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

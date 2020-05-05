@@ -2984,6 +2984,33 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         console.log("Error :", err);
       });
+    },
+    onDelete: function onDelete(id) {
+      var _this6 = this;
+
+      console.log("ID :", id);
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          axios["delete"]('api/user/' + id).then(function (_ref5) {
+            var data = _ref5.data;
+            // find id from param to users state and remove
+            _this6.users.data = _this6.users.data.filter(function (user) {
+              return user.id !== id;
+            });
+            Swal.fire('', data.message, data.status);
+          })["catch"](function (error) {
+            Swal.fire('', 'Oops! User failed to delete.', 'error');
+          });
+        }
+      });
     }
   }
 });
@@ -44127,7 +44154,7 @@ var render = function() {
                           staticClass: "fas fa-trash",
                           on: {
                             click: function($event) {
-                              return _vm.editUser(user.id)
+                              return _vm.onDelete(user.id)
                             }
                           }
                         }),

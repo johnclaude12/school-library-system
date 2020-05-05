@@ -34,7 +34,7 @@
                                     <td>{{ user.gender }}</td>
                                     <td>{{ user.birthday }}</td>
                                     <td>
-                                        <i class="fas fa-trash" @click="editUser(user.id)"></i>
+                                        <i class="fas fa-trash" @click="onDelete(user.id)"></i>
                                         <i class="fas fa-edit" @click="editUser(user.id)"></i>
                                     </td>
                                 </tr>
@@ -199,6 +199,39 @@
                         this.$Progress.failed();
                         console.log("Error :", err)
                     })
+            },
+            onDelete(id) {
+                console.log("ID :", id)
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        axios.delete('api/user/'+ id)
+                            .then(({ data }) => {
+                                // find id from param to users state and remove
+                                this.users.data = this.users.data.filter(user => user.id !== id);
+
+                                Swal.fire(
+                                    '',
+                                    data.message,
+                                    data.status
+                                )
+                            })
+                            .catch(error => {
+                                Swal.fire(
+                                    '',
+                                    'Oops! User failed to delete.',
+                                    'error'
+                                )
+                            })
+                    }
+                })
             }
         }
     }
