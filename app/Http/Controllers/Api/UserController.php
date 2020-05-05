@@ -44,6 +44,8 @@ class UserController extends Controller
                 $input['user_image'] = $name;
             }
 
+            unset($input['user_type']);
+            unset($input['question']);
             $input['password'] = bcrypt($input['password']);
             $userData = User::create($input);
         } catch(Exception $ex) {
@@ -64,7 +66,7 @@ class UserController extends Controller
 
     }
 
-    public function update(Request $request)
+    public function update(UserRequest $request)
     {
         $user = User::find($request->id);
         $input = $request->all();
