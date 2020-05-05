@@ -57,7 +57,6 @@
             :onSubmit="onSubmit"
             :onUpdate="onUpdate"
             :imageOnchage="imageOnchage"
-            :getUserImage="getUserImage"
             :errors="errors"
         />
     </div>
@@ -186,9 +185,6 @@
                 $('input[name="user_image"]').val("");
                 this.userData.user_image = '';
             },
-            getUserImage() {
-                // return this.userData.user_image.length > 150 ? this.userData.user_image : 'images/profile/'+ this.userData.user_image
-            },
             editUser(id) {
                 this.$Progress.start();
                 axios.get('api/user/'+ id)
@@ -196,7 +192,6 @@
                         this.userData = data;
                         $('#user_modal').modal('show');
                         this.editMode = true;
-                        // this.getUserImage();
                         this.$Progress.finish();
                     })
                     .catch(err => {

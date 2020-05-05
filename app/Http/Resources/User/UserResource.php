@@ -16,7 +16,7 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_image' => $this->user_image,
+            'user_image' => $this->user_image ? "images/profile/".$this->user_image : "images/profile/user.png",
             'user_type_id' => $this->user_type_id,
             'user_type' => $this->userType->name,
             'firstname' => $this->firstname,

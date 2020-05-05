@@ -26,7 +26,7 @@
                                         <div class="text-center">
                                             <img
                                             class="profile-user-img img-fluid img-circle"
-                                            :src="getUserImage()"
+                                            :src="userData[item.name]"
                                             alt="User profile picture"
                                         >
                                         <input

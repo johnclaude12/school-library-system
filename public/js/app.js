@@ -2827,7 +2827,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "UserManagement",
@@ -2964,8 +2963,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       $('input[name="user_image"]').val("");
       this.userData.user_image = '';
     },
-    getUserImage: function getUserImage() {// return this.userData.user_image.length > 150 ? this.userData.user_image : 'images/profile/'+ this.userData.user_image
-    },
     editUser: function editUser(id) {
       var _this5 = this;
 
@@ -2974,7 +2971,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         var data = _ref4.data;
         _this5.userData = data;
         $('#user_modal').modal('show');
-        _this5.editMode = true; // this.getUserImage();
+        _this5.editMode = true;
 
         _this5.$Progress.finish();
       })["catch"](function (err) {
@@ -42381,7 +42378,7 @@ var render = function() {
                                     staticClass:
                                       "profile-user-img img-fluid img-circle",
                                     attrs: {
-                                      src: _vm.getUserImage(),
+                                      src: _vm.userData[item.name],
                                       alt: "User profile picture"
                                     }
                                   }),
@@ -44156,7 +44153,6 @@ var render = function() {
           onSubmit: _vm.onSubmit,
           onUpdate: _vm.onUpdate,
           imageOnchage: _vm.imageOnchage,
-          getUserImage: _vm.getUserImage,
           errors: _vm.errors
         }
       })
