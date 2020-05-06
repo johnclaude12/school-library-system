@@ -15,7 +15,7 @@
                     <div class="modal-body text-muted">
                         <div class="row">
                             <div class="col-md-6 col-sm-12">
-                                <h5 class="font-weight-bold">Personal Info</h5>
+                                <h5 class="font-weight-bold mb-0">Personal Info</h5>
                                 <div
                                     class="form-group"
                                     v-for="(item, $index) in items_col1"

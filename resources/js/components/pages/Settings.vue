@@ -1,38 +1,8 @@
 <template>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-3">
-
-            <!-- Profile Image -->
-            <div class="card card-primary card-outline">
-                <div class="card-body box-profile">
-                    <div class="text-center">
-                    <img class="profile-user-img img-fluid img-circle" src="" alt="User profile picture">
-                    </div>
-
-                    <h3 class="profile-username text-center">Nina Mcintire</h3>
-
-                    <p class="text-muted text-center">Software Engineer</p>
-
-                    <ul class="list-group list-group-unbordered mb-3">
-                        <li class="list-group-item">
-                            <b>Followers</b> <a class="float-right">1,322</a>
-                        </li>
-                        <li class="list-group-item">
-                            <b>Following</b> <a class="float-right">543</a>
-                        </li>
-                        <li class="list-group-item">
-                            <b>Friends</b> <a class="float-right">13,287</a>
-                        </li>
-                    </ul>
-
-                    <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
-                </div>
-            </div>
-
-            </div>
             <!-- /.col -->
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="card">
                 <div class="card-header p-2">
                     <ul class="nav nav-pills">
@@ -44,45 +14,114 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="profile">
                             <form class="form-horizontal">
-                                <div class="form-group row">
-                                    <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                                    <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="inputName" placeholder="Name">
+                                <div class="col mb-4">
+                                    <div class="text-center">
+                                        <img
+                                            class="profile-user-img img-fluid img-circle"
+                                            :src="currentUser.user_image ? currentUser.user_image : 'images/profile/user.png'"
+                                            alt="User profile picture"
+                                        >
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                                    <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <h5 class="font-weight-bold">Personal Info</h5>
+                                        <div
+                                            class="form-group"
+                                            v-for="(item, $index) in items_col1"
+                                            :key="$index"
+                                        >
+                                            <label :for="item.name">{{ item.label }}</label>
+
+                                            <template v-if="item.name === 'gender'">
+                                                <select
+                                                    class="form-control form-control-custom"
+                                                    :class="errors[item.name] ? 'is-invalid' : ''"
+                                                    :name="item.name"
+                                                    :id="item.name"
+                                                    v-model="currentUser[item.name]"
+                                                >
+                                                    <option value="M">Male</option>
+                                                    <option value="F">Female</option>
+                                                </select>
+                                            </template>
+                                            <template v-else>
+                                                <input
+                                                    class="form-control form-control-custom"
+                                                    :class="errors[item.name] ? 'is-invalid' : ''"
+                                                    :type="item.type"
+                                                    :id="item.name"
+                                                    :name="item.name"
+                                                    v-model="currentUser[item.name]"
+                                                >
+                                            </template>
+
+                                            <span role="alert" :class="errors[item.name] ? 'invalid-feedback d-block' : ''">
+                                                <strong v-if="errors[item.name]" >{{ errors[item.name][0] }}</strong>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <h5 class="font-weight-bold">Security Info</h5>
+                                        <div
+                                            class="form-group"
+                                            v-for="(item, $index) in items_col2"
+                                            :key="$index"
+                                        >
+                                            <label :for="item.name">{{ item.label }}</label>
+                                            <template v-if="item.name === 'user_type_id'">
+                                                <select
+                                                    class="form-control form-control-custom"
+                                                    :class="errors[item.name] ? 'is-invalid' : ''"
+                                                    :name="item.name"
+                                                    :id="item.name"
+                                                    v-model="currentUser[item.name]"
+                                                >
+                                                    <option value="1">Admin</option>
+                                                    <option value="2">Librarian</option>
+                                                    <option value="3">Student Assistant</option>
+                                                </select>
+                                            </template>
+                                            <template v-else-if="item.name === 'question_id'">
+                                                <select
+                                                    class="form-control form-control-custom"
+                                                    :class="errors[item.name] ? 'is-invalid' : ''"
+                                                    :name="item.name"
+                                                    :id="item.name"
+                                                    v-model="currentUser[item.name]"
+                                                >
+                                                    <option value="1">Who's your first pet?</option>
+                                                    <option value="2">Where is your first school?</option>
+                                                    <option value="3">What is your mother maiden name?</option>
+                                                </select>
+                                            </template>
+                                            <template v-else>
+                                                <input
+                                                    class="form-control form-control-custom"
+                                                    :class="errors[item.name] ? 'is-invalid' : ''"
+                                                    :type="item.type"
+                                                    :id="item.name"
+                                                    :name="item.name"
+                                                    v-model="currentUser[item.name]"
+                                                >
+                                            </template>
+
+                                            <span role="alert" :class="errors[item.name] ? 'invalid-feedback d-block' : ''">
+                                                <strong v-if="errors[item.name]" >{{ errors[item.name][0] }}</strong>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
-                                    <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputName2" placeholder="Name">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
-                                    <div class="col-sm-10">
-                                    <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-                                    <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="offset-sm-2 col-sm-10">
-                                    <button type="submit" class="btn btn-success">Submit</button>
-                                    </div>
+                                <div class="row col">
+                                    <button type="button" class="btn btn-success">
+                                    <i class="fas fa-save" style="color: #fff; float: none"></i> Save
+                                    </button>
                                 </div>
                             </form>
                         </div>
 
-                        <div class="tab-pane active" id="option">
+                        <div class="tab-pane" id="option">
                             <form class="form-horizontal">
                                 <div class="form-group row">
                                     <label for="inputName" class="col-sm-2 col-form-label">Name</label>
@@ -118,6 +157,99 @@
         name: "Settings",
         mounted() {
             console.log('Settings Component mounted.')
+        },
+        created() {
+            this.getCurrentUser();
+        },
+        methods: {
+            getCurrentUser() {
+                const currentUserID = localStorage.getItem('userId');
+                axios.get('api/user/'+ currentUserID)
+                    .then(({ data }) => this.currentUser = data)
+                    .catch(({ error }) => console.log("Error :", error))
+            },
+        },
+        data() {
+            return {
+                currentUser: {},
+                errors: [],
+                items_col1: [
+                    // {
+                    //     label: "",
+                    //     name: "user_image",
+                    //     required: "required",
+                    //     type: "file"
+                    // },
+                    {
+                        label: "Firstname *",
+                        name: "firstname",
+                        required: "required",
+                        type: "text"
+                    },
+                    {
+                        label: "Middlename *",
+                        name: "middlename",
+                        required: "required",
+                        type: "text"
+                    },
+                    {
+                        label: "Lastname *",
+                        name: "lastname",
+                        required: "required",
+                        type: "text"
+                    },
+                    {
+                        label: "Gender *",
+                        name: "gender",
+                        required: "required",
+                        type: "dropdown"
+                    },
+                    {
+                        label: "Date Of Birth *",
+                        name: "birthday",
+                        required: "required",
+                        type: "date"
+                    }
+                ],
+                items_col2: [
+                    {
+                        label: "User Type *",
+                        name: "user_type_id",
+                        required: "required",
+                        type: "dropdown"
+                    },
+                    {
+                        label: "Username *",
+                        name: "username",
+                        required: "required",
+                        type: "text"
+                    },
+                    {
+                        label: "Email Address *",
+                        name: "email",
+                        required: "required",
+                        type: "email"
+                    },
+                    {
+                        label: "Contact No. *",
+                        name: "contact_no",
+                        required: "required",
+                        type: "number"
+                    },
+                    {
+                        label: "Question *",
+                        name: "question_id",
+                        required: "required",
+                        type: "dropdown"
+                    },
+                    {
+                        label: "Answer *",
+                        name: "security_answer",
+                        required: "required",
+                        type: "text"
+                    }
+                ]
+            }
         }
     }
 </script>
