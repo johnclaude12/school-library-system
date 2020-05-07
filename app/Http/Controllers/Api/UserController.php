@@ -63,16 +63,25 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        User::findOrFail($id)->delete();
+        if ($id == 1) {
+            $status = "fail";
+            $message = "You cannot delete main Administrator.";
+            $code = Response::HTTP_CONFLICT;
+        } else {
+            $status = 'success';
+            $message = 'User successfully deleted.';
+            $code = Response::HTTP_OK;
+            User::findOrFail($id)->delete();
+        }
 
         // User::withTrashed()
         //     ->where('id', 2)
         //     ->restore();
 
         return response()->json([
-            'status' => 'success',
-            'message' => 'User successfully deleted.'
-        ], Response::HTTP_OK);
+            'status' => $status,
+            'message' => $message
+        ], $code);
 
     }
 

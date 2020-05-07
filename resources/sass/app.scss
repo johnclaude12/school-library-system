@@ -20,6 +20,20 @@ $fa-font-path: "../webfonts";
     color: #212529 !important;
 }
 
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #343a40cc;
+}
+
+.nav-pills .nav-link:not(.active):hover {
+    color: $text-muted;
+
+    &:click {
+        color: $text-muted;
+        font-weight: 900;
+    }
+}
+
 .card {
     color: #76838F;
 }
@@ -48,8 +62,9 @@ tbody i {
     cursor: pointer;
 }
 
-tbody tr td i {
+tbody td i {
     padding: 0px 5px;
+    color: $teal;
 }
 
 .small-box-footer {

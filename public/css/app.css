@@ -31319,7 +31319,7 @@ table {
 caption {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-  color: #343a40;
+  color: #343a40c4;
   text-align: left;
   caption-side: bottom;
 }
@@ -33425,7 +33425,7 @@ textarea.form-control {
 
 .form-check-input[disabled] ~ .form-check-label,
 .form-check-input:disabled ~ .form-check-label {
-  color: #343a40;
+  color: #343a40c4;
 }
 
 .form-check-label {
@@ -41838,7 +41838,7 @@ a.text-dark:focus {
 }
 
 .text-muted {
-  color: #343a40 !important;
+  color: #343a40c4 !important;
 }
 
 .text-black-50 {
@@ -48023,6 +48023,21 @@ readers do not read off random characters that represent icons */
   color: #212529 !important;
 }
 
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #343a40cc;
+}
+
+.nav-pills .nav-link:not(.active):hover {
+  color: #343a40c4;
+}
+
+.nav-pills .nav-link:not(.active):hover:click {
+  color: #343a40c4;
+  font-weight: 900;
+}
+
 .card {
   color: #76838F;
 }
@@ -48049,8 +48064,9 @@ tbody i {
   cursor: pointer;
 }
 
-tbody tr td i {
+tbody td i {
   padding: 0px 5px;
+  color: #4dc0b5;
 }
 
 .small-box-footer {
@@ -48059,13 +48075,13 @@ tbody tr td i {
   position: inherit;
   -moz-text-align-last: center;
        text-align-last: center;
-  color: #343a40;
+  color: #343a40c4;
   text-decoration: none;
 }
 
 .small-box-footer:hover {
   text-decoration: none;
-  color: #343a40;
+  color: #343a40c4;
 }
 
 label {
@@ -48081,6 +48097,6 @@ label {
 }
 
 .text-muted {
-  color: #343a40;
+  color: #343a40c4;
 }
 

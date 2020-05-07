@@ -2878,33 +2878,7 @@ __webpack_require__.r(__webpack_exports__);
         required: "required",
         type: "text"
       }],
-      options_items: [] // options_items: [
-      //     {
-      //         label: "No. of Book(s) allow to be borrow",
-      //         name: "no_of_books",
-      //         required: "required",
-      //         type: "number"
-      //     },
-      //     {
-      //         label: "No. of day(s) allowed",
-      //         name: "no_of_days",
-      //         required: "required",
-      //         type: "number"
-      //     },
-      //     {
-      //         label: "Penalty per day",
-      //         name: "penalty",
-      //         required: "required",
-      //         type: "number"
-      //     },
-      //     {
-      //         label: "Grace period after time-in and time-out",
-      //         name: "grace_period",
-      //         required: "required",
-      //         type: "number"
-      //     }
-      // ]
-
+      options_items: []
     };
   },
   created: function created() {
@@ -44045,7 +44019,7 @@ var render = function() {
         _c("div", { staticClass: "card" }, [
           _vm._m(0),
           _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "card-body text-muted" }, [
             _c("div", { staticClass: "tab-content" }, [
               _c(
                 "div",

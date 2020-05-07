@@ -10,7 +10,7 @@
                         <li class="nav-item"><a class="nav-link" href="#option" data-toggle="tab">Option</a></li>
                     </ul>
                 </div><!-- /.card-header -->
-                <div class="card-body">
+                <div class="card-body text-muted">
                     <div class="tab-content">
                         <div class="tab-pane active" id="profile">
                             <form class="form-horizontal">
@@ -275,32 +275,6 @@
                     }
                 ],
                 options_items: []
-                // options_items: [
-                //     {
-                //         label: "No. of Book(s) allow to be borrow",
-                //         name: "no_of_books",
-                //         required: "required",
-                //         type: "number"
-                //     },
-                //     {
-                //         label: "No. of day(s) allowed",
-                //         name: "no_of_days",
-                //         required: "required",
-                //         type: "number"
-                //     },
-                //     {
-                //         label: "Penalty per day",
-                //         name: "penalty",
-                //         required: "required",
-                //         type: "number"
-                //     },
-                //     {
-                //         label: "Grace period after time-in and time-out",
-                //         name: "grace_period",
-                //         required: "required",
-                //         type: "number"
-                //     }
-                // ]
             }
         },
         created() {
