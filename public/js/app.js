@@ -2924,6 +2924,10 @@ __webpack_require__.r(__webpack_exports__);
           timer: 4000
         });
         _this3.errors = "";
+
+        if (data.data.id == localStorage.getItem('userId')) {
+          $('img#user_profile_picture').attr('src', data.data.user_image);
+        }
       })["catch"](function (error) {
         _this3.$Progress.fail();
 

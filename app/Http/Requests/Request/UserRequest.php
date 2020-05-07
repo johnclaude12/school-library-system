@@ -56,7 +56,16 @@ class UserRequest extends FormRequest
     {
         if (isset($data->current_password) || isset($data->newpassword) || isset($data->confirm_password)) {
             return [
-                'current_password' => 'min:8|max:25',
+                'current_password' => [
+                    'required', 'min:8', 'max:25',
+                    function($attribute, $value, $fail) {
+                        $comparePassword = \Hash::check($value, auth()->user()->password);
+
+                        if ($comparePassword == false) {
+                            $fail('Password did not match.');
+                        }
+                    }
+                ],
                 'password' => 'required|min:8|max:25',
                 'confirm_password' => 'required|same:password|min:8|max:25'
             ];

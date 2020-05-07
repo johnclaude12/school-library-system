@@ -305,6 +305,10 @@
                             timer: 4000
                         })
                         this.errors = ""
+
+                        if (data.data.id == localStorage.getItem('userId')) {
+                            $('img#user_profile_picture').attr('src', data.data.user_image);
+                        }
                     })
                     .catch(error => {
                         this.$Progress.fail();

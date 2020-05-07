@@ -97,7 +97,7 @@ class UserController extends Controller
         }
 
         if (isset($input['password'])) {
-            $input['password'] = $this->confirmPassword($input);
+            $input['password'] = $this->comparePassword($input);
         } else {
             $input['password'] = $user->password;
         }
@@ -116,7 +116,7 @@ class UserController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function confirmPassword($request)
+    public function comparePassword($request)
     {
                 // new password ↓
         if (\Hash::check($request['current_password'], auth()->user()->password)) {
