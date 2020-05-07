@@ -2620,6 +2620,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2774,98 +2776,154 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = (_defineProperty({
   name: "Settings",
-  mounted: function mounted() {
-    console.log('Settings Component mounted.');
+  data: function data() {
+    return {
+      currentUser: {},
+      currentUserID: ''
+    };
   },
   created: function created() {
+    this.currentUserID = localStorage.getItem('userId');
     this.getCurrentUser();
   },
   methods: {
     getCurrentUser: function getCurrentUser() {
       var _this = this;
 
-      var currentUserID = localStorage.getItem('userId');
-      axios.get('api/user/' + currentUserID).then(function (_ref) {
+      axios.get('api/user/' + this.currentUserID).then(function (_ref) {
         var data = _ref.data;
         return _this.currentUser = data;
       })["catch"](function (_ref2) {
         var error = _ref2.error;
         return console.log("Error :", error);
       });
+    },
+    onUpdate: function onUpdate() {
+      var _this2 = this;
+
+      this.$Progress.start();
+      axios.put('api/user/' + this.currentUser.id, this.currentUser).then(function (_ref3) {
+        var data = _ref3.data;
+
+        _this2.$Progress.finish();
+
+        Swal.fire({
+          icon: 'success',
+          text: data.message,
+          showConfirmButton: false,
+          timer: 4000
+        });
+      })["catch"](function (_ref4) {
+        var error = _ref4.error;
+        return _this2.$Progress.failed();
+      });
+    },
+    imageOnchage: function imageOnchage(el) {
+      var _this3 = this;
+
+      var file = el.target.files[0];
+      var reader = new FileReader();
+
+      if (file) {
+        if (file['size'] < 2111775) {
+          reader.onloadend = function (file) {
+            _this3.currentUser.user_image = reader.result;
+          };
+
+          return reader.readAsDataURL(file);
+        }
+
+        Swal.fire({
+          icon: 'error',
+          text: 'Please upload less than 2MB.'
+        });
+      }
+
+      $('input[name="user_image"]').val("");
+      this.currentUser.user_image = '';
     }
-  },
-  data: function data() {
-    return {
-      currentUser: {},
-      errors: [],
-      items_col1: [// {
-      //     label: "",
-      //     name: "user_image",
-      //     required: "required",
-      //     type: "file"
-      // },
-      {
-        label: "Firstname *",
-        name: "firstname",
-        required: "required",
-        type: "text"
-      }, {
-        label: "Middlename *",
-        name: "middlename",
-        required: "required",
-        type: "text"
-      }, {
-        label: "Lastname *",
-        name: "lastname",
-        required: "required",
-        type: "text"
-      }, {
-        label: "Gender *",
-        name: "gender",
-        required: "required",
-        type: "dropdown"
-      }, {
-        label: "Date Of Birth *",
-        name: "birthday",
-        required: "required",
-        type: "date"
-      }],
-      items_col2: [{
-        label: "User Type *",
-        name: "user_type_id",
-        required: "required",
-        type: "dropdown"
-      }, {
-        label: "Username *",
-        name: "username",
-        required: "required",
-        type: "text"
-      }, {
-        label: "Email Address *",
-        name: "email",
-        required: "required",
-        type: "email"
-      }, {
-        label: "Contact No. *",
-        name: "contact_no",
-        required: "required",
-        type: "number"
-      }, {
-        label: "Question *",
-        name: "question_id",
-        required: "required",
-        type: "dropdown"
-      }, {
-        label: "Answer *",
-        name: "security_answer",
-        required: "required",
-        type: "text"
-      }]
-    };
   }
-});
+}, "data", function data() {
+  return {
+    currentUser: {},
+    errors: [],
+    items_col1: [// {
+    //     label: "",
+    //     name: "user_image",
+    //     required: "required",
+    //     type: "file"
+    // },
+    {
+      label: "Firstname *",
+      name: "firstname",
+      required: "required",
+      type: "text"
+    }, {
+      label: "Middlename *",
+      name: "middlename",
+      required: "required",
+      type: "text"
+    }, {
+      label: "Lastname *",
+      name: "lastname",
+      required: "required",
+      type: "text"
+    }, {
+      label: "Gender *",
+      name: "gender",
+      required: "required",
+      type: "dropdown"
+    }, {
+      label: "Date Of Birth *",
+      name: "birthday",
+      required: "required",
+      type: "date"
+    }],
+    items_col2: [{
+      label: "User Type *",
+      name: "user_type_id",
+      required: "required",
+      type: "dropdown"
+    }, {
+      label: "Username *",
+      name: "username",
+      required: "required",
+      type: "text"
+    }, {
+      label: "Email Address *",
+      name: "email",
+      required: "required",
+      type: "email"
+    }, {
+      label: "Contact No. *",
+      name: "contact_no",
+      required: "required",
+      type: "number"
+    }, {
+      label: "Question *",
+      name: "question_id",
+      required: "required",
+      type: "dropdown"
+    }, {
+      label: "Answer *",
+      name: "security_answer",
+      required: "required",
+      type: "text"
+    }]
+  };
+}));
 
 /***/ }),
 
@@ -2998,7 +3056,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     OpenAddModal: function OpenAddModal() {
       this.editMode = false;
-      this.userData = {};
       this.userData.user_image = 'images/profile/user.png'; // set default value of element file
 
       $('#user_modal').modal('show').find("input,textarea,select").val('').end().find("input[type=checkbox], input[type=radio]").prop("checked", "").end();
@@ -3116,7 +3173,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     onDelete: function onDelete(id) {
       var _this6 = this;
 
-      console.log("ID :", id);
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -43938,19 +43994,43 @@ var render = function() {
                 { staticClass: "tab-pane active", attrs: { id: "profile" } },
                 [
                   _c("form", { staticClass: "form-horizontal" }, [
-                    _c("div", { staticClass: "col mb-4" }, [
-                      _c("div", { staticClass: "text-center" }, [
-                        _c("img", {
-                          staticClass: "profile-user-img img-fluid img-circle",
-                          attrs: {
-                            src: _vm.currentUser.user_image
-                              ? _vm.currentUser.user_image
-                              : "images/profile/user.png",
-                            alt: "User profile picture"
-                          }
-                        })
-                      ])
-                    ]),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "row justify-content-center text-center mb-4"
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "col-sm-6 col-md-4 col-lg-3" },
+                          [
+                            _c("img", {
+                              staticClass:
+                                "profile-user-img img-fluid img-circle",
+                              attrs: {
+                                src: _vm.currentUser.user_image
+                                  ? _vm.currentUser.user_image
+                                  : "images/profile/user.png",
+                                alt: "User profile picture"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("input", {
+                              staticClass: "d-none",
+                              attrs: {
+                                type: "file",
+                                id: "user_image",
+                                name: "user_image"
+                              },
+                              on: { change: _vm.imageOnchage }
+                            }),
+                            _vm._v(" "),
+                            _vm._m(1)
+                          ]
+                        )
+                      ]
+                    ),
                     _vm._v(" "),
                     _c("div", { staticClass: "row" }, [
                       _c(
@@ -44552,7 +44632,23 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _vm._m(1)
+                    _c("div", { staticClass: "row col" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-success",
+                          attrs: { type: "button" },
+                          on: { click: _vm.onUpdate }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "fas fa-save",
+                            staticStyle: { color: "#fff", float: "none" }
+                          }),
+                          _vm._v(" Save\n                                ")
+                        ]
+                      )
+                    ])
                   ])
                 ]
               ),
@@ -44600,19 +44696,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row col" }, [
-      _c(
-        "button",
-        { staticClass: "btn btn-success", attrs: { type: "button" } },
-        [
-          _c("i", {
-            staticClass: "fas fa-save",
-            staticStyle: { color: "#fff", float: "none" }
-          }),
-          _vm._v(" Save\n                                ")
-        ]
-      )
-    ])
+    return _c(
+      "label",
+      {
+        staticClass: "form-control form-control-custom mt-2",
+        attrs: { for: "user_image" }
+      },
+      [
+        _c("i", { staticClass: "fas fa-upload" }),
+        _vm._v(" Upload Image\n                                    ")
+      ]
+    )
   },
   function() {
     var _vm = this

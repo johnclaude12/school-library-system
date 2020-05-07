@@ -101,7 +101,6 @@
             },
             OpenAddModal() {
                 this.editMode = false;
-                this.userData = {};
                 this.userData.user_image = 'images/profile/user.png'; // set default value of element file
                 $('#user_modal').modal('show')
                                 .find("input,textarea,select").val('').end()
@@ -203,7 +202,6 @@
                     })
             },
             onDelete(id) {
-                console.log("ID :", id)
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",

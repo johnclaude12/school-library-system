@@ -14,13 +14,23 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="profile">
                             <form class="form-horizontal">
-                                <div class="col mb-4">
-                                    <div class="text-center">
+                                <div class="row justify-content-center text-center mb-4">
+                                    <div class="col-sm-6 col-md-4 col-lg-3">
                                         <img
                                             class="profile-user-img img-fluid img-circle"
                                             :src="currentUser.user_image ? currentUser.user_image : 'images/profile/user.png'"
                                             alt="User profile picture"
                                         >
+                                        <input
+                                            class="d-none"
+                                            type="file"
+                                            id="user_image"
+                                            name="user_image"
+                                            @change="imageOnchage"
+                                        >
+                                        <label for="user_image" class="form-control form-control-custom mt-2">
+                                            <i class="fas fa-upload"></i> Upload Image
+                                        </label>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -114,7 +124,7 @@
                                     </div>
                                 </div>
                                 <div class="row col">
-                                    <button type="button" class="btn btn-success">
+                                    <button @click="onUpdate" type="button" class="btn btn-success">
                                     <i class="fas fa-save" style="color: #fff; float: none"></i> Save
                                     </button>
                                 </div>
@@ -155,19 +165,58 @@
 <script>
     export default {
         name: "Settings",
-        mounted() {
-            console.log('Settings Component mounted.')
+        data() {
+            return {
+                currentUser: {},
+                currentUserID: ''
+            }
         },
         created() {
+            this.currentUserID = localStorage.getItem('userId');
             this.getCurrentUser();
         },
         methods: {
             getCurrentUser() {
-                const currentUserID = localStorage.getItem('userId');
-                axios.get('api/user/'+ currentUserID)
+                axios.get('api/user/'+ this.currentUserID)
                     .then(({ data }) => this.currentUser = data)
                     .catch(({ error }) => console.log("Error :", error))
             },
+            onUpdate() {
+                this.$Progress.start()
+                axios.put('api/user/'+ this.currentUser.id, this.currentUser)
+                    .then(({ data }) => {
+                        this.$Progress.finish()
+                        Swal.fire({
+                            icon: 'success',
+                            text: data.message,
+                            showConfirmButton: false,
+                            timer: 4000
+                        })
+                    })
+                    .catch(({ error }) => this.$Progress.failed())
+            },
+            imageOnchage(el) {
+                let file = el.target.files[0];
+                let reader = new FileReader();
+
+                if (file) {
+                    if (file['size'] < 2111775) {
+                        reader.onloadend = file => {
+                            this.currentUser.user_image = reader.result;
+                        }
+
+                        return reader.readAsDataURL(file);
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Please upload less than 2MB.',
+                    });
+                }
+
+                $('input[name="user_image"]').val("");
+                this.currentUser.user_image = '';
+            }
         },
         data() {
             return {
