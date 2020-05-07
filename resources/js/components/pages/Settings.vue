@@ -14,25 +14,6 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="profile">
                             <form class="form-horizontal">
-                                <div class="row justify-content-center text-center mb-4">
-                                    <div class="col-sm-6 col-md-4 col-lg-3">
-                                        <img
-                                            class="profile-user-img img-fluid img-circle"
-                                            :src="currentUser.user_image ? currentUser.user_image : 'images/profile/user.png'"
-                                            alt="User profile picture"
-                                        >
-                                        <input
-                                            class="d-none"
-                                            type="file"
-                                            id="user_image"
-                                            name="user_image"
-                                            @change="imageOnchage"
-                                        >
-                                        <label for="user_image" class="form-control form-control-custom mt-2">
-                                            <i class="fas fa-upload"></i> Upload Image
-                                        </label>
-                                    </div>
-                                </div>
                                 <div class="row">
                                     <div class="col-md-6 col-sm-12">
                                         <h5 class="font-weight-bold">Personal Info</h5>
@@ -42,13 +23,33 @@
                                             :key="$index"
                                         >
                                             <label :for="item.name">{{ item.label }}</label>
-
-                                            <template v-if="item.name === 'gender'">
+                                            <template v-if="item.name === 'user_image'">
+                                                <div class="text-center">
+                                                    <img
+                                                        class="profile-user-img img-fluid img-circle"
+                                                        :src="currentUser[item.name]"
+                                                        alt="User profile picture"
+                                                    >
+                                                    <input
+                                                        class="d-none"
+                                                        :type="item.type"
+                                                        :id="item.name"
+                                                        :name="item.name"
+                                                        :disabled="item.disabled"
+                                                        @change="imageOnchage"
+                                                    >
+                                                    <label :for="item.name" class="form-control form-control-custom mt-2">
+                                                        <i class="fas fa-upload"></i> Upload Image
+                                                    </label>
+                                                </div>
+                                            </template>
+                                            <template v-else-if="item.name === 'gender'">
                                                 <select
                                                     class="form-control form-control-custom"
                                                     :class="errors[item.name] ? 'is-invalid' : ''"
                                                     :name="item.name"
                                                     :id="item.name"
+                                                    :disabled="item.disabled"
                                                     v-model="currentUser[item.name]"
                                                 >
                                                     <option value="M">Male</option>
@@ -62,6 +63,7 @@
                                                     :type="item.type"
                                                     :id="item.name"
                                                     :name="item.name"
+                                                    :disabled="item.disabled"
                                                     v-model="currentUser[item.name]"
                                                 >
                                             </template>
@@ -86,6 +88,7 @@
                                                     :class="errors[item.name] ? 'is-invalid' : ''"
                                                     :name="item.name"
                                                     :id="item.name"
+                                                    :disabled="item.disabled"
                                                     v-model="currentUser[item.name]"
                                                 >
                                                     <option value="1">Admin</option>
@@ -99,6 +102,7 @@
                                                     :class="errors[item.name] ? 'is-invalid' : ''"
                                                     :name="item.name"
                                                     :id="item.name"
+                                                    :disabled="item.disabled"
                                                     v-model="currentUser[item.name]"
                                                 >
                                                     <option value="1">Who's your first pet?</option>
@@ -113,6 +117,7 @@
                                                     :type="item.type"
                                                     :id="item.name"
                                                     :name="item.name"
+                                                    :disabled="item.disabled"
                                                     v-model="currentUser[item.name]"
                                                 >
                                             </template>
@@ -124,7 +129,7 @@
                                     </div>
                                 </div>
                                 <div class="row col">
-                                    <button @click="onUpdate" type="button" class="btn btn-success">
+                                    <button @click="onUpdate" type="button" class="btn btn-primary">
                                     <i class="fas fa-save" style="color: #fff; float: none"></i> Save
                                     </button>
                                 </div>
@@ -168,7 +173,8 @@
         data() {
             return {
                 currentUser: {},
-                currentUserID: ''
+                currentUserID: '',
+                errors: []
             }
         },
         created() {
@@ -192,8 +198,12 @@
                             showConfirmButton: false,
                             timer: 4000
                         })
+                        this.errors = ""
                     })
-                    .catch(({ error }) => this.$Progress.failed())
+                    .catch(error => {
+                        this.$Progress.fail();
+                        this.errors = error.response.data.errors;
+                    })
             },
             imageOnchage(el) {
                 let file = el.target.files[0];
@@ -223,40 +233,45 @@
                 currentUser: {},
                 errors: [],
                 items_col1: [
-                    // {
-                    //     label: "",
-                    //     name: "user_image",
-                    //     required: "required",
-                    //     type: "file"
-                    // },
+                    {
+                        label: "User Picture",
+                        name: "user_image",
+                        required: "required",
+                        type: "file"
+                    },
                     {
                         label: "Firstname *",
                         name: "firstname",
                         required: "required",
+                        disabled: "disabled",
                         type: "text"
                     },
                     {
                         label: "Middlename *",
                         name: "middlename",
                         required: "required",
+                        disabled: "disabled",
                         type: "text"
                     },
                     {
                         label: "Lastname *",
                         name: "lastname",
                         required: "required",
+                        disabled: "disabled",
                         type: "text"
                     },
                     {
                         label: "Gender *",
                         name: "gender",
                         required: "required",
+                        disabled: "disabled",
                         type: "dropdown"
                     },
                     {
                         label: "Date Of Birth *",
                         name: "birthday",
                         required: "required",
+                        disabled: "disabled",
                         type: "date"
                     }
                 ],
@@ -265,12 +280,14 @@
                         label: "User Type *",
                         name: "user_type_id",
                         required: "required",
+                        disabled: "disabled",
                         type: "dropdown"
                     },
                     {
                         label: "Username *",
                         name: "username",
                         required: "required",
+                        disabled: "disabled",
                         type: "text"
                     },
                     {
@@ -278,6 +295,24 @@
                         name: "email",
                         required: "required",
                         type: "email"
+                    },
+                    {
+                        label: "Current Password *",
+                        name: "current_password",
+                        required: "required",
+                        type: "password"
+                    },
+                    {
+                        label: "New Password *",
+                        name: "password",
+                        required: "required",
+                        type: "password"
+                    },
+                    {
+                        label: "Confirm Password *",
+                        name: "confirm_password",
+                        required: "required",
+                        type: "password"
                     },
                     {
                         label: "Contact No. *",

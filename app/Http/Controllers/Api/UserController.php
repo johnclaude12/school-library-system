@@ -87,9 +87,16 @@ class UserController extends Controller
             $input['user_image'] = $name;
         }
 
-        $input['password'] = $user->password;
+        if (isset($input['password'])) {
+            $input['password'] = $this->confirmPassword($input);
+        } else {
+            $input['password'] = $user->password;
+        }
+
         unset($input['user_type']);
         unset($input['question']);
+        unset($input['current_password']);
+        unset($input['confirm_password']);
 
         $user->update($input);
 
@@ -98,5 +105,13 @@ class UserController extends Controller
             'message' => 'User updated successfully.',
             'data' => new UserResource($user)
         ], Response::HTTP_OK);
+    }
+
+    public function confirmPassword($request)
+    {
+                // new password ↓
+        if (\Hash::check($request['current_password'], auth()->user()->password)) {
+            return bcrypt($request['password']);
+        }
     }
 }

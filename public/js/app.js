@@ -2786,12 +2786,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = (_defineProperty({
   name: "Settings",
   data: function data() {
     return {
       currentUser: {},
-      currentUserID: ''
+      currentUserID: '',
+      errors: []
     };
   },
   created: function created() {
@@ -2825,9 +2831,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           showConfirmButton: false,
           timer: 4000
         });
-      })["catch"](function (_ref4) {
-        var error = _ref4.error;
-        return _this2.$Progress.failed();
+        _this2.errors = "";
+      })["catch"](function (error) {
+        _this2.$Progress.fail();
+
+        _this2.errors = error.response.data.errors;
       });
     },
     imageOnchage: function imageOnchage(el) {
@@ -2859,53 +2867,74 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   return {
     currentUser: {},
     errors: [],
-    items_col1: [// {
-    //     label: "",
-    //     name: "user_image",
-    //     required: "required",
-    //     type: "file"
-    // },
-    {
+    items_col1: [{
+      label: "User Picture",
+      name: "user_image",
+      required: "required",
+      type: "file"
+    }, {
       label: "Firstname *",
       name: "firstname",
       required: "required",
+      disabled: "disabled",
       type: "text"
     }, {
       label: "Middlename *",
       name: "middlename",
       required: "required",
+      disabled: "disabled",
       type: "text"
     }, {
       label: "Lastname *",
       name: "lastname",
       required: "required",
+      disabled: "disabled",
       type: "text"
     }, {
       label: "Gender *",
       name: "gender",
       required: "required",
+      disabled: "disabled",
       type: "dropdown"
     }, {
       label: "Date Of Birth *",
       name: "birthday",
       required: "required",
+      disabled: "disabled",
       type: "date"
     }],
     items_col2: [{
       label: "User Type *",
       name: "user_type_id",
       required: "required",
+      disabled: "disabled",
       type: "dropdown"
     }, {
       label: "Username *",
       name: "username",
       required: "required",
+      disabled: "disabled",
       type: "text"
     }, {
       label: "Email Address *",
       name: "email",
       required: "required",
       type: "email"
+    }, {
+      label: "Current Password *",
+      name: "current_password",
+      required: "required",
+      type: "password"
+    }, {
+      label: "New Password *",
+      name: "password",
+      required: "required",
+      type: "password"
+    }, {
+      label: "Confirm Password *",
+      name: "confirm_password",
+      required: "required",
+      type: "password"
     }, {
       label: "Contact No. *",
       name: "contact_no",
@@ -3165,7 +3194,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         _this5.$Progress.finish();
       })["catch"](function (err) {
-        _this5.$Progress.failed();
+        _this5.$Progress.fail();
 
         console.log("Error :", err);
       });
@@ -43994,44 +44023,6 @@ var render = function() {
                 { staticClass: "tab-pane active", attrs: { id: "profile" } },
                 [
                   _c("form", { staticClass: "form-horizontal" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "row justify-content-center text-center mb-4"
-                      },
-                      [
-                        _c(
-                          "div",
-                          { staticClass: "col-sm-6 col-md-4 col-lg-3" },
-                          [
-                            _c("img", {
-                              staticClass:
-                                "profile-user-img img-fluid img-circle",
-                              attrs: {
-                                src: _vm.currentUser.user_image
-                                  ? _vm.currentUser.user_image
-                                  : "images/profile/user.png",
-                                alt: "User profile picture"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("input", {
-                              staticClass: "d-none",
-                              attrs: {
-                                type: "file",
-                                id: "user_image",
-                                name: "user_image"
-                              },
-                              on: { change: _vm.imageOnchage }
-                            }),
-                            _vm._v(" "),
-                            _vm._m(1)
-                          ]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
                     _c("div", { staticClass: "row" }, [
                       _c(
                         "div",
@@ -44050,7 +44041,52 @@ var render = function() {
                                   _vm._v(_vm._s(item.label))
                                 ]),
                                 _vm._v(" "),
-                                item.name === "gender"
+                                item.name === "user_image"
+                                  ? [
+                                      _c(
+                                        "div",
+                                        { staticClass: "text-center" },
+                                        [
+                                          _c("img", {
+                                            staticClass:
+                                              "profile-user-img img-fluid img-circle",
+                                            attrs: {
+                                              src: _vm.currentUser[item.name],
+                                              alt: "User profile picture"
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c("input", {
+                                            staticClass: "d-none",
+                                            attrs: {
+                                              type: item.type,
+                                              id: item.name,
+                                              name: item.name,
+                                              disabled: item.disabled
+                                            },
+                                            on: { change: _vm.imageOnchage }
+                                          }),
+                                          _vm._v(" "),
+                                          _c(
+                                            "label",
+                                            {
+                                              staticClass:
+                                                "form-control form-control-custom mt-2",
+                                              attrs: { for: item.name }
+                                            },
+                                            [
+                                              _c("i", {
+                                                staticClass: "fas fa-upload"
+                                              }),
+                                              _vm._v(
+                                                " Upload Image\n                                                "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  : item.name === "gender"
                                   ? [
                                       _c(
                                         "select",
@@ -44071,7 +44107,8 @@ var render = function() {
                                             : "",
                                           attrs: {
                                             name: item.name,
-                                            id: item.name
+                                            id: item.name,
+                                            disabled: item.disabled
                                           },
                                           on: {
                                             change: function($event) {
@@ -44135,6 +44172,7 @@ var render = function() {
                                             attrs: {
                                               id: item.name,
                                               name: item.name,
+                                              disabled: item.disabled,
                                               type: "checkbox"
                                             },
                                             domProps: {
@@ -44207,6 +44245,7 @@ var render = function() {
                                             attrs: {
                                               id: item.name,
                                               name: item.name,
+                                              disabled: item.disabled,
                                               type: "radio"
                                             },
                                             domProps: {
@@ -44244,6 +44283,7 @@ var render = function() {
                                             attrs: {
                                               id: item.name,
                                               name: item.name,
+                                              disabled: item.disabled,
                                               type: item.type
                                             },
                                             domProps: {
@@ -44328,7 +44368,8 @@ var render = function() {
                                             : "",
                                           attrs: {
                                             name: item.name,
-                                            id: item.name
+                                            id: item.name,
+                                            disabled: item.disabled
                                           },
                                           on: {
                                             change: function($event) {
@@ -44398,7 +44439,8 @@ var render = function() {
                                             : "",
                                           attrs: {
                                             name: item.name,
-                                            id: item.name
+                                            id: item.name,
+                                            disabled: item.disabled
                                           },
                                           on: {
                                             change: function($event) {
@@ -44476,6 +44518,7 @@ var render = function() {
                                             attrs: {
                                               id: item.name,
                                               name: item.name,
+                                              disabled: item.disabled,
                                               type: "checkbox"
                                             },
                                             domProps: {
@@ -44548,6 +44591,7 @@ var render = function() {
                                             attrs: {
                                               id: item.name,
                                               name: item.name,
+                                              disabled: item.disabled,
                                               type: "radio"
                                             },
                                             domProps: {
@@ -44585,6 +44629,7 @@ var render = function() {
                                             attrs: {
                                               id: item.name,
                                               name: item.name,
+                                              disabled: item.disabled,
                                               type: item.type
                                             },
                                             domProps: {
@@ -44636,7 +44681,7 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-success",
+                          staticClass: "btn btn-primary",
                           attrs: { type: "button" },
                           on: { click: _vm.onUpdate }
                         },
@@ -44653,7 +44698,7 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(2)
+              _vm._m(1)
             ])
           ])
         ])
@@ -44691,22 +44736,6 @@ var staticRenderFns = [
         ])
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "label",
-      {
-        staticClass: "form-control form-control-custom mt-2",
-        attrs: { for: "user_image" }
-      },
-      [
-        _c("i", { staticClass: "fas fa-upload" }),
-        _vm._v(" Upload Image\n                                    ")
-      ]
-    )
   },
   function() {
     var _vm = this

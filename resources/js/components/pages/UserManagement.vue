@@ -197,7 +197,7 @@
                         this.$Progress.finish();
                     })
                     .catch(err => {
-                        this.$Progress.failed();
+                        this.$Progress.fail();
                         console.log("Error :", err)
                     })
             },
