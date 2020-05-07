@@ -130,7 +130,7 @@
                                 </div>
                                 <div class="row col">
                                     <button @click="onUpdate" type="button" class="btn btn-primary">
-                                    <i class="fas fa-save" style="color: #fff; float: none"></i> Save
+                                    <i class="fas fa-save"></i> Save
                                     </button>
                                 </div>
                             </form>
@@ -138,22 +138,20 @@
 
                         <div class="tab-pane" id="option">
                             <form class="form-horizontal">
-                                <div class="form-group row">
-                                    <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                                    <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="inputName" placeholder="Name">
+                                <div
+                                    v-for="(item, $index) in options_items"
+                                    :key="$index"
+                                    class="form-group row"
+                                >
+                                    <label for="no_of_boook" class="col-sm-5 col-form-label">{{ item.label }}</label>
+                                    <div class="col-sm-7">
+                                        <input :type="item.type" class="form-control" :id="item.name" :name="item.name">
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                                    <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="offset-sm-2 col-sm-10">
-                                    <button type="submit" class="btn btn-success">Submit</button>
-                                    </div>
+                                <div class="form-group row col">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Save
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -174,63 +172,6 @@
             return {
                 currentUser: {},
                 currentUserID: '',
-                errors: []
-            }
-        },
-        created() {
-            this.currentUserID = localStorage.getItem('userId');
-            this.getCurrentUser();
-        },
-        methods: {
-            getCurrentUser() {
-                axios.get('api/user/'+ this.currentUserID)
-                    .then(({ data }) => this.currentUser = data)
-                    .catch(({ error }) => console.log("Error :", error))
-            },
-            onUpdate() {
-                this.$Progress.start()
-                axios.put('api/user/'+ this.currentUser.id, this.currentUser)
-                    .then(({ data }) => {
-                        this.$Progress.finish()
-                        Swal.fire({
-                            icon: 'success',
-                            text: data.message,
-                            showConfirmButton: false,
-                            timer: 4000
-                        })
-                        this.errors = ""
-                    })
-                    .catch(error => {
-                        this.$Progress.fail();
-                        this.errors = error.response.data.errors;
-                    })
-            },
-            imageOnchage(el) {
-                let file = el.target.files[0];
-                let reader = new FileReader();
-
-                if (file) {
-                    if (file['size'] < 2111775) {
-                        reader.onloadend = file => {
-                            this.currentUser.user_image = reader.result;
-                        }
-
-                        return reader.readAsDataURL(file);
-                    }
-
-                    Swal.fire({
-                        icon: 'error',
-                        text: 'Please upload less than 2MB.',
-                    });
-                }
-
-                $('input[name="user_image"]').val("");
-                this.currentUser.user_image = '';
-            }
-        },
-        data() {
-            return {
-                currentUser: {},
                 errors: [],
                 items_col1: [
                     {
@@ -332,8 +273,92 @@
                         required: "required",
                         type: "text"
                     }
-                ]
+                ],
+                options_items: []
+                // options_items: [
+                //     {
+                //         label: "No. of Book(s) allow to be borrow",
+                //         name: "no_of_books",
+                //         required: "required",
+                //         type: "number"
+                //     },
+                //     {
+                //         label: "No. of day(s) allowed",
+                //         name: "no_of_days",
+                //         required: "required",
+                //         type: "number"
+                //     },
+                //     {
+                //         label: "Penalty per day",
+                //         name: "penalty",
+                //         required: "required",
+                //         type: "number"
+                //     },
+                //     {
+                //         label: "Grace period after time-in and time-out",
+                //         name: "grace_period",
+                //         required: "required",
+                //         type: "number"
+                //     }
+                // ]
             }
-        }
+        },
+        created() {
+            this.currentUserID = localStorage.getItem('userId');
+            this.getCurrentUser();
+            this.getAdminSettings();
+        },
+        methods: {
+            getCurrentUser() {
+                axios.get('api/user/'+ this.currentUserID)
+                    .then(({ data }) => this.currentUser = data)
+                    .catch(({ error }) => console.log("Error :", error))
+            },
+            getAdminSettings() {
+                axios.get('api/admin_settings')
+                    .then(({ data }) => this.options_items = data.data)
+                    .catch(error => console.log("Error :", error))
+            },
+            onUpdate() {
+                this.$Progress.start()
+                axios.put('api/user/'+ this.currentUser.id, this.currentUser)
+                    .then(({ data }) => {
+                        this.$Progress.finish()
+                        Swal.fire({
+                            icon: 'success',
+                            text: data.message,
+                            showConfirmButton: false,
+                            timer: 4000
+                        })
+                        this.errors = ""
+                    })
+                    .catch(error => {
+                        this.$Progress.fail();
+                        this.errors = error.response.data.errors;
+                    })
+            },
+            imageOnchage(el) {
+                let file = el.target.files[0];
+                let reader = new FileReader();
+
+                if (file) {
+                    if (file['size'] < 2111775) {
+                        reader.onloadend = file => {
+                            this.currentUser.user_image = reader.result;
+                        }
+
+                        return reader.readAsDataURL(file);
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Please upload less than 2MB.',
+                    });
+                }
+
+                $('input[name="user_image"]').val("");
+                this.currentUser.user_image = '';
+            }
+        },
     }
 </script>

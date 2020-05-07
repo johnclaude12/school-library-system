@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => 'auth:api'], function() {
     Route::apiResource('user', 'Api\UserController');
+    Route::apiResource('admin_settings', 'Api\AdminSettingsController');
 
     Route::apiResource('book', 'Api\BookController');
     // Route::post('book', 'Api\BookController@store');

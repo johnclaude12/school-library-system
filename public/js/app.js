@@ -2620,8 +2620,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -2789,20 +2787,130 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = (_defineProperty({
+/* harmony default export */ __webpack_exports__["default"] = ({
   name: "Settings",
   data: function data() {
     return {
       currentUser: {},
       currentUserID: '',
-      errors: []
+      errors: [],
+      items_col1: [{
+        label: "User Picture",
+        name: "user_image",
+        required: "required",
+        type: "file"
+      }, {
+        label: "Firstname *",
+        name: "firstname",
+        required: "required",
+        disabled: "disabled",
+        type: "text"
+      }, {
+        label: "Middlename *",
+        name: "middlename",
+        required: "required",
+        disabled: "disabled",
+        type: "text"
+      }, {
+        label: "Lastname *",
+        name: "lastname",
+        required: "required",
+        disabled: "disabled",
+        type: "text"
+      }, {
+        label: "Gender *",
+        name: "gender",
+        required: "required",
+        disabled: "disabled",
+        type: "dropdown"
+      }, {
+        label: "Date Of Birth *",
+        name: "birthday",
+        required: "required",
+        disabled: "disabled",
+        type: "date"
+      }],
+      items_col2: [{
+        label: "User Type *",
+        name: "user_type_id",
+        required: "required",
+        disabled: "disabled",
+        type: "dropdown"
+      }, {
+        label: "Username *",
+        name: "username",
+        required: "required",
+        disabled: "disabled",
+        type: "text"
+      }, {
+        label: "Email Address *",
+        name: "email",
+        required: "required",
+        type: "email"
+      }, {
+        label: "Current Password *",
+        name: "current_password",
+        required: "required",
+        type: "password"
+      }, {
+        label: "New Password *",
+        name: "password",
+        required: "required",
+        type: "password"
+      }, {
+        label: "Confirm Password *",
+        name: "confirm_password",
+        required: "required",
+        type: "password"
+      }, {
+        label: "Contact No. *",
+        name: "contact_no",
+        required: "required",
+        type: "number"
+      }, {
+        label: "Question *",
+        name: "question_id",
+        required: "required",
+        type: "dropdown"
+      }, {
+        label: "Answer *",
+        name: "security_answer",
+        required: "required",
+        type: "text"
+      }],
+      options_items: [] // options_items: [
+      //     {
+      //         label: "No. of Book(s) allow to be borrow",
+      //         name: "no_of_books",
+      //         required: "required",
+      //         type: "number"
+      //     },
+      //     {
+      //         label: "No. of day(s) allowed",
+      //         name: "no_of_days",
+      //         required: "required",
+      //         type: "number"
+      //     },
+      //     {
+      //         label: "Penalty per day",
+      //         name: "penalty",
+      //         required: "required",
+      //         type: "number"
+      //     },
+      //     {
+      //         label: "Grace period after time-in and time-out",
+      //         name: "grace_period",
+      //         required: "required",
+      //         type: "number"
+      //     }
+      // ]
+
     };
   },
   created: function created() {
     this.currentUserID = localStorage.getItem('userId');
     this.getCurrentUser();
+    this.getAdminSettings();
   },
   methods: {
     getCurrentUser: function getCurrentUser() {
@@ -2816,14 +2924,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return console.log("Error :", error);
       });
     },
-    onUpdate: function onUpdate() {
+    getAdminSettings: function getAdminSettings() {
       var _this2 = this;
 
-      this.$Progress.start();
-      axios.put('api/user/' + this.currentUser.id, this.currentUser).then(function (_ref3) {
+      axios.get('api/admin_settings').then(function (_ref3) {
         var data = _ref3.data;
+        return _this2.options_items = data.data;
+      })["catch"](function (error) {
+        return console.log("Error :", error);
+      });
+    },
+    onUpdate: function onUpdate() {
+      var _this3 = this;
 
-        _this2.$Progress.finish();
+      this.$Progress.start();
+      axios.put('api/user/' + this.currentUser.id, this.currentUser).then(function (_ref4) {
+        var data = _ref4.data;
+
+        _this3.$Progress.finish();
 
         Swal.fire({
           icon: 'success',
@@ -2831,15 +2949,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           showConfirmButton: false,
           timer: 4000
         });
-        _this2.errors = "";
+        _this3.errors = "";
       })["catch"](function (error) {
-        _this2.$Progress.fail();
+        _this3.$Progress.fail();
 
-        _this2.errors = error.response.data.errors;
+        _this3.errors = error.response.data.errors;
       });
     },
     imageOnchage: function imageOnchage(el) {
-      var _this3 = this;
+      var _this4 = this;
 
       var file = el.target.files[0];
       var reader = new FileReader();
@@ -2847,7 +2965,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (file) {
         if (file['size'] < 2111775) {
           reader.onloadend = function (file) {
-            _this3.currentUser.user_image = reader.result;
+            _this4.currentUser.user_image = reader.result;
           };
 
           return reader.readAsDataURL(file);
@@ -2863,96 +2981,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.currentUser.user_image = '';
     }
   }
-}, "data", function data() {
-  return {
-    currentUser: {},
-    errors: [],
-    items_col1: [{
-      label: "User Picture",
-      name: "user_image",
-      required: "required",
-      type: "file"
-    }, {
-      label: "Firstname *",
-      name: "firstname",
-      required: "required",
-      disabled: "disabled",
-      type: "text"
-    }, {
-      label: "Middlename *",
-      name: "middlename",
-      required: "required",
-      disabled: "disabled",
-      type: "text"
-    }, {
-      label: "Lastname *",
-      name: "lastname",
-      required: "required",
-      disabled: "disabled",
-      type: "text"
-    }, {
-      label: "Gender *",
-      name: "gender",
-      required: "required",
-      disabled: "disabled",
-      type: "dropdown"
-    }, {
-      label: "Date Of Birth *",
-      name: "birthday",
-      required: "required",
-      disabled: "disabled",
-      type: "date"
-    }],
-    items_col2: [{
-      label: "User Type *",
-      name: "user_type_id",
-      required: "required",
-      disabled: "disabled",
-      type: "dropdown"
-    }, {
-      label: "Username *",
-      name: "username",
-      required: "required",
-      disabled: "disabled",
-      type: "text"
-    }, {
-      label: "Email Address *",
-      name: "email",
-      required: "required",
-      type: "email"
-    }, {
-      label: "Current Password *",
-      name: "current_password",
-      required: "required",
-      type: "password"
-    }, {
-      label: "New Password *",
-      name: "password",
-      required: "required",
-      type: "password"
-    }, {
-      label: "Confirm Password *",
-      name: "confirm_password",
-      required: "required",
-      type: "password"
-    }, {
-      label: "Contact No. *",
-      name: "contact_no",
-      required: "required",
-      type: "number"
-    }, {
-      label: "Question *",
-      name: "question_id",
-      required: "required",
-      type: "dropdown"
-    }, {
-      label: "Answer *",
-      name: "security_answer",
-      required: "required",
-      type: "text"
-    }]
-  };
-}));
+});
 
 /***/ }),
 
@@ -44686,10 +44715,7 @@ var render = function() {
                           on: { click: _vm.onUpdate }
                         },
                         [
-                          _c("i", {
-                            staticClass: "fas fa-save",
-                            staticStyle: { color: "#fff", float: "none" }
-                          }),
+                          _c("i", { staticClass: "fas fa-save" }),
                           _vm._v(" Save\n                                ")
                         ]
                       )
@@ -44698,7 +44724,44 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(1)
+              _c("div", { staticClass: "tab-pane", attrs: { id: "option" } }, [
+                _c(
+                  "form",
+                  { staticClass: "form-horizontal" },
+                  [
+                    _vm._l(_vm.options_items, function(item, $index) {
+                      return _c(
+                        "div",
+                        { key: $index, staticClass: "form-group row" },
+                        [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-sm-5 col-form-label",
+                              attrs: { for: "no_of_boook" }
+                            },
+                            [_vm._v(_vm._s(item.label))]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-sm-7" }, [
+                            _c("input", {
+                              staticClass: "form-control",
+                              attrs: {
+                                type: item.type,
+                                id: item.name,
+                                name: item.name
+                              }
+                            })
+                          ])
+                        ]
+                      )
+                    }),
+                    _vm._v(" "),
+                    _vm._m(1)
+                  ],
+                  2
+                )
+              ])
             ])
           ])
         ])
@@ -44741,54 +44804,15 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "tab-pane", attrs: { id: "option" } }, [
-      _c("form", { staticClass: "form-horizontal" }, [
-        _c("div", { staticClass: "form-group row" }, [
-          _c(
-            "label",
-            {
-              staticClass: "col-sm-2 col-form-label",
-              attrs: { for: "inputName" }
-            },
-            [_vm._v("Name")]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm-10" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "email", id: "inputName", placeholder: "Name" }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c(
-            "label",
-            {
-              staticClass: "col-sm-2 col-form-label",
-              attrs: { for: "inputEmail" }
-            },
-            [_vm._v("Email")]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm-10" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "email", id: "inputEmail", placeholder: "Email" }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c("div", { staticClass: "offset-sm-2 col-sm-10" }, [
-            _c(
-              "button",
-              { staticClass: "btn btn-success", attrs: { type: "submit" } },
-              [_vm._v("Submit")]
-            )
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "form-group row col" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        [
+          _c("i", { staticClass: "fas fa-save" }),
+          _vm._v(" Save\n                                ")
+        ]
+      )
     ])
   }
 ]

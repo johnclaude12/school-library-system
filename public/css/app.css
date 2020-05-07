@@ -48032,12 +48032,12 @@ readers do not read off random characters that represent icons */
   font-size: 75px;
 }
 
-.card-body i {
+.card-body.dashboard i {
   float: right;
   color: #4dc0b5;
 }
 
-.card-body i:hover {
+.card-body.dashboard i:hover {
   color: rgba(77, 192, 181, 0.8);
 }
 
