@@ -17,7 +17,10 @@ class DatabaseSeeder extends Seeder
             UserTypeSeeder::class,
             UserSecuritySeeder::class,
             SecurityQuestionSeeder::class,
-            SecurityAnswerSeeder::class
+            SecurityAnswerSeeder::class,
+            BookCategorySeeder::class,
         ]);
+
+        factory(App\Model\Book::class, 20)->create();
     }
 }
