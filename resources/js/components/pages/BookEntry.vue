@@ -28,7 +28,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="book in books" :key="book.id">
+                                <tr v-for="book in books.data" :key="book.id">
                                     <td>{{ book.id }}</td>
                                     <td>{{ book.call_number }}</td>
                                     <td>{{ book.isbn }}</td>
@@ -44,13 +44,9 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
-                        <ul class="pagination pagination-sm m-0 float-right">
-                        <li class="page-item"><a class="page-link" href="#">«</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">»</a></li>
-                        </ul>
+                        <div class="float-right">
+                            <pagination :data="books" show-disabled @pagination-change-page="loadBooks"></pagination>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -129,7 +125,7 @@
                                     </div>
                                     <div class="form-group">
                                         <select class="custom-select" v-model="data.category">
-                                            <option v-for="cat in categories" :value="cat.id" :key="cat.id">
+                                            <option v-for="cat in book_categories" :value="cat.id" :key="cat.id">
                                                 {{ cat.category }}
                                             </option>
                                         </select>
@@ -179,8 +175,8 @@
         name: "BookEntry",
         data() {
             return {
-                books: [],
-                categories: [],
+                books: {},
+                book_categories: [],
                 data: {
                     title: '',
                     isbn: '',
@@ -189,16 +185,18 @@
                 }
             }
         },
-        mounted() {
-            console.log('Book Entry Component mounted.')
-        },
         created() {
-            axios.get('api/book')
-                .then(({ data: { data: { book_categories, books } } }) => {
-                    this.categories = book_categories;
-                    this.books = books.data;
-                })
-                .catch(err => console.log("Error :", err))
+            this.loadBooks();
+        },
+        methods: {
+            async loadBooks(page = 1) {
+                await axios.get('api/book?page='+ page)
+                        .then(({ data }) => {
+                            this.books = data.data.books;
+                            this.book_categories = data.data.book_categories;
+                        })
+                        .catch(err => console.log("Error :", err))
+            }
         }
     }
 </script>

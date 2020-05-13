@@ -22,7 +22,7 @@ class BookController extends Controller
     public function index()
     {
         $book_categories = BookCategory::all();
-        $books = Book::paginate(10);
+        $books = Book::paginate(5);
 
         return response()->json([
             "success" => true,
