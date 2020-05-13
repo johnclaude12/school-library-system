@@ -239,12 +239,68 @@
                         .catch(err => console.log("Error :", err))
             },
             async onSubmit() {
+                this.$Progress.start();
                 await axios.post('api/book', this.bookData)
-                    .then(({ data }) => console.log("DATA :", data))
-                    .catch(error => console.log("Error :", error))
+                    .then(({ data }) => {
+                        this.$Progress.finish();
+                        $('#add_book').modal('hide');
+                        this.bookData = {};
+
+                        Swal.fire({
+                            icon: 'success',
+                            text: data.message,
+                            showConfirmButton: false,
+                            timer: 4000
+                        })
+                    })
+                    .catch(error => {
+                        this.$Progress.fail()
+                        if (error.response.status !== 422) {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'Something went wrong. Please, try again later.',
+                                showConfirmButton: false,
+                                timer: 4000
+                            })
+                        }
+
+                        this.errors = error.response.data.errors;
+                    })
             },
             deleteBook(id) {
-                console.log("ID :", id);
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    this.$Progress.start()
+                    if (result.value) {
+                        axios.delete('api/book/'+ id)
+                            .then(({ data }) => {
+                                // find id from param to books state and remove
+                                this.books.data = this.books.data.filter(book => book.id !== id);
+                                this.$Progress.finish()
+
+                                Swal.fire(
+                                    '',
+                                    data.message,
+                                    data.status
+                                )
+                            })
+                            .catch(error => {
+                                this.$Progress.fail()
+                                Swal.fire(
+                                    '',
+                                    'Something went wrong. Please, try again later.',
+                                    'error'
+                                )
+                            })
+                    }
+                })
             },
             editBook(id) {
                 console.log("ID :", id);

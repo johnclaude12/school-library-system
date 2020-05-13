@@ -127,7 +127,7 @@
                         if (error.response.status !== 422) {
                             Swal.fire({
                                 icon: 'error',
-                                text: 'Oops! Something went wrong.',
+                                text: 'Something went wrong. Please, try again later.',
                                 showConfirmButton: false,
                                 timer: 4000
                             })

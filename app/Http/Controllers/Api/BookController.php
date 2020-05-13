@@ -15,46 +15,24 @@ class BookController extends Controller
         $this->middleware('auth:api');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $book_categories = BookCategory::all();
         $books = Book::paginate(5);
 
         return response()->json([
-            "success" => true,
+            "status" => true,
             "data" => [
                 "book_categories" => $book_categories,
                 "books" => $books
-            ],
-
+            ]
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $status = false;
-        $message = "error";
+        $status = "error";
+        $message = "Book failed to create.";
         $code = Response::HTTP_CONFLICT;
         $data = $request->all();
 
@@ -62,8 +40,8 @@ class BookController extends Controller
         $book = Book::create($request->all());
 
         if ($book) {
-            $status = true;
-            $message = "success";
+            $status = "success";
+            $message = "Book successfully created.";
             $code = Response::HTTP_CREATED;
             $data = $book;
         }
@@ -75,48 +53,24 @@ class BookController extends Controller
         ], $code);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Book  $book
-     * @return \Illuminate\Http\Response
-     */
     public function show(Book $book)
     {
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Book  $book
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Book $book)
-    {
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Book  $book
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Book $book)
     {
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Book  $book
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Book $book)
+    public function destroy($id)
     {
+        $book = Book::find($id);
+        $book->delete($id);
 
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Book deleted successfully.',
+        ], Response::HTTP_OK);
     }
 }

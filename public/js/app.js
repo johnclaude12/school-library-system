@@ -2506,15 +2506,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _context2.next = 2;
+                _this2.$Progress.start();
+
+                _context2.next = 3;
                 return axios.post('api/book', _this2.bookData).then(function (_ref2) {
                   var data = _ref2.data;
-                  return console.log("DATA :", data);
+
+                  _this2.$Progress.finish();
+
+                  $('#add_book').modal('hide');
+                  _this2.bookData = {};
+                  Swal.fire({
+                    icon: 'success',
+                    text: data.message,
+                    showConfirmButton: false,
+                    timer: 4000
+                  });
                 })["catch"](function (error) {
-                  return console.log("Error :", error);
+                  _this2.$Progress.fail();
+
+                  if (error.response.status !== 422) {
+                    Swal.fire({
+                      icon: 'error',
+                      text: 'Something went wrong. Please, try again later.',
+                      showConfirmButton: false,
+                      timer: 4000
+                    });
+                  }
+
+                  _this2.errors = error.response.data.errors;
                 });
 
-              case 2:
+              case 3:
               case "end":
                 return _context2.stop();
             }
@@ -2523,7 +2546,37 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     deleteBook: function deleteBook(id) {
-      console.log("ID :", id);
+      var _this3 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        _this3.$Progress.start();
+
+        if (result.value) {
+          axios["delete"]('api/book/' + id).then(function (_ref3) {
+            var data = _ref3.data;
+            // find id from param to books state and remove
+            _this3.books.data = _this3.books.data.filter(function (book) {
+              return book.id !== id;
+            });
+
+            _this3.$Progress.finish();
+
+            Swal.fire('', data.message, data.status);
+          })["catch"](function (error) {
+            _this3.$Progress.fail();
+
+            Swal.fire('', 'Something went wrong. Please, try again later.', 'error');
+          });
+        }
+      });
     },
     editBook: function editBook(id) {
       console.log("ID :", id);
@@ -3222,7 +3275,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         if (error.response.status !== 422) {
           Swal.fire({
             icon: 'error',
-            text: 'Oops! Something went wrong.',
+            text: 'Something went wrong. Please, try again later.',
             showConfirmButton: false,
             timer: 4000
           });
