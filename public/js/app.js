@@ -2387,46 +2387,83 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BookEntry",
   data: function data() {
     return {
       books: {},
       book_categories: [],
-      data: {
-        title: '',
+      bookData: {
         isbn: '',
-        category: '',
-        description: ''
-      }
+        call_number: '',
+        title: '',
+        author: '',
+        publisher: '',
+        description: '',
+        category_id: '',
+        date_published: '',
+        series: '',
+        price: '',
+        total_copies: ''
+      },
+      errors: [],
+      items_col1: [{
+        label: "ISBN*",
+        name: "isbn",
+        required: "required",
+        type: "text"
+      }, {
+        label: "Call Number*",
+        name: "call_number",
+        required: "required",
+        type: "number"
+      }, {
+        label: "Title*",
+        name: "title",
+        required: "required",
+        type: "text"
+      }, {
+        label: "Author*",
+        name: "author",
+        required: "required",
+        type: "text"
+      }, {
+        label: "Publisher*",
+        name: "publisher",
+        required: "required",
+        type: "text"
+      }],
+      items_col2: [{
+        label: "Description*",
+        name: "description",
+        required: "required",
+        type: "text"
+      }, {
+        label: "Categories*",
+        name: "category_id",
+        required: "required",
+        type: "dropdown"
+      }, {
+        label: "Date Published*",
+        name: "date_published",
+        required: "required",
+        type: "date"
+      }, {
+        label: "Series*",
+        name: "series",
+        required: "required",
+        type: "text"
+      }, {
+        label: "Copies*",
+        name: "total_copies",
+        required: "required",
+        type: "number"
+      }, {
+        label: "Price*",
+        name: "price",
+        required: "required",
+        type: "number"
+      }]
     };
   },
   created: function created() {
@@ -2460,6 +2497,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }))();
+    },
+    onSubmit: function onSubmit() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.post('api/book', _this2.bookData).then(function (_ref2) {
+                  var data = _ref2.data;
+                  return console.log("DATA :", data);
+                })["catch"](function (error) {
+                  return console.log("Error :", error);
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    deleteBook: function deleteBook(id) {
+      console.log("ID :", id);
+    },
+    editBook: function editBook(id) {
+      console.log("ID :", id);
     }
   }
 });
@@ -44152,8 +44219,6 @@ var render = function() {
                 "tbody",
                 _vm._l(_vm.books.data, function(book) {
                   return _c("tr", { key: book.id }, [
-                    _c("td", [_vm._v(_vm._s(book.id))]),
-                    _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(book.call_number))]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(book.isbn))]),
@@ -44168,7 +44233,25 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(book.date_published))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.copies))])
+                    _c("td", [
+                      _c("i", {
+                        staticClass: "fas fa-trash",
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteBook(book.id)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("i", {
+                        staticClass: "fas fa-edit",
+                        on: {
+                          click: function($event) {
+                            return _vm.editBook(book.id)
+                          }
+                        }
+                      })
+                    ])
                   ])
                 }),
                 0
@@ -44201,107 +44284,407 @@ var render = function() {
           _c("div", { staticClass: "modal-content" }, [
             _vm._m(2),
             _vm._v(" "),
-            _c("div", { staticClass: "modal-body" }, [
+            _c("div", { staticClass: "modal-body text-muted" }, [
               _c("div", { staticClass: "row" }, [
-                _vm._m(3),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _vm._m(4),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("input", {
-                        directives: [
+                _c(
+                  "div",
+                  { staticClass: "col-6" },
+                  _vm._l(_vm.items_col1, function(item, $index) {
+                    return _c(
+                      "div",
+                      { key: $index, staticClass: "form-group" },
+                      [
+                        _c("label", { attrs: { for: item.name } }, [
+                          _vm._v(_vm._s(item.label))
+                        ]),
+                        _vm._v(" "),
+                        item.type === "checkbox"
+                          ? _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.bookData[item.name],
+                                  expression: "bookData[item.name]"
+                                }
+                              ],
+                              staticClass: "form-control form-control-custom",
+                              attrs: {
+                                id: item.name,
+                                name: item.name,
+                                required: item.required,
+                                type: "checkbox"
+                              },
+                              domProps: {
+                                checked: Array.isArray(_vm.bookData[item.name])
+                                  ? _vm._i(_vm.bookData[item.name], null) > -1
+                                  : _vm.bookData[item.name]
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$a = _vm.bookData[item.name],
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = null,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        _vm.$set(
+                                          _vm.bookData,
+                                          item.name,
+                                          $$a.concat([$$v])
+                                        )
+                                    } else {
+                                      $$i > -1 &&
+                                        _vm.$set(
+                                          _vm.bookData,
+                                          item.name,
+                                          $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1))
+                                        )
+                                    }
+                                  } else {
+                                    _vm.$set(_vm.bookData, item.name, $$c)
+                                  }
+                                }
+                              }
+                            })
+                          : item.type === "radio"
+                          ? _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.bookData[item.name],
+                                  expression: "bookData[item.name]"
+                                }
+                              ],
+                              staticClass: "form-control form-control-custom",
+                              attrs: {
+                                id: item.name,
+                                name: item.name,
+                                required: item.required,
+                                type: "radio"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.bookData[item.name], null)
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(_vm.bookData, item.name, null)
+                                }
+                              }
+                            })
+                          : _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.bookData[item.name],
+                                  expression: "bookData[item.name]"
+                                }
+                              ],
+                              staticClass: "form-control form-control-custom",
+                              attrs: {
+                                id: item.name,
+                                name: item.name,
+                                required: item.required,
+                                type: item.type
+                              },
+                              domProps: { value: _vm.bookData[item.name] },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.bookData,
+                                    item.name,
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                        _vm._v(" "),
+                        _c(
+                          "span",
                           {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.data.description,
-                            expression: "data.description"
-                          }
-                        ],
-                        staticClass: "form-control text-background",
-                        attrs: { type: "text", maxlength: "30" },
-                        domProps: { value: _vm.data.description },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.data,
-                              "description",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _vm._m(5),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.data.category,
-                              expression: "data.category"
-                            }
-                          ],
-                          staticClass: "custom-select",
-                          on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.data,
-                                "category",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            }
-                          }
-                        },
-                        _vm._l(_vm.book_categories, function(cat) {
-                          return _c(
-                            "option",
-                            { key: cat.id, domProps: { value: cat.id } },
-                            [
-                              _vm._v(
-                                "\n                                            " +
-                                  _vm._s(cat.category) +
-                                  "\n                                        "
+                            class: _vm.errors[item.name]
+                              ? "invalid-feedback d-block"
+                              : "",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm.errors[item.name]
+                              ? _c("strong", [
+                                  _vm._v(_vm._s(_vm.errors[item.name][0]))
+                                ])
+                              : _vm._e()
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-6" },
+                  _vm._l(_vm.items_col2, function(item, $index) {
+                    return _c(
+                      "div",
+                      { key: $index, staticClass: "form-group" },
+                      [
+                        _c("label", { attrs: { for: item.name } }, [
+                          _vm._v(_vm._s(item.label))
+                        ]),
+                        _vm._v(" "),
+                        item.name == "category_id"
+                          ? [
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.bookData[item.name],
+                                      expression: "bookData[item.name]"
+                                    }
+                                  ],
+                                  staticClass:
+                                    "form-control form-control-custom",
+                                  attrs: { name: item.name, id: item.name },
+                                  on: {
+                                    change: function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.$set(
+                                        _vm.bookData,
+                                        item.name,
+                                        $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      )
+                                    }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "option",
+                                    {
+                                      attrs: {
+                                        value: "",
+                                        disabled: "",
+                                        selected: ""
+                                      }
+                                    },
+                                    [_vm._v("Select Book Category")]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm._l(_vm.book_categories, function(
+                                    item,
+                                    $index
+                                  ) {
+                                    return _c(
+                                      "option",
+                                      {
+                                        key: $index,
+                                        domProps: { value: item.id }
+                                      },
+                                      [_vm._v(_vm._s(item.category))]
+                                    )
+                                  })
+                                ],
+                                2
                               )
                             ]
-                          )
-                        }),
-                        0
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(6),
-                  _vm._v(" "),
-                  _vm._m(7),
-                  _vm._v(" "),
-                  _vm._m(8)
-                ])
+                          : [
+                              item.type === "checkbox"
+                                ? _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.bookData[item.name],
+                                        expression: "bookData[item.name]"
+                                      }
+                                    ],
+                                    staticClass:
+                                      "form-control form-control-custom",
+                                    attrs: {
+                                      id: item.name,
+                                      name: item.name,
+                                      required: item.required,
+                                      type: "checkbox"
+                                    },
+                                    domProps: {
+                                      checked: Array.isArray(
+                                        _vm.bookData[item.name]
+                                      )
+                                        ? _vm._i(
+                                            _vm.bookData[item.name],
+                                            null
+                                          ) > -1
+                                        : _vm.bookData[item.name]
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        var $$a = _vm.bookData[item.name],
+                                          $$el = $event.target,
+                                          $$c = $$el.checked ? true : false
+                                        if (Array.isArray($$a)) {
+                                          var $$v = null,
+                                            $$i = _vm._i($$a, $$v)
+                                          if ($$el.checked) {
+                                            $$i < 0 &&
+                                              _vm.$set(
+                                                _vm.bookData,
+                                                item.name,
+                                                $$a.concat([$$v])
+                                              )
+                                          } else {
+                                            $$i > -1 &&
+                                              _vm.$set(
+                                                _vm.bookData,
+                                                item.name,
+                                                $$a
+                                                  .slice(0, $$i)
+                                                  .concat($$a.slice($$i + 1))
+                                              )
+                                          }
+                                        } else {
+                                          _vm.$set(_vm.bookData, item.name, $$c)
+                                        }
+                                      }
+                                    }
+                                  })
+                                : item.type === "radio"
+                                ? _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.bookData[item.name],
+                                        expression: "bookData[item.name]"
+                                      }
+                                    ],
+                                    staticClass:
+                                      "form-control form-control-custom",
+                                    attrs: {
+                                      id: item.name,
+                                      name: item.name,
+                                      required: item.required,
+                                      type: "radio"
+                                    },
+                                    domProps: {
+                                      checked: _vm._q(
+                                        _vm.bookData[item.name],
+                                        null
+                                      )
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        return _vm.$set(
+                                          _vm.bookData,
+                                          item.name,
+                                          null
+                                        )
+                                      }
+                                    }
+                                  })
+                                : _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.bookData[item.name],
+                                        expression: "bookData[item.name]"
+                                      }
+                                    ],
+                                    staticClass:
+                                      "form-control form-control-custom",
+                                    attrs: {
+                                      id: item.name,
+                                      name: item.name,
+                                      required: item.required,
+                                      type: item.type
+                                    },
+                                    domProps: {
+                                      value: _vm.bookData[item.name]
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.bookData,
+                                          item.name,
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                            ],
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          {
+                            class: _vm.errors[item.name]
+                              ? "invalid-feedback d-block"
+                              : "",
+                            attrs: { role: "alert" }
+                          },
+                          [
+                            _vm.errors[item.name]
+                              ? _c("strong", [
+                                  _vm._v(_vm._s(_vm.errors[item.name][0]))
+                                ])
+                              : _vm._e()
+                          ]
+                        )
+                      ],
+                      2
+                    )
+                  }),
+                  0
+                )
               ])
             ]),
             _vm._v(" "),
-            _vm._m(9)
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary p-18",
+                  attrs: { type: "button", "data-dismiss": "modal" }
+                },
+                [_vm._v("Cancel")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary btn-new-position",
+                  attrs: { type: "submit" },
+                  on: { click: _vm.onSubmit }
+                },
+                [_c("i", { staticClass: "fas fa-save mr-1" }), _vm._v("Save")]
+              )
+            ])
           ])
         ])
       ]
@@ -44332,7 +44715,10 @@ var staticRenderFns = [
                 "data-title": "ADD"
               }
             },
-            [_vm._v("Book Register")]
+            [
+              _vm._v("\n                            Book Register "),
+              _c("i", { staticClass: "fas fa-plus" })
+            ]
           )
         ]
       )
@@ -44344,8 +44730,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", { staticStyle: { width: "10px" } }, [_vm._v("ID")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Call No.")]),
         _vm._v(" "),
         _c("th", [_vm._v("ISBN")]),
@@ -44360,7 +44744,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Date Pub.")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Copies")])
+        _c("th", [_vm._v("Action")])
       ])
     ])
   },
@@ -44388,168 +44772,6 @@ var staticRenderFns = [
             [_vm._v("×")]
           )
         ]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-6" }, [
-      _c("div", { staticClass: "form-group" }, [
-        _c("div", { staticStyle: { "font-size": "15px" } }, [
-          _c("span", [_vm._v("ISBN*")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("input", {
-            staticClass: "form-control text-background",
-            attrs: { type: "text", maxlength: "30" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("div", { staticStyle: { "font-size": "15px" } }, [
-          _c("span", [_vm._v("Call Number*")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("input", {
-            staticClass: "form-control text-background",
-            attrs: { type: "text", maxlength: "30" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("div", { staticStyle: { "font-size": "15px" } }, [
-          _c("span", [_vm._v("Title*")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("input", {
-            staticClass: "form-control text-background",
-            attrs: { type: "text", maxlength: "30" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("div", { staticStyle: { "font-size": "15px" } }, [
-          _c("span", [_vm._v("Author*")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("input", {
-            staticClass: "form-control text-background",
-            attrs: { type: "text", maxlength: "30" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("div", { staticStyle: { "font-size": "15px" } }, [
-          _c("span", [_vm._v("Publisher*")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("input", {
-            staticClass: "form-control text-background",
-            attrs: { type: "text", maxlength: "30" }
-          })
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticStyle: { "font-size": "15px" } }, [
-      _c("span", [_vm._v("Description*")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticStyle: { "font-size": "15px" } }, [
-      _c("span", [_vm._v("Categories*")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("div", { staticStyle: { "font-size": "15px" } }, [
-        _c("span", [_vm._v("Date Published*")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("input", {
-          staticClass: "form-control text-background",
-          attrs: { type: "text", maxlength: "30" }
-        })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("div", { staticStyle: { "font-size": "15px" } }, [
-        _c("span", [_vm._v("Series*")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("input", {
-          staticClass: "form-control text-background",
-          attrs: { type: "text", maxlength: "30" }
-        })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("div", { staticStyle: { "font-size": "15px" } }, [
-        _c("span", [_vm._v("Price*")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("input", {
-          staticClass: "form-control text-background",
-          attrs: { type: "text", maxlength: "30" }
-        })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary p-18",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("Cancel")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary btn-new-position",
-          attrs: { type: "submit" }
-        },
-        [_c("i", { staticClass: "fas fa-save mr-1" }), _vm._v("Save")]
       )
     ])
   }

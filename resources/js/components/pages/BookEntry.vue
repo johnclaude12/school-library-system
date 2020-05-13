@@ -8,7 +8,9 @@
                             <div class="d-flex align-items-center pb-2">
                                 <h3 class="card-title">Books</h3>
                             </div>
-                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#add_book" data-title="ADD">Book Register</button>
+                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#add_book" data-title="ADD">
+                                Book Register <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                     </div>
                     <!-- /.card-header -->
@@ -16,7 +18,6 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th style="width: 10px">ID</th>
                                     <th>Call No.</th>
                                     <th>ISBN</th>
                                     <th>Title</th>
@@ -24,12 +25,11 @@
                                     <th>Publisher</th>
                                     <th>Category</th>
                                     <th>Date Pub.</th>
-                                    <th>Copies</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="book in books.data" :key="book.id">
-                                    <td>{{ book.id }}</td>
                                     <td>{{ book.call_number }}</td>
                                     <td>{{ book.isbn }}</td>
                                     <td>{{ book.title }}</td>
@@ -37,7 +37,10 @@
                                     <td>{{ book.publisher }}</td>
                                     <td>{{ book.category_id }}</td>
                                     <td>{{ book.date_published }}</td>
-                                    <td>{{ book.copies }}</td>
+                                    <td>
+                                        <i class="fas fa-trash" @click="deleteBook(book.id)"></i>
+                                        <i class="fas fa-edit" @click="editBook(book.id)"></i>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -64,96 +67,65 @@
                     </div>
 
                     <!-- Modal Content -->
-                    <div class="modal-body">
+                    <div class="modal-body text-muted">
                         <div class="row">
                             <!-- first row -->
                             <div class="col-6">
-                                <div class="form-group">
-                                    <div style="font-size: 15px;">
-                                        <span>ISBN*</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control text-background" maxlength="30">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div style="font-size: 15px;">
-                                        <span>Call Number*</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control text-background" maxlength="30">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div style="font-size: 15px;">
-                                        <span>Title*</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control text-background" maxlength="30">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div style="font-size: 15px;">
-                                        <span>Author*</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control text-background" maxlength="30">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div style="font-size: 15px;">
-                                        <span>Publisher*</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control text-background" maxlength="30">
-                                    </div>
+                                <div
+                                    v-for="(item, $index) in items_col1"
+                                    :key="$index"
+                                    class="form-group"
+                                >
+                                    <label :for="item.name">{{ item.label }}</label>
+                                    <input
+                                        :id="item.name"
+                                        :name="item.name"
+                                        :type="item.type"
+                                        :required="item.required"
+                                        v-model="bookData[item.name]"
+                                        class="form-control form-control-custom"
+                                    >
+                                    <span role="alert" :class="errors[item.name] ? 'invalid-feedback d-block' : ''">
+                                        <strong v-if="errors[item.name]" >{{ errors[item.name][0] }}</strong>
+                                    </span>
                                 </div>
                             </div>
                             <!-- second row -->
                             <div class="col-6">
-                                <div class="form-group">
-                                    <div style="font-size: 15px;">
-                                        <span>Description*</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control text-background" maxlength="30" v-model="data.description">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div style="font-size: 15px;">
-                                        <span>Categories*</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <select class="custom-select" v-model="data.category">
-                                            <option v-for="cat in book_categories" :value="cat.id" :key="cat.id">
-                                                {{ cat.category }}
-                                            </option>
+                                <div
+                                    v-for="(item, $index) in items_col2"
+                                    :key="$index"
+                                    class="form-group"
+                                >
+                                    <label :for="item.name">{{ item.label }}</label>
+                                    <template v-if="item.name == 'category_id'">
+                                        <select
+                                            :name="item.name"
+                                            :id="item.name"
+                                            v-model="bookData[item.name]"
+                                            class="form-control form-control-custom"
+                                        >
+                                            <option value="" disabled selected>Select Book Category</option>
+                                            <option
+                                                v-for="(item, $index) in book_categories"
+                                                :key="$index"
+                                                :value="item.id"
+                                            >{{ item.category }}</option>
                                         </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div style="font-size: 15px;">
-                                        <span>Date Published*</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control text-background" maxlength="30">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div style="font-size: 15px;">
-                                        <span>Series*</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control text-background" maxlength="30">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div style="font-size: 15px;">
-                                        <span>Price*</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control text-background" maxlength="30">
-                                    </div>
+                                    </template>
+                                    <template v-else>
+                                        <input
+                                            :id="item.name"
+                                            :name="item.name"
+                                            :type="item.type"
+                                            :required="item.required"
+                                            v-model="bookData[item.name]"
+                                            class="form-control form-control-custom"
+                                        >
+                                    </template>
+                                    <span role="alert" :class="errors[item.name] ? 'invalid-feedback d-block' : ''">
+                                        <strong v-if="errors[item.name]" >{{ errors[item.name][0] }}</strong>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -162,7 +134,7 @@
                     <!-- Modal Footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary p-18" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-new-position"><i class="fas fa-save mr-1"></i>Save</button>
+                        <button type="submit" class="btn btn-primary btn-new-position" @click="onSubmit"><i class="fas fa-save mr-1"></i>Save</button>
                     </div>
                 </div>
             </div>
@@ -177,12 +149,81 @@
             return {
                 books: {},
                 book_categories: [],
-                data: {
-                    title: '',
+                bookData: {
                     isbn: '',
-                    category: '',
-                    description: ''
-                }
+                    call_number: '',
+                    title: '',
+                    author: '',
+                    publisher: '',
+                    description: '',
+                    category_id: '',
+                    date_published: '',
+                    series: '',
+                    price: '',
+                    total_copies: ''
+                },
+                errors: [],
+                items_col1: [
+                    {
+                        label: "ISBN*",
+                        name: "isbn",
+                        required: "required",
+                        type: "text"
+                    },{
+                        label: "Call Number*",
+                        name: "call_number",
+                        required: "required",
+                        type: "number"
+                    },{
+                        label: "Title*",
+                        name: "title",
+                        required: "required",
+                        type: "text"
+                    },{
+                        label: "Author*",
+                        name: "author",
+                        required: "required",
+                        type: "text"
+                    },{
+                        label: "Publisher*",
+                        name: "publisher",
+                        required: "required",
+                        type: "text"
+                    }
+                ],
+                items_col2: [
+                   {
+                        label: "Description*",
+                        name: "description",
+                        required: "required",
+                        type: "text"
+                    },{
+                        label: "Categories*",
+                        name: "category_id",
+                        required: "required",
+                        type: "dropdown"
+                    },{
+                        label: "Date Published*",
+                        name: "date_published",
+                        required: "required",
+                        type: "date"
+                    },{
+                        label: "Series*",
+                        name: "series",
+                        required: "required",
+                        type: "text"
+                    },{
+                        label: "Copies*",
+                        name: "total_copies",
+                        required: "required",
+                        type: "number"
+                    },{
+                        label: "Price*",
+                        name: "price",
+                        required: "required",
+                        type: "number"
+                    },
+                ]
             }
         },
         created() {
@@ -196,6 +237,17 @@
                             this.book_categories = data.data.book_categories;
                         })
                         .catch(err => console.log("Error :", err))
+            },
+            async onSubmit() {
+                await axios.post('api/book', this.bookData)
+                    .then(({ data }) => console.log("DATA :", data))
+                    .catch(error => console.log("Error :", error))
+            },
+            deleteBook(id) {
+                console.log("ID :", id);
+            },
+            editBook(id) {
+                console.log("ID :", id);
             }
         }
     }

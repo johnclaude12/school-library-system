@@ -24,7 +24,7 @@ class CreateBooksTable extends Migration
             $table->integer('category_id');
             $table->string('date_published');
             $table->string('series');
-            $table->integer('copies');
+            $table->integer('avail_copies');
             $table->integer('total_copies');
             $table->decimal('price');
             $table->timestamps();

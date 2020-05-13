@@ -20,7 +20,7 @@ $factory->define(Book::class, function (Faker $faker) {
         'date_published' => $faker->year,
         'series' => $faker->numberBetween(1,10),
         'price' => $faker->randomDigit,
-        'copies' => $faker->numberBetween(10,50),
+        'avail_copies' => $faker->numberBetween(10,50),
         'total_copies' => $faker->numberBetween(10,50),
         'created_at' => date('Y-m-d H:i:s'),
         'updated_at' => date('Y-m-d H:i:s')

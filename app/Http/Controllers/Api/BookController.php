@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Model\Book;
 use App\Model\BookCategory;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -52,20 +53,26 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $book = new Book();
-        $book->isbn = $request->input('isbn');
-        $book->call_number = $request->input('call_number');
-        $book->title = $request->input('title');
-        $book->author = $request->input('author');
-        $book->publisher = $request->input('publisher');
-        $book->description = $request->input('description');
-        $book->category_id = $request->input('category_id');
-        $book->date_published = $request->input('date_published');
-        $book->series = $request->input('series');
-        $book->copies = $request->input('copies');
-        $book->total_copies = $request->input('total_copies');
-        $book->price = $request->input('price');
-        $book->save();
+        $status = false;
+        $message = "error";
+        $code = Response::HTTP_CONFLICT;
+        $data = $request->all();
+
+        $request['avail_copies'] = $request->total_copies;
+        $book = Book::create($request->all());
+
+        if ($book) {
+            $status = true;
+            $message = "success";
+            $code = Response::HTTP_CREATED;
+            $data = $book;
+        }
+
+        return response()->json([
+            'status' => $status,
+            'message' => $message,
+            'data' => $book
+        ], $code);
     }
 
     /**
