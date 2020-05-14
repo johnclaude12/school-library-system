@@ -281,8 +281,8 @@
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
-                    this.$Progress.start()
                     if (result.value) {
+                        this.$Progress.start()
                         axios.delete('api/book/'+ id)
                             .then(({ data }) => {
                                 // find id from param to books state and remove

@@ -31,6 +31,7 @@ const routes = [
     { path: '/audit-log', name: 'AuditLog', component: require('./components/pages/AuditLog.vue').default },
     { path: '/reports', name: 'Reports', component: require('./components/pages/Reports.vue').default },
     { path: '/settings', name: 'Settings', component: require('./components/pages/Settings.vue').default },
+    { path: '/*', name: 'NotFound', component: require('./components/pages/NotFound.vue').default }
 ];
 
 const router = new VueRouter({
