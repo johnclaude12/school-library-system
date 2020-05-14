@@ -2803,6 +2803,20 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2976,6 +2990,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       currentUser: {},
       currentUserID: '',
+      options: {},
       errors: [],
       items_col1: [{
         label: "User Picture",
@@ -3061,7 +3076,27 @@ __webpack_require__.r(__webpack_exports__);
         required: "required",
         type: "text"
       }],
-      options_items: []
+      options_items: [{
+        label: "No. of Book(s) allow to be borrow",
+        name: "no_of_books",
+        required: "required",
+        type: "number"
+      }, {
+        label: "No. of day(s) allowed",
+        name: "no_of_days_allow",
+        required: "required",
+        type: "number"
+      }, {
+        label: "Penalty per day",
+        name: "penalty_per_day",
+        required: "required",
+        type: "number"
+      }, {
+        label: "Grace period after time-in and time-out",
+        name: "grace_period",
+        required: "required",
+        type: "number"
+      }]
     };
   },
   created: function created() {
@@ -3084,21 +3119,65 @@ __webpack_require__.r(__webpack_exports__);
     getAdminSettings: function getAdminSettings() {
       var _this2 = this;
 
-      axios.get('api/admin_settings').then(function (_ref3) {
-        var data = _ref3.data;
-        return _this2.options_items = data.data;
-      })["catch"](function (error) {
-        return console.log("Error :", error);
-      });
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return axios.get('api/admin_settings').then(function (_ref3) {
+                  var data = _ref3.data;
+                  return _this2.options = data.data[0];
+                })["catch"](function (error) {
+                  return console.log("Error :", error);
+                });
+
+              case 2:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
     },
-    onUpdate: function onUpdate() {
+    updateAdminSettings: function updateAdminSettings() {
       var _this3 = this;
 
-      this.$Progress.start();
-      axios.put('api/user/' + this.currentUser.id, this.currentUser).then(function (_ref4) {
-        var data = _ref4.data;
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _this3.$Progress.start();
 
-        _this3.$Progress.finish();
+                _context2.next = 3;
+                return axios.put('api/admin_settings/' + _this3.options.id, _this3.options).then(function (_ref4) {
+                  var data = _ref4.data;
+                  _this3.options = data.data[0];
+
+                  _this3.$Progress.finish();
+                })["catch"](function (error) {
+                  console.log("Error :", error);
+
+                  _this3.$Progress.fail();
+                });
+
+              case 3:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    onUpdate: function onUpdate() {
+      var _this4 = this;
+
+      this.$Progress.start();
+      axios.put('api/user/' + this.currentUser.id, this.currentUser).then(function (_ref5) {
+        var data = _ref5.data;
+
+        _this4.$Progress.finish();
 
         Swal.fire({
           icon: 'success',
@@ -3106,19 +3185,19 @@ __webpack_require__.r(__webpack_exports__);
           showConfirmButton: false,
           timer: 4000
         });
-        _this3.errors = "";
+        _this4.errors = "";
 
         if (data.data.id == localStorage.getItem('userId')) {
           $('img#user_profile_picture').attr('src', data.data.user_image);
         }
       })["catch"](function (error) {
-        _this3.$Progress.fail();
+        _this4.$Progress.fail();
 
-        _this3.errors = error.response.data.errors;
+        _this4.errors = error.response.data.errors;
       });
     },
     imageOnchage: function imageOnchage(el) {
-      var _this4 = this;
+      var _this5 = this;
 
       var file = el.target.files[0];
       var reader = new FileReader();
@@ -3126,7 +3205,7 @@ __webpack_require__.r(__webpack_exports__);
       if (file) {
         if (file['size'] < 2111775) {
           reader.onloadend = function (file) {
-            _this4.currentUser.user_image = reader.result;
+            _this5.currentUser.user_image = reader.result;
           };
 
           return reader.readAsDataURL(file);
@@ -46627,7 +46706,15 @@ var render = function() {
               _c("div", { staticClass: "tab-pane", attrs: { id: "option" } }, [
                 _c(
                   "form",
-                  { staticClass: "form-horizontal" },
+                  {
+                    staticClass: "form-horizontal",
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.updateAdminSettings($event)
+                      }
+                    }
+                  },
                   [
                     _vm._l(_vm.options_items, function(item, $index) {
                       return _c(
@@ -46644,14 +46731,122 @@ var render = function() {
                           ),
                           _vm._v(" "),
                           _c("div", { staticClass: "col-sm-7" }, [
-                            _c("input", {
-                              staticClass: "form-control",
-                              attrs: {
-                                type: item.type,
-                                id: item.name,
-                                name: item.name
-                              }
-                            })
+                            item.type === "checkbox"
+                              ? _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.options[item.name],
+                                      expression: "options[item.name]"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    id: item.name,
+                                    name: item.name,
+                                    type: "checkbox"
+                                  },
+                                  domProps: {
+                                    checked: Array.isArray(
+                                      _vm.options[item.name]
+                                    )
+                                      ? _vm._i(_vm.options[item.name], null) >
+                                        -1
+                                      : _vm.options[item.name]
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      var $$a = _vm.options[item.name],
+                                        $$el = $event.target,
+                                        $$c = $$el.checked ? true : false
+                                      if (Array.isArray($$a)) {
+                                        var $$v = null,
+                                          $$i = _vm._i($$a, $$v)
+                                        if ($$el.checked) {
+                                          $$i < 0 &&
+                                            _vm.$set(
+                                              _vm.options,
+                                              item.name,
+                                              $$a.concat([$$v])
+                                            )
+                                        } else {
+                                          $$i > -1 &&
+                                            _vm.$set(
+                                              _vm.options,
+                                              item.name,
+                                              $$a
+                                                .slice(0, $$i)
+                                                .concat($$a.slice($$i + 1))
+                                            )
+                                        }
+                                      } else {
+                                        _vm.$set(_vm.options, item.name, $$c)
+                                      }
+                                    }
+                                  }
+                                })
+                              : item.type === "radio"
+                              ? _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.options[item.name],
+                                      expression: "options[item.name]"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    id: item.name,
+                                    name: item.name,
+                                    type: "radio"
+                                  },
+                                  domProps: {
+                                    checked: _vm._q(
+                                      _vm.options[item.name],
+                                      null
+                                    )
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      return _vm.$set(
+                                        _vm.options,
+                                        item.name,
+                                        null
+                                      )
+                                    }
+                                  }
+                                })
+                              : _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.options[item.name],
+                                      expression: "options[item.name]"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    id: item.name,
+                                    name: item.name,
+                                    type: item.type
+                                  },
+                                  domProps: { value: _vm.options[item.name] },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.options,
+                                        item.name,
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
                           ])
                         ]
                       )

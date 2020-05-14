@@ -15,10 +15,10 @@ class CreateAdminSettingsTable extends Migration
     {
         Schema::create('admin_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
-            $table->string('name');
-            $table->string('required');
-            $table->string('type');
+            $table->integer('no_of_books');
+            $table->integer('no_of_days_allow');
+            $table->integer('penalty_per_day');
+            $table->integer('grace_period');
             $table->timestamps();
         });
     }

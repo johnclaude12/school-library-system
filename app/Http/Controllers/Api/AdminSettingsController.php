@@ -5,82 +5,50 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\AdminSettings;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\AdminSettings\AdminSettingsCollection;
+use App\Http\Resources\AdminSettings\AdminSettingsResource;
 
 class AdminSettingsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $adminSettings = AdminSettings::all();
         return AdminSettingsCollection::collection($adminSettings);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Model\AdminSettings  $adminSettings
-     * @return \Illuminate\Http\Response
-     */
     public function show(AdminSettings $adminSettings)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Model\AdminSettings  $adminSettings
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(AdminSettings $adminSettings)
+    public function update(Request $request, $id)
     {
-        //
+        $message = "Failed to update.";
+        $status = false;
+        $code = Response::HTTP_CONFLICT;
+
+        $options =  AdminSettings::where('id', $id)->update($request->all());
+
+        if ($options) {
+            $message = "Updated successfully.";
+            $status = true;
+            $code = Response::HTTP_OK;
+        }
+
+        return response()->json([
+            'status' => $status,
+            'message' => $message,
+            'status' => $status,
+            'data' => new AdminSettingsResource($request->all()),
+        ], $code);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Model\AdminSettings  $adminSettings
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, AdminSettings $adminSettings)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Model\AdminSettings  $adminSettings
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(AdminSettings $adminSettings)
     {
         //

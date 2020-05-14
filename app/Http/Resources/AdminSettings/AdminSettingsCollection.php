@@ -15,10 +15,11 @@ class AdminSettingsCollection extends JsonResource
     public function toArray($request)
     {
         return [
-            'label' => $this->description,
-            'name' => $this->name,
-            'required' => $this->required,
-            'type' => $this->type
+            'id' => $this->id,
+            'no_of_books' => $this->no_of_books,
+            'no_of_days_allow' => $this->no_of_days_allow,
+            'penalty_per_day' => $this->penalty_per_day,
+            'grace_period' => $this->grace_period
         ];
     }
 }

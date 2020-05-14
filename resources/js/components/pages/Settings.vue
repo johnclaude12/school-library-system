@@ -137,7 +137,7 @@
                         </div>
 
                         <div class="tab-pane" id="option">
-                            <form class="form-horizontal">
+                            <form @submit.prevent="updateAdminSettings" class="form-horizontal">
                                 <div
                                     v-for="(item, $index) in options_items"
                                     :key="$index"
@@ -145,7 +145,13 @@
                                 >
                                     <label for="no_of_boook" class="col-sm-5 col-form-label">{{ item.label }}</label>
                                     <div class="col-sm-7">
-                                        <input :type="item.type" class="form-control" :id="item.name" :name="item.name">
+                                        <input
+                                            v-model="options[item.name]"
+                                            :type="item.type"
+                                            class="form-control"
+                                            :id="item.name"
+                                            :name="item.name"
+                                        >
                                     </div>
                                 </div>
                                 <div class="form-group row col">
@@ -172,6 +178,7 @@
             return {
                 currentUser: {},
                 currentUserID: '',
+                options: {},
                 errors: [],
                 items_col1: [
                     {
@@ -274,7 +281,32 @@
                         type: "text"
                     }
                 ],
-                options_items: []
+                options_items: [
+                    {
+                        label: "No. of Book(s) allow to be borrow",
+                        name: "no_of_books",
+                        required: "required",
+                        type: "number"
+                    },
+                    {
+                        label: "No. of day(s) allowed",
+                        name: "no_of_days_allow",
+                        required: "required",
+                        type: "number"
+                    },
+                    {
+                        label: "Penalty per day",
+                        name: "penalty_per_day",
+                        required: "required",
+                        type: "number"
+                    },
+                    {
+                        label: "Grace period after time-in and time-out",
+                        name: "grace_period",
+                        required: "required",
+                        type: "number"
+                    }
+                ]
             }
         },
         created() {
@@ -288,10 +320,22 @@
                     .then(({ data }) => this.currentUser = data)
                     .catch(({ error }) => console.log("Error :", error))
             },
-            getAdminSettings() {
-                axios.get('api/admin_settings')
-                    .then(({ data }) => this.options_items = data.data)
-                    .catch(error => console.log("Error :", error))
+            async getAdminSettings() {
+                await axios.get('api/admin_settings')
+                        .then(({ data }) => this.options = data.data[0])
+                        .catch(error => console.log("Error :", error))
+            },
+            async updateAdminSettings() {
+                this.$Progress.start()
+                await axios.put('api/admin_settings/'+ this.options.id, this.options)
+                        .then(({ data }) => {
+                            this.options = data.data[0];
+                            this.$Progress.finish()
+                        })
+                        .catch(error => {
+                            console.log("Error :", error)
+                            this.$Progress.fail()
+                        })
             },
             onUpdate() {
                 this.$Progress.start()
