@@ -2387,6 +2387,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BookEntry",
   data: function data() {
@@ -44368,6 +44371,7 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control form-control-custom",
+                              class: _vm.errors[item.name] ? "is-invalid" : "",
                               attrs: {
                                 id: item.name,
                                 name: item.name,
@@ -44421,6 +44425,7 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control form-control-custom",
+                              class: _vm.errors[item.name] ? "is-invalid" : "",
                               attrs: {
                                 id: item.name,
                                 name: item.name,
@@ -44446,6 +44451,7 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control form-control-custom",
+                              class: _vm.errors[item.name] ? "is-invalid" : "",
                               attrs: {
                                 id: item.name,
                                 name: item.name,
@@ -44516,6 +44522,9 @@ var render = function() {
                                   ],
                                   staticClass:
                                     "form-control form-control-custom",
+                                  class: _vm.errors[item.name]
+                                    ? "is-invalid"
+                                    : "",
                                   attrs: { name: item.name, id: item.name },
                                   on: {
                                     change: function($event) {
@@ -44583,6 +44592,9 @@ var render = function() {
                                     ],
                                     staticClass:
                                       "form-control form-control-custom",
+                                    class: _vm.errors[item.name]
+                                      ? "is-invalid"
+                                      : "",
                                     attrs: {
                                       id: item.name,
                                       name: item.name,
@@ -44642,6 +44654,9 @@ var render = function() {
                                     ],
                                     staticClass:
                                       "form-control form-control-custom",
+                                    class: _vm.errors[item.name]
+                                      ? "is-invalid"
+                                      : "",
                                     attrs: {
                                       id: item.name,
                                       name: item.name,
@@ -44675,6 +44690,9 @@ var render = function() {
                                     ],
                                     staticClass:
                                       "form-control form-control-custom",
+                                    class: _vm.errors[item.name]
+                                      ? "is-invalid"
+                                      : "",
                                     attrs: {
                                       id: item.name,
                                       name: item.name,

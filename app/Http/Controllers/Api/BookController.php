@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\Book\BookCollection;
 use App\Http\Resources\BookCategory\BookCategoryCollection;
+use App\Http\Requests\Book\BookEntryRequest;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -32,7 +33,7 @@ class BookController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(BookEntryRequest $request)
     {
         $status = "error";
         $message = "Book failed to create.";

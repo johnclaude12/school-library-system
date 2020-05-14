@@ -84,6 +84,7 @@
                                         :required="item.required"
                                         v-model="bookData[item.name]"
                                         class="form-control form-control-custom"
+                                        :class="errors[item.name] ? 'is-invalid' : ''"
                                     >
                                     <span role="alert" :class="errors[item.name] ? 'invalid-feedback d-block' : ''">
                                         <strong v-if="errors[item.name]" >{{ errors[item.name][0] }}</strong>
@@ -104,6 +105,7 @@
                                             :id="item.name"
                                             v-model="bookData[item.name]"
                                             class="form-control form-control-custom"
+                                            :class="errors[item.name] ? 'is-invalid' : ''"
                                         >
                                             <option value="" disabled selected>Select Book Category</option>
                                             <option
@@ -121,6 +123,7 @@
                                             :required="item.required"
                                             v-model="bookData[item.name]"
                                             class="form-control form-control-custom"
+                                            :class="errors[item.name] ? 'is-invalid' : ''"
                                         >
                                     </template>
                                     <span role="alert" :class="errors[item.name] ? 'invalid-feedback d-block' : ''">
