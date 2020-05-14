@@ -44284,7 +44284,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(book.publisher))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(book.category_id))]),
+                    _c("td", [_vm._v(_vm._s(book.category))]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(book.date_published))]),
                     _vm._v(" "),

@@ -8,8 +8,8 @@ class Book extends Model
 {
     protected $guarded = [];
 
-    public function bookCategory()
+    public function category()
     {
-        return $this->hasOne(BookCategory::class);
+        return $this->belongsTo(BookCategory::class);
     }
 }

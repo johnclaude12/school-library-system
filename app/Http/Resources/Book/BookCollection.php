@@ -27,6 +27,7 @@ class BookCollection extends JsonResource
                     'publisher' => $item->publisher,
                     'description' => $item->description,
                     'category_id' => $item->category_id,
+                    'category' => $item->category->category,
                     'date_published' => $item->date_published,
                     'series' => $item->series,
                     'avail_copies' => $item->avail_copies,

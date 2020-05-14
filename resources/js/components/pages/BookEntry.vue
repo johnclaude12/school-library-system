@@ -35,7 +35,7 @@
                                     <td>{{ book.title }}</td>
                                     <td>{{ book.author }}</td>
                                     <td>{{ book.publisher }}</td>
-                                    <td>{{ book.category_id }}</td>
+                                    <td>{{ book.category }}</td>
                                     <td>{{ book.date_published }}</td>
                                     <td>
                                         <i class="fas fa-trash" @click="deleteBook(book.id)"></i>
