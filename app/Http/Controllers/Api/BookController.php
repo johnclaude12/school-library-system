@@ -6,6 +6,8 @@ use App\Model\Book;
 use App\Model\BookCategory;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Resources\Book\BookCollection;
+use App\Http\Resources\BookCategory\BookCategoryCollection;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -22,9 +24,10 @@ class BookController extends Controller
 
         return response()->json([
             "status" => true,
+            'message' => "success",
             "data" => [
-                "book_categories" => $book_categories,
-                "books" => $books
+                "book_categories" => BookCategoryCollection::collection($book_categories),
+                "books" => new BookCollection($books)
             ]
         ]);
     }

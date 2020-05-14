@@ -2463,7 +2463,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         name: "price",
         required: "required",
         type: "number"
-      }]
+      }],
+      limit: 2
     };
   },
   created: function created() {
@@ -3225,7 +3226,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         security_answer: '',
         user_type_id: ''
       },
-      errors: []
+      errors: [],
+      limit: 2
     };
   },
   created: function created() {
@@ -44318,7 +44320,11 @@ var render = function() {
               { staticClass: "float-right" },
               [
                 _c("pagination", {
-                  attrs: { data: _vm.books, "show-disabled": "" },
+                  attrs: {
+                    data: _vm.books,
+                    "show-disabled": "",
+                    limit: _vm.limit
+                  },
                   on: { "pagination-change-page": _vm.loadBooks }
                 })
               ],
@@ -45914,7 +45920,11 @@ var render = function() {
                 { staticClass: "float-right" },
                 [
                   _c("pagination", {
-                    attrs: { data: _vm.users, "show-disabled": "" },
+                    attrs: {
+                      data: _vm.users,
+                      limit: _vm.limit,
+                      "show-disabled": ""
+                    },
                     on: { "pagination-change-page": _vm.loadUsers }
                   })
                 ],

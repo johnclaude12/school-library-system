@@ -48,7 +48,7 @@
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
                         <div class="float-right">
-                            <pagination :data="books" show-disabled @pagination-change-page="loadBooks"></pagination>
+                            <pagination :data="books" show-disabled :limit="limit" @pagination-change-page="loadBooks"></pagination>
                         </div>
                     </div>
                 </div>
@@ -223,7 +223,8 @@
                         required: "required",
                         type: "number"
                     },
-                ]
+                ],
+                limit: 2
             }
         },
         created() {

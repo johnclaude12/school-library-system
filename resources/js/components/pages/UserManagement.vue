@@ -44,7 +44,7 @@
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
                         <div class="float-right">
-                            <pagination :data="users" show-disabled @pagination-change-page="loadUsers"></pagination>
+                            <pagination :data="users" :limit="limit" show-disabled @pagination-change-page="loadUsers"></pagination>
                         </div>
                     </div>
                 </div>
@@ -87,7 +87,8 @@
                     security_answer: '',
                     user_type_id: ''
                 },
-                errors: []
+                errors: [],
+                limit: 2
             }
         },
         created() {

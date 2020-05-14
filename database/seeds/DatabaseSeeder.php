@@ -21,6 +21,6 @@ class DatabaseSeeder extends Seeder
             BookCategorySeeder::class,
         ]);
 
-        factory(App\Model\Book::class, 20)->create();
+        factory(App\Model\Book::class, 100)->create();
     }
 }
