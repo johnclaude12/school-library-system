@@ -61,3 +61,34 @@ php artisan make:resource UserResource
 ```
 php artisan make:resource UserCollection
 ```
+
+#### TIPS for Good Practice
+
+```
+// Add to classes if two properties return true
+< div :class="{'red': isError, 'text-bold': isActive }” >< /div >
+```
+
+```
+// Emitting
+this.$emit('my-event') // instead of myEvent
+
+// Listening
+v-on:my-event
+```
+
+```
+// We have this selector
+export const language = (state) => state.userConfig.language;// In one of our actions, we need language:
+// Bad
+[GET_GAMES]({ commit, rootState }) {
+   const lang = rootState.userConfig.language;
+   // Do stuff...
+}
+// Good
+[GET_GAMES]({ commit, rootState }) {
+   const lang = language(rootState);
+   // Do stuff...
+}
+```
+

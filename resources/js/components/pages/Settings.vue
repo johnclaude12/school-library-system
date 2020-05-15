@@ -46,7 +46,7 @@
                                             <template v-else-if="item.name === 'gender'">
                                                 <select
                                                     class="form-control form-control-custom"
-                                                    :class="errors[item.name] ? 'is-invalid' : ''"
+                                                    :class="{'is-invalid' : errors[item.name]}"
                                                     :name="item.name"
                                                     :id="item.name"
                                                     :disabled="item.disabled"
@@ -59,7 +59,7 @@
                                             <template v-else>
                                                 <input
                                                     class="form-control form-control-custom"
-                                                    :class="errors[item.name] ? 'is-invalid' : ''"
+                                                    :class="{'is-invalid' : errors[item.name]}"
                                                     :type="item.type"
                                                     :id="item.name"
                                                     :name="item.name"
@@ -68,7 +68,7 @@
                                                 >
                                             </template>
 
-                                            <span role="alert" :class="errors[item.name] ? 'invalid-feedback d-block' : ''">
+                                            <span role="alert" :class="{'invalid-feedback d-block' : errors[item.name]}">
                                                 <strong v-if="errors[item.name]" >{{ errors[item.name][0] }}</strong>
                                             </span>
                                         </div>
@@ -85,7 +85,7 @@
                                             <template v-if="item.name === 'user_type_id'">
                                                 <select
                                                     class="form-control form-control-custom"
-                                                    :class="errors[item.name] ? 'is-invalid' : ''"
+                                                    :class="{'is-invalid' : errors[item.name]}"
                                                     :name="item.name"
                                                     :id="item.name"
                                                     :disabled="item.disabled"
@@ -99,7 +99,7 @@
                                             <template v-else-if="item.name === 'question_id'">
                                                 <select
                                                     class="form-control form-control-custom"
-                                                    :class="errors[item.name] ? 'is-invalid' : ''"
+                                                    :class="{'is-invalid' : errors[item.name]}"
                                                     :name="item.name"
                                                     :id="item.name"
                                                     :disabled="item.disabled"
@@ -113,7 +113,7 @@
                                             <template v-else>
                                                 <input
                                                     class="form-control form-control-custom"
-                                                    :class="errors[item.name] ? 'is-invalid' : ''"
+                                                    :class="{'is-invalid' : errors[item.name]}"
                                                     :type="item.type"
                                                     :id="item.name"
                                                     :name="item.name"
@@ -122,7 +122,7 @@
                                                 >
                                             </template>
 
-                                            <span role="alert" :class="errors[item.name] ? 'invalid-feedback d-block' : ''">
+                                            <span role="alert" :class="{'invalid-feedback d-block' : errors[item.name]}">
                                                 <strong v-if="errors[item.name]" >{{ errors[item.name][0] }}</strong>
                                             </span>
                                         </div>
