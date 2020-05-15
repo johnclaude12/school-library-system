@@ -3153,13 +3153,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context2.next = 3;
                 return axios.put('api/admin_settings/' + _this3.options.id, _this3.options).then(function (_ref4) {
                   var data = _ref4.data;
-                  _this3.options = data.data[0];
+                  _this3.options = data.data;
 
                   _this3.$Progress.finish();
-                })["catch"](function (error) {
-                  console.log("Error :", error);
 
+                  Swal.fire({
+                    icon: 'success',
+                    text: data.message,
+                    showConfirmButton: false,
+                    timer: 4000
+                  });
+                })["catch"](function (error) {
                   _this3.$Progress.fail();
+
+                  Swal.fire({
+                    icon: 'error',
+                    text: 'Something went wrong. Please, try again later.',
+                    showConfirmButton: false,
+                    timer: 4000
+                  });
                 });
 
               case 3:

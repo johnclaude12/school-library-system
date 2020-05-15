@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         factory(App\Model\Book::class, 100)->create();
+        factory(App\Model\User::class, 100)->create();
     }
 }

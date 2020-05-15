@@ -329,12 +329,25 @@
                 this.$Progress.start()
                 await axios.put('api/admin_settings/'+ this.options.id, this.options)
                         .then(({ data }) => {
-                            this.options = data.data[0];
+                            this.options = data.data;
                             this.$Progress.finish()
+
+                            Swal.fire({
+                                icon: 'success',
+                                text: data.message,
+                                showConfirmButton: false,
+                                timer: 4000
+                            })
                         })
                         .catch(error => {
-                            console.log("Error :", error)
                             this.$Progress.fail()
+
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'Something went wrong. Please, try again later.',
+                                showConfirmButton: false,
+                                timer: 4000
+                            })
                         })
             },
             onUpdate() {
