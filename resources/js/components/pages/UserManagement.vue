@@ -27,7 +27,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="user in users.data" :key="user.id">
+                                <tr v-for="user in loadUsers.data" :key="user.id">
                                     <td>{{ user.id }}</td>
                                     <td>{{ user.user_type }}</td>
                                     <td>{{ user.firstname }}</td>
@@ -44,7 +44,7 @@
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
                         <div class="float-right">
-                            <pagination :data="users" :limit="limit" show-disabled @pagination-change-page="loadUsers"></pagination>
+                            <pagination :data="loadUsers" :limit="limit" show-disabled @pagination-change-page="fetchUsers"></pagination>
                         </div>
                     </div>
                 </div>
@@ -73,7 +73,6 @@
         data() {
             return {
                 editMode: false,
-                users: {},
                 userData: {
                     user_image: '',
                     firstname: '',
@@ -92,13 +91,16 @@
             }
         },
         created() {
-            this.loadUsers();
+            this.fetchUsers();
+        },
+        computed: {
+            loadUsers() {
+                return this.$store.state.users;
+            }
         },
         methods: {
-            loadUsers(page = 1) {
-                axios.get('api/user?page='+ page)
-                    .then(({ data })=> this.users = data)
-                    .catch(err => console.log("Error :", err))
+            fetchUsers(page = 1) {
+                this.$store.dispatch('GET_USERS', { page });
             },
             OpenAddModal() {
                 this.editMode = false;
@@ -216,7 +218,7 @@
                         axios.delete('api/user/'+ id)
                             .then(({ data }) => {
                                 // find id from param to users state and remove
-                                this.users.data = this.users.data.filter(user => user.id !== id);
+                                // this.users.data = this.users.data.filter(user => user.id !== id);
 
                                 Swal.fire(
                                     '',
