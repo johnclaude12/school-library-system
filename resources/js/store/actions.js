@@ -9,6 +9,16 @@ let actions = {
         await axios.get('api/user?page='+ payload.page)
                 .then(({ data }) => commit('SET_USERS', data))
                 .catch(error => console.log("Error :", error));
+    },
+    async DELETE_USER({ commit }, payload) {
+        await axios.delete('api/user/'+ payload)
+                .then(({ data }) => {
+                    commit('DELETE_USER', payload)
+                    Swal.fire('', data.message, data.status)
+                })
+                .catch(error => {
+                    Swal.fire('', 'Oops! User failed to delete.', 'error')
+                })
     }
 };
 

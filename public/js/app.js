@@ -3481,6 +3481,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       });
     },
     onDelete: function onDelete(id) {
+      var _this5 = this;
+
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -3491,21 +3493,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         confirmButtonText: 'Yes, delete it!'
       }).then(function (result) {
         if (result.value) {
-          axios["delete"]('api/user/' + id).then(function (_ref4) {
-            var data = _ref4.data;
-            // find id from param to users state and remove
-            // this.users.data = this.users.data.filter(user => user.id !== id);
-            Swal.fire('', data.message, data.status);
-          })["catch"](function (error) {
-            Swal.fire('', 'Oops! User failed to delete.', 'error');
-          });
+          _this5.$store.dispatch('DELETE_USER', id);
         }
       });
     },
-    setProfilePic: function setProfilePic(_ref5) {
-      var _ref5$data = _ref5.data,
-          id = _ref5$data.id,
-          user_image = _ref5$data.user_image;
+    setProfilePic: function setProfilePic(_ref4) {
+      var _ref4$data = _ref4.data,
+          id = _ref4$data.id,
+          user_image = _ref4$data.user_image;
 
       if (id == localStorage.getItem('userId')) {
         $('img#user_profile_picture').attr('src', user_image);
@@ -64241,6 +64236,31 @@ var actions = {
         }
       }, _callee);
     }))();
+  },
+  DELETE_USER: function DELETE_USER(_ref4, payload) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+      var commit;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              commit = _ref4.commit;
+              _context2.next = 3;
+              return axios__WEBPACK_IMPORTED_MODULE_1___default.a["delete"]('api/user/' + payload).then(function (_ref5) {
+                var data = _ref5.data;
+                commit('DELETE_USER', payload);
+                sweetalert2__WEBPACK_IMPORTED_MODULE_2___default.a.fire('', data.message, data.status);
+              })["catch"](function (error) {
+                sweetalert2__WEBPACK_IMPORTED_MODULE_2___default.a.fire('', 'Oops! User failed to delete.', 'error');
+              });
+
+            case 3:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }))();
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (actions);
@@ -64306,6 +64326,11 @@ var mutations = {
   SET_AUTH: function SET_AUTH(state, auth) {},
   SET_USERS: function SET_USERS(state, data) {
     state.users = data;
+  },
+  DELETE_USER: function DELETE_USER(state, userId) {
+    state.users.data = state.users.data.filter(function (user) {
+      return user.id !== userId;
+    });
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (mutations);

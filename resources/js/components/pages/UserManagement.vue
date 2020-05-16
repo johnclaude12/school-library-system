@@ -215,24 +215,7 @@
                     confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.value) {
-                        axios.delete('api/user/'+ id)
-                            .then(({ data }) => {
-                                // find id from param to users state and remove
-                                // this.users.data = this.users.data.filter(user => user.id !== id);
-
-                                Swal.fire(
-                                    '',
-                                    data.message,
-                                    data.status
-                                )
-                            })
-                            .catch(error => {
-                                Swal.fire(
-                                    '',
-                                    'Oops! User failed to delete.',
-                                    'error'
-                                )
-                            })
+                        this.$store.dispatch('DELETE_USER', id);
                     }
                 })
             },
