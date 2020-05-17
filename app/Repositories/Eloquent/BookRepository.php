@@ -28,6 +28,14 @@ class BookRepository implements BookRepositoryInterface {
         return Book::findOrFail($id);
     }
 
+    public function updateBook($book)
+    {
+        $this->getBook($book['id'])->update($book);
+
+        // return getBook result for response
+        return $this->getBook($book['id']);
+    }
+
     public function deleteBook($id)
     {
         return Book::where('id', $id)->delete();

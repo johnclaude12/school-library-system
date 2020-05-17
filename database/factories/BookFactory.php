@@ -17,7 +17,7 @@ $factory->define(Book::class, function (Faker $faker) {
         'category_id' => function() {
             return BookCategory::all()->random();
         },
-        'date_published' => $faker->year,
+        'date_published' => $faker->dateTime,
         'series' => $faker->numberBetween(1,10),
         'price' => $faker->randomDigit,
         'avail_copies' => $faker->numberBetween(10,50),

@@ -8,7 +8,7 @@
                             <div class="d-flex align-items-center pb-2">
                                 <h3 class="card-title">Books</h3>
                             </div>
-                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#add_book" data-title="ADD">
+                            <button class="btn btn-sm btn-primary show-book-modal" @click="openModal" data-title="ADD">
                                 Book Register <i class="fas fa-plus"></i>
                             </button>
                         </div>
@@ -38,7 +38,7 @@
                                     <td>{{ book.category }}</td>
                                     <td>{{ book.date_published }}</td>
                                     <td>
-                                        <i class="fas fa-trash" @click="deleteBook(book.id)"></i>
+                                        <i class="fas fa-trash" @click="onDelete(book.id)"></i>
                                         <i class="fas fa-edit" @click="editBook(book.id)"></i>
                                     </td>
                                 </tr>
@@ -137,7 +137,18 @@
                     <!-- Modal Footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary p-18" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-new-position" @click="onSubmit"><i class="fas fa-save mr-1"></i>Save</button>
+                        <button
+                            v-if="!editMode"
+                            type="submit"
+                            class="btn btn-primary btn-new-position"
+                            @click="onSubmit"
+                        ><i class="fas fa-save mr-1"></i>Save</button>
+                        <button
+                            v-if="editMode"
+                            type="submit"
+                            class="btn btn-primary"
+                            @click="onUpdate"
+                        ><i class="fas fa-pen mr-1"></i>Update</button>
                     </div>
                 </div>
             </div>
@@ -227,7 +238,9 @@
                         type: "number"
                     },
                 ],
-                limit: 2
+                limit: 2,
+                editMode: false,
+                errors: []
             }
         },
         created() {
@@ -271,53 +284,85 @@
                         this.errors = error.response.data.errors;
                     })
             },
-            deleteBook(id) {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.value) {
-                        this.$Progress.start()
-                        axios.delete('api/book/'+ id)
-                            .then(({ data }) => {
-                                // find id from param to books state and remove
-                                this.books.data = this.books.data.filter(book => book.id !== id);
-                                this.$Progress.finish()
+            openModal() {
+                $('.show-book-modal').click(function() {
+                    this.editMode = false;
+                    $('#add_modal').modal('show');
+                });
+            },
+            onDelete(id) {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then(async (result) => {
+                        if (result.value) {
+                            this.$Progress.start()
+                            await axios.delete('api/book/'+ id)
+                                    .then(({ data }) => {
+                                        // find id from param to books state and remove
+                                        this.books.data = this.books.data.filter(book => book.id !== id);
+                                        this.$Progress.finish()
 
-                                Swal.fire(
-                                    '',
-                                    data.message,
-                                    data.status
-                                )
-                            })
-                            .catch(error => {
-                                this.$Progress.fail()
-                                Swal.fire(
-                                    '',
-                                    'Something went wrong. Please, try again later.',
-                                    'error'
-                                )
-                            })
-                    }
-                })
+                                        Swal.fire('', data.message, data.status)
+                                    })
+                                    .catch(error => {
+                                        this.$Progress.fail()
+                                        Swal.fire(
+                                            '',
+                                            'Something went wrong. Please, try again later.',
+                                            'error'
+                                        )
+                                    })
+                        }
+                    })
             },
             editBook(id) {
                 this.$Progress.start()
-
                 axios.get('api/book/'+id)
                     .then(({ data }) => {
-                        console.log("Data :", data)
+                        this.editMode = true;
+                        this.bookData = data.data;
+                        $('#add_book').modal('show');
                         this.$Progress.finish()
                     })
                     .catch(error => {
-                        console.log("Error :", error)
                         this.$Progress.fail()
                     });
+            },
+            async onUpdate() {
+                this.$Progress.start()
+                await axios.put('api/book/'+ this.bookData.id, this.bookData)
+                        .then(({ data }) => {
+                            this.books.data = this.books.data.filter(book => book.id !== data.data.id); // remove update book
+                            this.books.data = [data.data, ...this.books.data]; // inject new data
+                            this.$Progress.finish()
+                            $('#add_book').modal('hide');
+
+                            Swal.fire({
+                                icon: 'success',
+                                text: data.message,
+                                showConfirmButton: false,
+                                timer: 4000
+                            })
+                        })
+                        .catch(error => {
+                            if (error.response.status !== 422) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    text: 'Something went wrong. Please, try again later.',
+                                    showConfirmButton: false,
+                                    timer: 4000
+                                })
+                            }
+
+                            this.$Progress.fail()
+                            this.errors = error.response.data.errors;
+                        })
             }
         }
     }

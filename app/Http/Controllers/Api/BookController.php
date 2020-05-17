@@ -73,9 +73,16 @@ class BookController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function update(Request $request, Book $book)
+    public function update(Request $request)
     {
+        unset($request['category']); // remove category attribute from request
+        $book = $this->bookRepository->updateBook($request->all());
 
+        return response()->json([
+            'status' => true,
+            'message' => 'Book updated successfully.',
+            'data' => new BookResource($book)
+        ], Response::HTTP_OK);
     }
 
     public function destroy($id)

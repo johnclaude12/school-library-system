@@ -22,7 +22,7 @@ class CreateBooksTable extends Migration
             $table->string('publisher');
             $table->text('description');
             $table->integer('category_id');
-            $table->string('date_published');
+            $table->date('date_published');
             $table->string('series');
             $table->integer('avail_copies');
             $table->integer('total_copies');

@@ -91,7 +91,7 @@ class UserController extends Controller
 
     public function update(UserRequest $request)
     {
-        $user = User::find($request->id);
+        $user = $this->userReposity->getUser($request->id);
         $input = $request->all();
 
         if ($input['user_image'] != null) {
@@ -114,7 +114,7 @@ class UserController extends Controller
         $user->update($input);
 
         return response()->json([
-            'status' => 'success',
+            'status' => true,
             'message' => 'User updated successfully.',
             'data' => new UserResource($user)
         ], Response::HTTP_OK);

@@ -2239,10 +2239,35 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2393,7 +2418,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BookEntry",
   data: function data() {
-    return {
+    return _defineProperty({
       books: {},
       book_categories: [],
       bookData: {
@@ -2467,8 +2492,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         required: "required",
         type: "number"
       }],
-      limit: 2
-    };
+      limit: 2,
+      editMode: false
+    }, "errors", []);
   },
   created: function created() {
     this.loadBooks();
@@ -2486,8 +2512,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 page = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : 1;
                 _context.next = 3;
-                return axios.get('api/book?page=' + page).then(function (_ref) {
-                  var data = _ref.data;
+                return axios.get('api/book?page=' + page).then(function (_ref2) {
+                  var data = _ref2.data;
                   _this.books = data.data.books;
                   _this.book_categories = data.data.book_categories;
                 })["catch"](function (err) {
@@ -2513,8 +2539,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this2.$Progress.start();
 
                 _context2.next = 3;
-                return axios.post('api/book', _this2.bookData).then(function (_ref2) {
-                  var data = _ref2.data;
+                return axios.post('api/book', _this2.bookData).then(function (_ref3) {
+                  var data = _ref3.data;
 
                   _this2.$Progress.finish();
 
@@ -2549,7 +2575,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    deleteBook: function deleteBook(id) {
+    openModal: function openModal() {
+      $('.show-book-modal').click(function () {
+        this.editMode = false;
+        $('#add_modal').modal('show');
+      });
+    },
+    onDelete: function onDelete(id) {
       var _this3 = this;
 
       Swal.fire({
@@ -2560,42 +2592,114 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!'
-      }).then(function (result) {
-        if (result.value) {
-          _this3.$Progress.start();
+      }).then( /*#__PURE__*/function () {
+        var _ref4 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(result) {
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+            while (1) {
+              switch (_context3.prev = _context3.next) {
+                case 0:
+                  if (!result.value) {
+                    _context3.next = 4;
+                    break;
+                  }
 
-          axios["delete"]('api/book/' + id).then(function (_ref3) {
-            var data = _ref3.data;
-            // find id from param to books state and remove
-            _this3.books.data = _this3.books.data.filter(function (book) {
-              return book.id !== id;
-            });
+                  _this3.$Progress.start();
 
-            _this3.$Progress.finish();
+                  _context3.next = 4;
+                  return axios["delete"]('api/book/' + id).then(function (_ref5) {
+                    var data = _ref5.data;
+                    // find id from param to books state and remove
+                    _this3.books.data = _this3.books.data.filter(function (book) {
+                      return book.id !== id;
+                    });
 
-            Swal.fire('', data.message, data.status);
-          })["catch"](function (error) {
-            _this3.$Progress.fail();
+                    _this3.$Progress.finish();
 
-            Swal.fire('', 'Something went wrong. Please, try again later.', 'error');
-          });
-        }
-      });
+                    Swal.fire('', data.message, data.status);
+                  })["catch"](function (error) {
+                    _this3.$Progress.fail();
+
+                    Swal.fire('', 'Something went wrong. Please, try again later.', 'error');
+                  });
+
+                case 4:
+                case "end":
+                  return _context3.stop();
+              }
+            }
+          }, _callee3);
+        }));
+
+        return function (_x) {
+          return _ref4.apply(this, arguments);
+        };
+      }());
     },
     editBook: function editBook(id) {
       var _this4 = this;
 
       this.$Progress.start();
-      axios.get('api/book/' + id).then(function (_ref4) {
-        var data = _ref4.data;
-        console.log("Data :", data);
+      axios.get('api/book/' + id).then(function (_ref6) {
+        var data = _ref6.data;
+        _this4.editMode = true;
+        _this4.bookData = data.data;
+        $('#add_book').modal('show');
 
         _this4.$Progress.finish();
       })["catch"](function (error) {
-        console.log("Error :", error);
-
         _this4.$Progress.fail();
       });
+    },
+    onUpdate: function onUpdate() {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _this5.$Progress.start();
+
+                _context4.next = 3;
+                return axios.put('api/book/' + _this5.bookData.id, _this5.bookData).then(function (_ref7) {
+                  var data = _ref7.data;
+                  _this5.books.data = _this5.books.data.filter(function (book) {
+                    return book.id !== data.data.id;
+                  }); // remove update book
+
+                  _this5.books.data = [data.data].concat(_toConsumableArray(_this5.books.data)); // inject new data
+
+                  _this5.$Progress.finish();
+
+                  $('#add_book').modal('hide');
+                  Swal.fire({
+                    icon: 'success',
+                    text: data.message,
+                    showConfirmButton: false,
+                    timer: 4000
+                  });
+                })["catch"](function (error) {
+                  if (error.response.status !== 422) {
+                    Swal.fire({
+                      icon: 'error',
+                      text: 'Something went wrong. Please, try again later.',
+                      showConfirmButton: false,
+                      timer: 4000
+                    });
+                  }
+
+                  _this5.$Progress.fail();
+
+                  _this5.errors = error.response.data.errors;
+                });
+
+              case 3:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
     }
   }
 });
@@ -44388,7 +44492,31 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-12" }, [
         _c("div", { staticClass: "card" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "card-header" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-baseline"
+              },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-sm btn-primary show-book-modal",
+                    attrs: { "data-title": "ADD" },
+                    on: { click: _vm.openModal }
+                  },
+                  [
+                    _vm._v("\n                            Book Register "),
+                    _c("i", { staticClass: "fas fa-plus" })
+                  ]
+                )
+              ]
+            )
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
             _c("table", { staticClass: "table table-bordered" }, [
@@ -44417,7 +44545,7 @@ var render = function() {
                         staticClass: "fas fa-trash",
                         on: {
                           click: function($event) {
-                            return _vm.deleteBook(book.id)
+                            return _vm.onDelete(book.id)
                           }
                         }
                       }),
@@ -44873,15 +45001,35 @@ var render = function() {
                 [_vm._v("Cancel")]
               ),
               _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary btn-new-position",
-                  attrs: { type: "submit" },
-                  on: { click: _vm.onSubmit }
-                },
-                [_c("i", { staticClass: "fas fa-save mr-1" }), _vm._v("Save")]
-              )
+              !_vm.editMode
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary btn-new-position",
+                      attrs: { type: "submit" },
+                      on: { click: _vm.onSubmit }
+                    },
+                    [
+                      _c("i", { staticClass: "fas fa-save mr-1" }),
+                      _vm._v("Save")
+                    ]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.editMode
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "submit" },
+                      on: { click: _vm.onUpdate }
+                    },
+                    [
+                      _c("i", { staticClass: "fas fa-pen mr-1" }),
+                      _vm._v("Update")
+                    ]
+                  )
+                : _vm._e()
             ])
           ])
         ])
@@ -44894,32 +45042,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c(
-        "div",
-        { staticClass: "d-flex justify-content-between align-items-baseline" },
-        [
-          _c("div", { staticClass: "d-flex align-items-center pb-2" }, [
-            _c("h3", { staticClass: "card-title" }, [_vm._v("Books")])
-          ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-sm btn-primary",
-              attrs: {
-                "data-toggle": "modal",
-                "data-target": "#add_book",
-                "data-title": "ADD"
-              }
-            },
-            [
-              _vm._v("\n                            Book Register "),
-              _c("i", { staticClass: "fas fa-plus" })
-            ]
-          )
-        ]
-      )
+    return _c("div", { staticClass: "d-flex align-items-center pb-2" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Books")])
     ])
   },
   function() {
