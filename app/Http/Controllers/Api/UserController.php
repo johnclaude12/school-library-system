@@ -2,30 +2,34 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Model\User;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests\Request\UserRequest;
 use App\Http\Resources\User\UserResource;
 use App\Http\Resources\User\UserCollection;
-use App\Model\User;
+use App\Repositories\UserRepositoryInterface;
 
 class UserController extends Controller
 {
-    public function __construct()
+    public $userReposity;
+
+    public function __construct(UserRepositoryInterface $userReposity)
     {
+        $this->userReposity = $userReposity;
         $this->middleware('auth:api');
     }
 
     public function index()
     {
-        $users = User::paginate(5);
+        $users = $this->userReposity->getUsersByPaginated(5);
         return UserCollection::collection($users);
     }
 
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $user = $this->userReposity->getUser($id);
         return response()->json(new UserResource($user));
     }
 
@@ -71,7 +75,7 @@ class UserController extends Controller
             $status = 'success';
             $message = 'User successfully deleted.';
             $code = Response::HTTP_OK;
-            User::findOrFail($id)->delete();
+            $this->userReposity->deleteUser($id);
         }
 
         // User::withTrashed()
