@@ -2583,7 +2583,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     editBook: function editBook(id) {
-      console.log("ID :", id);
+      var _this4 = this;
+
+      this.$Progress.start();
+      axios.get('api/book/' + id).then(function (_ref4) {
+        var data = _ref4.data;
+        console.log("Data :", data);
+
+        _this4.$Progress.finish();
+      })["catch"](function (error) {
+        console.log("Error :", error);
+
+        _this4.$Progress.fail();
+      });
     }
   }
 });

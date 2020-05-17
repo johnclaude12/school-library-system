@@ -4,24 +4,29 @@ namespace App\Http\Controllers\Api;
 
 use App\Model\Book;
 use App\Model\BookCategory;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\Book\BookCollection;
+use App\Http\Resources\Book\BookResource;
 use App\Http\Resources\BookCategory\BookCategoryCollection;
 use App\Http\Requests\Book\BookEntryRequest;
-use Illuminate\Http\Request;
+use App\Repositories\BookRepositoryInterface;
 
 class BookController extends Controller
 {
-    public function __construct()
+    private $bookRepository;
+
+    public function __construct(BookRepositoryInterface $bookRepository)
     {
+        $this->bookRepository = $bookRepository;
         $this->middleware('auth:api');
     }
 
     public function index()
     {
         $book_categories = BookCategory::all();
-        $books = Book::paginate(5);
+        $books = $this->bookRepository->getBookByPaginated(5);
 
         return response()->json([
             "status" => true,
@@ -30,7 +35,7 @@ class BookController extends Controller
                 "book_categories" => BookCategoryCollection::collection($book_categories),
                 "books" => new BookCollection($books)
             ]
-        ]);
+            ], Response::HTTP_OK);
     }
 
     public function store(BookEntryRequest $request)
@@ -57,9 +62,15 @@ class BookController extends Controller
         ], $code);
     }
 
-    public function show(Book $book)
+    public function show($id)
     {
+        $book = $this->bookRepository->getBook($id);
 
+        return response()->json([
+            'message' => 'success',
+            'status' => true,
+            'data' => new BookResource($book)
+        ], Response::HTTP_OK);
     }
 
     public function update(Request $request, Book $book)
@@ -69,11 +80,10 @@ class BookController extends Controller
 
     public function destroy($id)
     {
-        $book = Book::find($id);
-        $book->delete($id);
+        $this->bookRepository->deleteBook($id);
 
         return response()->json([
-            'status' => 'success',
+            'status' => true,
             'message' => 'Book deleted successfully.',
         ], Response::HTTP_OK);
     }

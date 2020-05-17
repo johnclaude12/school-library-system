@@ -307,7 +307,17 @@
                 })
             },
             editBook(id) {
-                console.log("ID :", id);
+                this.$Progress.start()
+
+                axios.get('api/book/'+id)
+                    .then(({ data }) => {
+                        console.log("Data :", data)
+                        this.$Progress.finish()
+                    })
+                    .catch(error => {
+                        console.log("Error :", error)
+                        this.$Progress.fail()
+                    });
             }
         }
     }
