@@ -28,6 +28,11 @@ class BookRepository implements BookRepositoryInterface {
         return Book::findOrFail($id);
     }
 
+    public function getTotalBooks()
+    {
+        return Book::count();
+    }
+
     public function updateBook($book)
     {
         $this->getBook($book['id'])->update($book);

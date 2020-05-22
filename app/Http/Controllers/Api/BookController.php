@@ -94,4 +94,14 @@ class BookController extends Controller
             'message' => 'Book deleted successfully.',
         ], Response::HTTP_OK);
     }
+
+    public function TotalBooks() {
+        $total_counts = $this->bookRepository->getTotalBooks();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'success',
+            'data' => $total_counts
+        ], Response::HTTP_OK);
+    }
 }

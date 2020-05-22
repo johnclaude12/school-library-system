@@ -23,6 +23,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::apiResource('admin_settings', 'Api\AdminSettingsController');
 
     Route::apiResource('book', 'Api\BookController');
+    Route::get('total/books', 'Api\BookController@TotalBooks');
     // Route::post('book', 'Api\BookController@store');
     // Route::get('book', 'Api\BookController@index');
 });

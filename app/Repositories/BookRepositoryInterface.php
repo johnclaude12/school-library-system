@@ -6,6 +6,8 @@ interface BookRepositoryInterface {
 
     public function getBooks();
 
+    public function getTotalBooks();
+
     public function getBookByPaginated($perPage);
 
     public function getBook($id);
