@@ -10,7 +10,7 @@ window.Vue = require('vue');
 import VueRouter from 'vue-router';
 import VueProgressBar from 'vue-progressbar'
 import Swal from 'sweetalert2'
-import { store } from './store'
+import store from './store'
 
 Vue.use(VueRouter);
 Vue.use(VueProgressBar, {

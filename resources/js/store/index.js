@@ -1,17 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import actions from './actions'
-import mutations from './mutations'
-import getters from './getters'
-import state from "./state";
+import * as book from './modules/book.js'
+import * as user from './modules/user.js'
 
 Vue.use(Vuex);
 
-export const store = new Vuex.Store({
-    namespaced: true,
-    state,
-    mutations,
-    getters,
-    actions
-})
+export default new Vuex.Store({
+    modules: {
+        book,
+        user
+    }
+});

@@ -27,7 +27,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="user in loadUsers.data" :key="user.id">
+                                <tr v-for="user in getUsers.data" :key="user.id">
                                     <td>{{ user.id }}</td>
                                     <td>{{ user.user_type }}</td>
                                     <td>{{ user.firstname }}</td>
@@ -44,7 +44,7 @@
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
                         <div class="float-right">
-                            <pagination :data="loadUsers" :limit="limit" show-disabled @pagination-change-page="fetchUsers"></pagination>
+                            <pagination :data="getUsers" :limit="limit" show-disabled @pagination-change-page="getUsersPaginated"></pagination>
                         </div>
                     </div>
                 </div>
@@ -64,6 +64,7 @@
 
 <script>
     import UserModal from '../common/UserModal.vue'
+    import { mapActions, mapGetters } from 'vuex'
 
     export default {
         name: "UserManagement",
@@ -91,17 +92,13 @@
             }
         },
         created() {
-            this.fetchUsers();
+            this.getUsersPaginated(1); // 1 is for page
         },
         computed: {
-            loadUsers() {
-                return this.$store.state.users;
-            }
+            ...mapGetters('user', ['getUsers']),
         },
         methods: {
-            fetchUsers(page = 1) {
-                this.$store.dispatch('GET_USERS', { page });
-            },
+            ...mapActions('user', ['getUsersPaginated', 'deleteUser']),
             OpenAddModal() {
                 this.editMode = false;
                 this.userData.user_image = 'images/profile/user.png'; // set default value of element file
@@ -215,7 +212,9 @@
                     confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.value) {
-                        this.$store.dispatch('DELETE_USER', id);
+                        this.deleteUser(id)
+                            .then(() => Swal.fire('', 'User successfully deleted.', 'success'))
+                            .catch(error => Swal.fire('', 'Oops! User failed to delete.', 'error'));
                     }
                 })
             },

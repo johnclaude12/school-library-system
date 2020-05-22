@@ -6,7 +6,7 @@
                     <div class="card-body text-muted dashboard">
                         <i :class="'fa-5x mt-3 fas fa-' + item.icon"></i>
                         <h6 class="text-uppercase">{{ item.text }}</h6>
-                        <h1 class="display-4 font-weight-bold">{{ item.total }}</h1>
+                        <h1 class="display-4 font-weight-bold">{{ total_books }}</h1>
                     </div>
                     <a href="#" class="small-box-footer">{{ item['footer-text'] }} <i :class="'fas fa-' + item['footer-icon']"></i></a>
                 </div>
@@ -16,11 +16,10 @@
 </template>
 
 <script>
+    import { mapActions, mapGetters } from 'vuex'
+
     export default {
         name: "Dashboard",
-        mounted() {
-            console.log('Component mounted.')
-        },
         data() {
             return {
                 items: [
@@ -74,6 +73,13 @@
                     }
                 ]
             }
+        },
+        computed: mapGetters('book', ['total_books']),
+        created() {
+            this.getTotalBooks();
+        },
+        methods: {
+            ...mapActions('book', ['getTotalBooks']),
         }
     }
 </script>
