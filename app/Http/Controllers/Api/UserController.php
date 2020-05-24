@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Model\User;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use App\Http\Requests\Request\UserRequest;
 use App\Http\Resources\User\UserResource;
@@ -23,6 +24,7 @@ class UserController extends Controller
 
     public function index()
     {
+        $this->authorize('can-view-user-list');
         $users = $this->userReposity->getUsersByPaginated(5);
         return UserCollection::collection($users);
     }

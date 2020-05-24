@@ -11,6 +11,7 @@ import VueRouter from 'vue-router';
 import VueProgressBar from 'vue-progressbar'
 import Swal from 'sweetalert2'
 import store from './store'
+import Gate from './Gate.js'
 
 Vue.use(VueRouter);
 Vue.use(VueProgressBar, {
@@ -18,7 +19,8 @@ Vue.use(VueProgressBar, {
     failedColor: 'red',
     height: '3px'
 })
-Vue.component('pagination', require('laravel-vue-pagination'));
+
+Vue.prototype.$gate = new Gate(window.userRole); // windows.userRole was set in master.blade.php before </body>
 
 window.Swal = Swal;
 
@@ -34,6 +36,10 @@ const routes = [
     { path: '/settings', name: 'Settings', component: require('./components/pages/Settings.vue').default },
     { path: '/*', name: 'NotFound', component: require('./components/pages/NotFound.vue').default }
 ];
+
+Vue.component('pagination', require('laravel-vue-pagination'));
+Vue.component('not-found', require('./components/pages/NotFound.vue').default);
+Vue.component('forbidden-page', require('./components/pages/ForbiddenPage.vue').default);
 
 const router = new VueRouter({
     mode: 'history',

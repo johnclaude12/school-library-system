@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" v-if="$gate.isAdminLibr()">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
@@ -49,6 +49,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div v-else>
+            <forbidden-page></forbidden-page>
         </div>
 
         <UserModal

@@ -51,4 +51,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(SecurityQuestion::class);
     }
+
+    public function hasUserRole($roles) {
+        if ($this->userType()->whereIn('short_name', $roles)->first()) {
+            return true;
+        }
+
+        return false;
+    }
 }

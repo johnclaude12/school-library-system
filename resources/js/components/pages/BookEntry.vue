@@ -287,7 +287,7 @@
             openModal() {
                 $('.show-book-modal').click(function() {
                     this.editMode = false;
-                    $('#add_modal').modal('show');
+                    $('#add_book').modal('show');
                 });
             },
             onDelete(id) {

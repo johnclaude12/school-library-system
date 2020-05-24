@@ -82,6 +82,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <div class="info">
           <a href="#" class="d-block">{{ auth()->user()->firstname ." ". auth()->user()->lastname }}</a>
+          <small class="text-white">{{ auth()->user()->userType->name }}</small>
         </div>
       </div>
 
@@ -93,24 +94,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
             @php
                 $items = array(
                     // text        Link    Icon            Class
-                    "Dashboard" => ["/", "tachometer-alt", ""],
-                    "Attendance" => ["/attendance", "clipboard-list", ""],
-                    "Book Entry" => ["/book-entry", "book", ""],
-                    "Issued & Return" => ["/issued-return", "paste", ""],
-                    "Borrowers" => ["/borrowers", "book-reader", ""],
-                    "User Management" => ["/user-management", "users-cog", ""],
-                    "Audit Log" => ["/audit-log", "history", ""],
-                    "Reports" => ["/reports", "file-download", ""],
+                    "Dashboard" => ["/", "tachometer-alt", "", ""],
+                    "Attendance" => ["/attendance", "clipboard-list", "", ""],
+                    "Book Entry" => ["/book-entry", "book", "", ""],
+                    "Issued & Return" => ["/issued-return", "paste", "", ""],
+                    "Borrowers" => ["/borrowers", "book-reader", "", ""],
+                    "User Management" => ["/user-management", "users-cog", "", "can-view-user-list"],
+                    "Audit Log" => ["/audit-log", "history", "", ""],
+                    "Reports" => ["/reports", "file-download", "", ""],
                 );
             @endphp
 
-            @foreach ($items as $item => [$link, $icon, $class])
-                <li class="nav-item">
-                    <router-link to="{{ $link }}" class="nav-link {{ $class }}">
-                        <i class="nav-icon fas fa-{{ $icon }}"></i>
-                        <p>{{ $item }}</p>
-                    </router-link>
-                </li>
+            @foreach ($items as $item => [$link, $icon, $class, $authorize])
+                @if (strlen($authorize) > 0)
+                    @can($authorize)
+                        {{-- menu will not show --}}
+                    @endcan
+                @else
+                    <li class="nav-item">
+                        <router-link to="{{ $link }}" class="nav-link {{ $class }}">
+                            <i class="nav-icon fas fa-{{ $icon }}"></i>
+                            <p>{{ $item }}</p>
+                        </router-link>
+                    </li>
+                @endif
             @endforeach
         </ul>
       </nav>
@@ -157,6 +164,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <strong>Copyright &copy; 2020.</strong> All rights reserved.
   </footer>
 </div>
+
+@auth
+    <script>
+        window.userRole = @json(auth()->user()->userType->short_name)
+    </script>
+@endauth
+
 <!-- ./wrapper -->
 <script src="{{ asset('js/app.js') }}"></script>
 </body>
