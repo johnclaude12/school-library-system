@@ -108,7 +108,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
             @foreach ($items as $item => [$link, $icon, $class, $authorize])
                 @if (strlen($authorize) > 0)
                     @can($authorize)
-                        {{-- menu will not show --}}
+                        <li class="nav-item">
+                            <router-link to="{{ $link }}" class="nav-link {{ $class }}">
+                                <i class="nav-icon fas fa-{{ $icon }}"></i>
+                                <p>{{ $item }}</p>
+                            </router-link>
+                        </li>
                     @endcan
                 @else
                     <li class="nav-item">

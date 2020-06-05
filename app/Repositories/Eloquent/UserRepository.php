@@ -4,12 +4,20 @@ namespace App\Repositories\Eloquent;
 
 use App\Model\User;
 use App\Repositories\UserRepositoryInterface;
+use Carbon\Carbon;
 
 class UserRepository implements UserRepositoryInterface
 {
+    CONST CACHE_KEY = 'USERS';
+
     public function getUsers()
     {
-        return User::all();
+        $cacheKey = Self::CACHE_KEY.".ALL";
+        $orderBy = 'created_at';
+
+        return cache()->remember($cacheKey, Carbon::now()->addMinutes(5), function() use ($orderBy) {
+            return User::orderBy($orderBy)->get();
+        });
     }
 
     public function getUsersByPaginated($perPage)
@@ -19,7 +27,11 @@ class UserRepository implements UserRepositoryInterface
 
     public function getUser($id)
     {
-        return User::findOrFail($id);
+        $cacheKey = Self::CACHE_KEY.".ID";
+
+        return cache()->remember($cacheKey, Carbon::now()->addMinutes(5), function() use ($id) {
+            return User::findOrFail($id);
+        });
     }
 
     public function deleteUser($id)

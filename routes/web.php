@@ -16,4 +16,5 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::resource('/example/redis', 'SampleRedisController');
 Route::get('{any}', 'HomeController@index')->where('any', '.*');
