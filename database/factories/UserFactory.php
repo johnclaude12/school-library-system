@@ -32,8 +32,8 @@ $factory->define(User::class, function (Faker $faker) {
         'gender' => $faker->randomElement(['male', 'female']),
         'contact_no' => $faker->numberBetween(9827348348,19827348348),
         'birthday' => $randomDate,
-        'username' => $faker->userName,
-        'email' => $faker->safeEmail,
+        'username' => $faker->userName .Str::random(4),
+        'email' => Str::random(7).'@example.com',
         'email_verified_at' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'question_id' => function() {

@@ -65095,8 +65095,8 @@ var getters = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\Projects\Laravel\school-library-system\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\Projects\Laravel\school-library-system\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\john.maghanoy\Desktop\Projects\school-library-system\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\john.maghanoy\Desktop\Projects\school-library-system\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
