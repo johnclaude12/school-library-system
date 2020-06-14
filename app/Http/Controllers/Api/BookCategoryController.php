@@ -2,84 +2,61 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\BookCategory;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use App\Repositories\BookRepositoryInterface;
+use App\Http\Resources\BookCategory\BookCategoryCollection;
 
 class BookCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    private $bookRepository;
+
+    public function __construct(BookRepositoryInterface $bookRepository)
     {
-        //
+        $this->bookRepository = $bookRepository;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function index()
+    {
+        return response()->json([
+            "message" => "success",
+            "data" => BookCategoryCollection::collection($this->bookRepository->getBookCategories()),
+            "status" => true,
+        ], Response::HTTP_OK);
+    }
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $book_category = new BookCategory();
-        $book_category->category = $request->input('book_category');
-        $book_category->save();
+        $book_category = $this->bookRepository->addBookCategory($request);
+
+        return response()->json([
+            "status" => true,
+            "data" => $book_category,
+            "message" => "Book Category Successfully created."
+        ], Response::HTTP_CREATED);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\BookCategory  $bookCategory
-     * @return \Illuminate\Http\Response
-     */
     public function show(BookCategory $bookCategory)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\BookCategory  $bookCategory
-     * @return \Illuminate\Http\Response
-     */
     public function edit(BookCategory $bookCategory)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\BookCategory  $bookCategory
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, BookCategory $bookCategory)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\BookCategory  $bookCategory
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(BookCategory $bookCategory)
     {
         //

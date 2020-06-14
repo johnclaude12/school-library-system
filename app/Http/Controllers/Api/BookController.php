@@ -25,17 +25,15 @@ class BookController extends Controller
 
     public function index()
     {
-        $book_categories = BookCategory::all();
         $books = $this->bookRepository->getBookByPaginated(5);
 
         return response()->json([
             "status" => true,
             'message' => "success",
             "data" => [
-                "book_categories" => BookCategoryCollection::collection($book_categories),
                 "books" => new BookCollection($books)
             ]
-            ], Response::HTTP_OK);
+        ], Response::HTTP_OK);
     }
 
     public function store(BookEntryRequest $request)

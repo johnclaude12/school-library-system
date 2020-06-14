@@ -33,6 +33,15 @@ class BookRepository implements BookRepositoryInterface {
         return Book::count();
     }
 
+    public function addBookCategory($book)
+    {
+        $book_category = new BookCategory();
+        $book_category->category = $book->input('category');
+        $book_category->save();
+
+        return $book_category;
+    }
+
     public function updateBook($book)
     {
         $this->getBook($book['id'])->update($book);

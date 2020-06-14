@@ -21,10 +21,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'auth:api'], function() {
     Route::apiResource('user', 'Api\UserController');
     Route::apiResource('admin_settings', 'Api\AdminSettingsController');
-
-    Route::apiResource('book', 'Api\BookController');
     Route::get('total/books', 'Api\BookController@TotalBooks');
-    // Route::post('book', 'Api\BookController@store');
-    // Route::get('book', 'Api\BookController@index');
+    Route::apiResource('/books', 'Api\BookController');
+
+    Route::prefix('books')->name('books')->group(function() {
+        Route::get('/category/all', 'Api\BookCategoryController@index');
+        Route::apiResource('/category', 'Api\BookCategoryController');
+    });
 });
 

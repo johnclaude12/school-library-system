@@ -19,7 +19,7 @@ export default new VueRouter({
         {
             path: '/book-entry',
             name: 'BookEntry',
-            component: require('../components/pages/BookEntry.vue').default
+            component: require('../components/pages/Book/BookEntry.vue').default
         },
         {
             path: '/issued-return',
