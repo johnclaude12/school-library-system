@@ -52,6 +52,7 @@ class UserController extends Controller
 
             unset($input['user_type']);
             unset($input['question']);
+            unset($input['fullname']);
             $input['password'] = bcrypt($input['password']);
             $userData = User::create($input);
         } catch(Exception $ex) {
@@ -109,6 +110,7 @@ class UserController extends Controller
         }
 
         unset($input['user_type']);
+        unset($input['fullname']);
         unset($input['question']);
         unset($input['current_password']);
         unset($input['confirm_password']);

@@ -27,11 +27,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function getUser($id)
     {
-        $cacheKey = Self::CACHE_KEY.".ID";
-
-        return cache()->remember($cacheKey, Carbon::now()->addMinutes(5), function() use ($id) {
-            return User::findOrFail($id);
-        });
+        return User::findOrFail($id);
     }
 
     public function deleteUser($id)

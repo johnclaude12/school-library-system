@@ -29,7 +29,7 @@ $factory->define(User::class, function (Faker $faker) {
         'firstname' => $faker->firstName('male'|'female'),
         'middlename' => $faker->lastName,
         'lastname' => $faker->lastName,
-        'gender' => $faker->randomElement(['male', 'female']),
+        'gender' => $faker->randomElement(['M', 'F']),
         'contact_no' => $faker->numberBetween(9827348348,19827348348),
         'birthday' => $randomDate,
         'username' => $faker->userName .Str::random(4),

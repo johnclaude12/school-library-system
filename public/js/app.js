@@ -2508,7 +2508,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         $('#add_book').modal('show');
 
         _this4.$Progress.finish();
-      }, 800);
+      }, 500);
     },
     openAddCategory: function openAddCategory() {
       $('#modalCategory').modal('show');

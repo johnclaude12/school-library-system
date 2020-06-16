@@ -194,7 +194,7 @@
                 setTimeout(() => {
                     $('#add_book').modal('show')
                     this.$Progress.finish()
-                }, 800);
+                }, 500);
             },
             openAddCategory() {
                 $('#modalCategory').modal('show');
